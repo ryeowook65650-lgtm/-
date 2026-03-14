@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>XIAMEN TRIP</title>
+    <title>廈門旅遊</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -175,7 +175,7 @@
 
     <div class="top-bar">
         <div class="header-info">
-            <div class="app-title">Xiamen Trip <span class="refresh-btn" onclick="forceAppUpdate()">🔄</span></div>
+            <div class="app-title">廈門旅遊 <span class="refresh-btn" onclick="forceAppUpdate()">🔄</span></div>
             <div id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">
                 🇨🇳 載入天氣...
             </div>
@@ -342,7 +342,7 @@
         let expenses = []; 
         let selectedInputDate = 'Day 1'; 
         let selectedCategory = '交通';
-        let selectedCurrency = 'RMB'; // 預設幣別
+        let selectedCurrency = 'RMB'; 
         
         const tripDates = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5']; 
         
@@ -374,7 +374,6 @@
             }
         }
 
-        // 處理幣別按鈕切換
         function selectCurrency(curr) {
             selectedCurrency = curr;
             document.getElementById('btn-curr-rmb').classList.remove('active');
@@ -401,7 +400,6 @@
             
             let finalPriceRMB = inputPrice;
 
-            // 根據選擇的按鈕，自動處理換算
             if (selectedCurrency === 'TWD') {
                 finalPriceRMB = (inputPrice / currentRate).toFixed(2); 
                 finalName = `${finalName} (NT$${inputPrice})`; 
