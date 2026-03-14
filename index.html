@@ -114,7 +114,6 @@
         .input-area { overflow: hidden; padding: 25px; margin-bottom: 25px; }
         .input-title { font-family: var(--font-serif); font-size: 18px; font-weight: 800; color: var(--color-1); margin-bottom: 15px; display:block; }
         
-        /* 幣別切換按鈕樣式 */
         .curr-btn-row { display: flex; border-bottom: var(--border-width) solid var(--color-1); background: var(--color-3); }
         .curr-btn { flex: 1; text-align: center; padding: 12px; font-size: 15px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); }
         .curr-btn:last-child { border-right: none; }
@@ -398,11 +397,15 @@
             
             if (isNaN(inputPrice)) { alert('請輸入金額！'); return; }
             
-            let finalPriceRMB = inputPrice;
+            let finalPriceTWD; // 準備要存進資料庫的台幣金額
 
-            if (selectedCurrency === 'TWD') {
-                finalPriceRMB = (inputPrice / currentRate).toFixed(2); 
-                finalName = `${finalName} (NT$${inputPrice})`; 
+            // --- 核心修改：資料庫全面改存台幣 ---
+            if (selectedCurrency === 'RMB') {
+                // 如果輸入人民幣，乘上匯率轉換成台幣
+                finalPriceTWD = Math.round(inputPrice * currentRate); 
+            } else {
+                // 如果輸入台幣，直接存入
+                finalPriceTWD = Math.round(inputPrice); 
             }
             
             const formData = new URLSearchParams();
@@ -410,8 +413,8 @@
             formData.append('id', Date.now()); 
             formData.append('date', selectedInputDate);
             formData.append('cat', selectedCategory); 
-            formData.append('name', finalName); 
-            formData.append('price', finalPriceRMB);
+            formData.append('name', finalName); // 移除了 (NT$xxx) 括號
+            formData.append('price', finalPriceTWD); // 這裡傳上去的一定是台幣
 
             btn.disabled = true; btn.innerText = '⏳ 儲存中...';
 
@@ -498,12 +501,12 @@
         function renderExpenses() {
             const listEl = document.getElementById('expense-list');
             listEl.innerHTML = ''; 
-            let grandTotal = 0; 
-            let stats = { '交通':0, '食物':0, '購物':0, '其他':0 };
+            let grandTotalTWD = 0; 
+            let statsTWD = { '交通':0, '食物':0, '購物':0, '其他':0 };
             
             if (!expenses || expenses.length === 0) {
                 listEl.innerHTML = '<div style="text-align:center; color:var(--color-3); padding:30px; opacity:0.6; font-weight:800;">目前沒有記帳資料<br>嘗試新增一筆吧！</div>';
-                updateStats(0, stats); return;
+                updateStats(0, statsTWD); return;
             }
 
             tripDates.forEach(date => {
@@ -511,28 +514,29 @@
                 if (dailyItems.length > 0) {
                     const divider = document.createElement('div'); divider.className = 'date-divider'; divider.innerHTML = `${date}`; listEl.appendChild(divider);
                     dailyItems.forEach(item => {
-                        const itemPrice = parseFloat(item.price);
-                        grandTotal += itemPrice;
-                        if(stats[item.cat] !== undefined) stats[item.cat] += itemPrice; else stats['其他'] += itemPrice;
+                        // 現在從資料庫拿出來的直接就是「台幣」了！
+                        const twdValue = Math.round(parseFloat(item.price));
                         
-                        const twd = Math.round(itemPrice * currentRate);
-                        const div = document.createElement('div'); div.className = 'history-item';
-                        let displayPrice = itemPrice % 1 === 0 ? itemPrice : itemPrice.toFixed(1);
+                        grandTotalTWD += twdValue;
+                        if(statsTWD[item.cat] !== undefined) statsTWD[item.cat] += twdValue; else statsTWD['其他'] += twdValue;
+                        
+                        // 計算出對應的人民幣顯示在下方
+                        let rmbValue = (twdValue / currentRate).toFixed(1);
 
-                        div.innerHTML = `<div><div class="h-name">${getCatEmoji(item.cat)} ${item.name}</div><div class="h-cat">${item.cat}</div></div><div style="display:flex; align-items:center;"><div><div class="h-price">NT$ ${twd.toLocaleString()}</div><span class="h-twd">≈ ¥ ${displayPrice}</span></div><button class="del-btn" onclick="deleteExpense(${item.id})">×</button></div>`;
+                        const div = document.createElement('div'); div.className = 'history-item';
+                        div.innerHTML = `<div><div class="h-name">${getCatEmoji(item.cat)} ${item.name}</div><div class="h-cat">${item.cat}</div></div><div style="display:flex; align-items:center;"><div><div class="h-price">NT$ ${twdValue.toLocaleString()}</div><span class="h-twd">≈ ¥ ${rmbValue}</span></div><button class="del-btn" onclick="deleteExpense(${item.id})">×</button></div>`;
                         listEl.appendChild(div);
                     });
                 }
             });
-            updateStats(grandTotal, stats);
+            updateStats(grandTotalTWD, statsTWD);
         }
 
-        function updateStats(total, stats) {
-            let totalTWD = Math.round(total * currentRate);
-            let displayTotal = total % 1 === 0 ? total : total.toFixed(1);
+        function updateStats(totalTWD, statsTWD) {
+            let displayTotalRMB = (totalTWD / currentRate).toFixed(1);
             
             document.getElementById('total-primary').textContent = `NT$ ${totalTWD.toLocaleString()}`;
-            document.getElementById('total-secondary').textContent = `≈ ¥ ${displayTotal}`;
+            document.getElementById('total-secondary').textContent = `≈ ¥ ${displayTotalRMB}`;
             
             const TOTAL_BUDGET = 20000;
             let remaining = TOTAL_BUDGET - totalTWD;
@@ -559,21 +563,22 @@
             
             budgetFill.style.width = `${spentPercent}%`;
 
-            document.getElementById('stat-transport').textContent = `NT$ ${Math.round(stats['交通'] * currentRate).toLocaleString()}`;
-            document.getElementById('stat-food').textContent = `NT$ ${Math.round(stats['食物'] * currentRate).toLocaleString()}`;
-            document.getElementById('stat-shopping').textContent = `NT$ ${Math.round(stats['購物'] * currentRate).toLocaleString()}`;
-            document.getElementById('stat-other').textContent = `NT$ ${Math.round(stats['其他'] * currentRate).toLocaleString()}`;
+            document.getElementById('stat-transport').textContent = `NT$ ${statsTWD['交通'].toLocaleString()}`;
+            document.getElementById('stat-food').textContent = `NT$ ${statsTWD['食物'].toLocaleString()}`;
+            document.getElementById('stat-shopping').textContent = `NT$ ${statsTWD['購物'].toLocaleString()}`;
+            document.getElementById('stat-other').textContent = `NT$ ${statsTWD['其他'].toLocaleString()}`;
         }
 
         function getCatEmoji(cat) { return (cat==='交通'?'🚕':(cat==='食物'?'🍔':(cat==='購物'?'🛍️':'✨'))); }
         
         function exportToCSV() {
             if (expenses.length === 0) { alert('沒有資料可以匯出！'); return; }
-            let csvContent = "\uFEFF日期,分類,項目,金額(TWD),原始(RMB)\n";
+            let csvContent = "\uFEFF日期,分類,項目,金額(TWD),預估(RMB)\n";
             expenses.forEach(item => {
-                let twd = Math.round(parseFloat(item.price) * currentRate);
+                let twd = Math.round(parseFloat(item.price));
+                let rmb = (twd / currentRate).toFixed(1);
                 let safeName = item.name ? item.name.replace(/,/g, " ") : "";
-                csvContent += `${item.date},${item.cat},${safeName},${twd},${item.price}\n`;
+                csvContent += `${item.date},${item.cat},${safeName},${twd},${rmb}\n`;
             });
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
