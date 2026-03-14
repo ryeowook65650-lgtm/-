@@ -17,11 +17,10 @@
 
     <style>
         :root {
-            var-color-1: #004D5C; 
-            --color-1: #004D5C; /* 最多，深藍綠 */
-            --color-2: #53A8A2; /* 中等，淺藍綠 */
-            --color-3: #FFFDF1; /* 米白 */
-            --color-4: #EE869A; /* 最少，粉紅 */
+            --color-1: #004D5C; 
+            --color-2: #53A8A2; 
+            --color-3: #FFFDF1; 
+            --color-4: #EE869A; 
 
             --font-serif: "Noto Serif TC", "Nanum Myeongjo", "Georgia", serif;
             --border-width: 3px; 
@@ -114,12 +113,16 @@
 
         .input-area { overflow: hidden; padding: 25px; margin-bottom: 25px; }
         .input-title { font-family: var(--font-serif); font-size: 18px; font-weight: 800; color: var(--color-1); margin-bottom: 15px; display:block; }
-        .input-row { display: flex; gap: 0; margin-bottom: 15px; border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); background: #FFF;}
         
+        /* 幣別切換按鈕樣式 */
+        .curr-btn-row { display: flex; border-bottom: var(--border-width) solid var(--color-1); background: var(--color-3); }
+        .curr-btn { flex: 1; text-align: center; padding: 12px; font-size: 15px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); }
+        .curr-btn:last-child { border-right: none; }
+        .curr-btn.active { background: var(--color-2); color: #FFF; }
+
         .modern-input { width: 100%; padding: 14px; border: none; background: transparent; outline: none; font-size: 16px; color: var(--color-1); transition: 0.3s; font-weight: 700; }
         .modern-input::placeholder { color: rgba(0, 77, 92, 0.4); }
         
-        .currency-select { width: 35%; border-right: var(--border-width) solid var(--color-1); background: var(--color-2); color: #FFF; font-weight: 900; text-align: center; font-size: 16px; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; border-radius: 0; }
         .add-btn { width: 100%; background: var(--color-4); color: #FFF; padding: 16px; border-radius: 0; border: var(--border-width) solid var(--color-1); font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: var(--box-shadow-soft); transition: 0.2s; margin-top: 10px; }
         .add-btn:active { transform: translate(3px, 3px); box-shadow: none; }
         .add-btn:disabled { background: #ccc; border-color: #999; box-shadow: none; cursor: not-allowed; }
@@ -229,15 +232,15 @@
                 <div class="cat-btn" onclick="selectCategory('其他')"><span class="cat-emoji">✨</span>其他</div>
             </div>
             
-            <div style="border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 15px;">
+            <div style="border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 15px; background: var(--color-3);">
                 <input type="text" id="item-name" class="modern-input" placeholder="細項名稱 (空白則自動填入分類)" style="border-bottom: var(--border-width) solid var(--color-1);">
-                <div style="display: flex;">
-                    <select id="currency-select" class="currency-select">
-                        <option value="RMB">¥ 人民幣</option>
-                        <option value="TWD">$ 台幣</option>
-                    </select>
-                    <input type="number" id="item-price" class="modern-input" placeholder="輸入金額" style="width: 65%;">
+                
+                <div class="curr-btn-row">
+                    <div id="btn-curr-rmb" class="curr-btn active" onclick="selectCurrency('RMB')">¥ 人民幣</div>
+                    <div id="btn-curr-twd" class="curr-btn" onclick="selectCurrency('TWD')">$ 台幣</div>
                 </div>
+                
+                <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)">
             </div>
             
             <button onclick="addExpense()" id="btn-add" class="add-btn">確認新增 (至 <span id="btn-date-label">Day 1</span>)</button>
@@ -331,7 +334,7 @@
             } else { window.location.reload(true); }
         }
 
-        // 請換成你剛剛發布的 GAS 網址
+        // 請換成你發布的 GAS 網址
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVVY1EqQrjndhkeej_NIabBYYjNORHcRkaoev-wRGcWsRdO6HnvVrXg7BIIEHUYrVP/exec';
         
         const currentRate = 4.45; 
@@ -339,6 +342,8 @@
         let expenses = []; 
         let selectedInputDate = 'Day 1'; 
         let selectedCategory = '交通';
+        let selectedCurrency = 'RMB'; // 預設幣別
+        
         const tripDates = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5']; 
         
         const XIAMEN_LAT = 24.4798; 
@@ -369,10 +374,24 @@
             }
         }
 
+        // 處理幣別按鈕切換
+        function selectCurrency(curr) {
+            selectedCurrency = curr;
+            document.getElementById('btn-curr-rmb').classList.remove('active');
+            document.getElementById('btn-curr-twd').classList.remove('active');
+            
+            if (curr === 'RMB') {
+                document.getElementById('btn-curr-rmb').classList.add('active');
+                document.getElementById('item-price').placeholder = "輸入金額 (¥)";
+            } else {
+                document.getElementById('btn-curr-twd').classList.add('active');
+                document.getElementById('item-price').placeholder = "輸入金額 ($)";
+            }
+        }
+
         async function addExpense() {
             const nameInput = document.getElementById('item-name');
             const priceInput = document.getElementById('item-price');
-            const currencySelect = document.getElementById('currency-select');
             const btn = document.getElementById('btn-add');
             
             let finalName = nameInput.value.trim() || selectedCategory;
@@ -382,7 +401,8 @@
             
             let finalPriceRMB = inputPrice;
 
-            if (currencySelect.value === 'TWD') {
+            // 根據選擇的按鈕，自動處理換算
+            if (selectedCurrency === 'TWD') {
                 finalPriceRMB = (inputPrice / currentRate).toFixed(2); 
                 finalName = `${finalName} (NT$${inputPrice})`; 
             }
@@ -497,13 +517,10 @@
                         grandTotal += itemPrice;
                         if(stats[item.cat] !== undefined) stats[item.cat] += itemPrice; else stats['其他'] += itemPrice;
                         
-                        // 計算台幣並作為主要顯示
                         const twd = Math.round(itemPrice * currentRate);
                         const div = document.createElement('div'); div.className = 'history-item';
-                        
                         let displayPrice = itemPrice % 1 === 0 ? itemPrice : itemPrice.toFixed(1);
 
-                        // 把 NT$ 放大，¥ 變小字
                         div.innerHTML = `<div><div class="h-name">${getCatEmoji(item.cat)} ${item.name}</div><div class="h-cat">${item.cat}</div></div><div style="display:flex; align-items:center;"><div><div class="h-price">NT$ ${twd.toLocaleString()}</div><span class="h-twd">≈ ¥ ${displayPrice}</span></div><button class="del-btn" onclick="deleteExpense(${item.id})">×</button></div>`;
                         listEl.appendChild(div);
                     });
@@ -516,7 +533,6 @@
             let totalTWD = Math.round(total * currentRate);
             let displayTotal = total % 1 === 0 ? total : total.toFixed(1);
             
-            // 主看板金額對調
             document.getElementById('total-primary').textContent = `NT$ ${totalTWD.toLocaleString()}`;
             document.getElementById('total-secondary').textContent = `≈ ¥ ${displayTotal}`;
             
@@ -545,7 +561,6 @@
             
             budgetFill.style.width = `${spentPercent}%`;
 
-            // 分類統計轉換為台幣
             document.getElementById('stat-transport').textContent = `NT$ ${Math.round(stats['交通'] * currentRate).toLocaleString()}`;
             document.getElementById('stat-food').textContent = `NT$ ${Math.round(stats['食物'] * currentRate).toLocaleString()}`;
             document.getElementById('stat-shopping').textContent = `NT$ ${Math.round(stats['購物'] * currentRate).toLocaleString()}`;
