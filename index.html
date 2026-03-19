@@ -162,13 +162,22 @@
         .card-content { padding: 25px; }
         .t-time { font-size: 16px; font-weight: 900; color: var(--color-4); margin-bottom: 12px; display: inline-block; border-bottom: 3px solid rgba(0, 77, 92, 0.2); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
         .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin-bottom: 18px; line-height: 1.3; }
-        .info-block { display: flex; gap: 12px; margin-bottom: 12px; font-size: 15px; }
-        .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 20px; }
+        .info-block { display: flex; gap: 12px; margin-bottom: 15px; font-size: 15px; align-items: flex-start; }
+        .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 20px; line-height: 1.4; }
         .i-text { flex: 1; line-height: 1.5; font-weight: 700; font-family: var(--font-serif); }
-        .pill { display: inline-block; padding: 4px 8px; font-size: 13px; background-color: var(--color-1); color: #FFF; font-weight: 800; font-family: -apple-system, sans-serif; }
-        .pill.price { background-color: var(--color-4); color: #FFF; margin-left: 6px; }
+        
+        /* 交通花費半透明標籤 */
+        .cost-tag { display: inline-block; background-color: rgba(238, 134, 154, 0.25); color: var(--color-1); padding: 4px 8px; font-size: 14px; font-weight: 800; border: 1px solid rgba(238, 134, 154, 0.6); margin-top: 6px; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+        
+        /* 地鐵步驟標示 */
+        .subway-step { display: block; margin-bottom: 6px; border-left: 2px solid rgba(83, 168, 162, 0.5); padding-left: 10px;}
+        .subway-station { font-weight: 900; font-size: 16px;}
+        .subway-line { color: #D35400; font-weight: 800; }
+
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 15px; margin-top: 20px; font-size: 16px; font-weight: 800; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-2); transition: 0.2s; }
         .map-link:active { transform: translate(2px, 2px); box-shadow: none; }
+        .copy-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-left: 5px; color: var(--color-2); padding: 0; transition: 0.2s; }
+        .copy-btn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -303,36 +312,54 @@
     </div>
 
     <div id="view-itinerary" class="view-container">
-        
         <div id="day1-content" class="day-schedule">
             <div class="day-header">Day 1 • 4/24 (五)</div>
             <div class="timeline">
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=800" loading="lazy" class="card-img-top" alt="Hotel Check-in">
                     <div class="card-content">
-                        <div class="t-time">車程約 20 分鐘</div>
+                        <div class="t-time">車程預估 20 分鐘</div>
                         <div class="t-title">Check in: 廈門瑞頤大酒店</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">包車</span><span class="pill price">¥50</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 包車<br><span class="cost-tag">交通花費：¥50</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">💡</div><div class="i-text">先寄放行李</div></div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800" loading="lazy" class="card-img-top" alt="Buffet">
                     <div class="card-content">
-                        <div class="t-time">車程約 35 分鐘</div>
-                        <div class="t-title">Buffet: 漁緯港海鮮自助餐廳<br><span style="font-size: 16px; opacity: 0.8; display:block; margin-top:5px;">(SM廈門-3期)</span></div>
-                        <div class="info-block"><div class="i-icon">🚇</div><div class="i-text">步行到「鎮海路站」搭地鐵 1號線(往岩內)，至「烏石浦站」3B出口 <span class="pill price">¥3</span></div></div>
+                        <div class="t-time">車程預估 35 分鐘</div>
+                        <div class="t-title">漁緯港海鮮自助餐廳<br><span style="font-size: 16px; opacity: 0.8; display:block; margin-top:5px;">(SM廈門-3期)</span></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市湖里區嘉禾路399号(SM廈門3期) <button class="copy-btn" onclick="copyToClipboard('廈門市湖里區嘉禾路399号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚇</div>
+                            <div class="i-text">
+                                <span class="subway-step">步行到 <span class="subway-station">鎮海路站</span></span>
+                                <span class="subway-step">搭乘 <span class="subway-line">地鐵1號線（往岩內方向）</span></span>
+                                <span class="subway-step">搭到 <span class="subway-station">烏石浦站</span> 3B出口</span>
+                                <span class="cost-tag">交通花費：¥3</span>
+                            </div>
+                        </div>
                         <div class="info-block"><div class="i-icon">💡</div><div class="i-text">這期有無印良品，吃完buffet逛百貨公司</div></div>
                         <a href="https://j.map.baidu.com/24/LZQd" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
                     <div class="card-content">
-                        <div class="t-time">車程約 25 分鐘</div>
+                        <div class="t-time">車程預估 25 分鐘</div>
                         <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥28</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥28</span></div>
+                        </div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
@@ -345,49 +372,73 @@
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1596707255476-b6058e5ff90c?q=80&w=800" loading="lazy" class="card-img-top" alt="Sightseeing">
                     <div class="card-content">
-                        <div class="t-time">車程約 12 分鐘</div>
+                        <div class="t-time">車程預估 12 分鐘</div>
                         <div class="t-title">景點: 胡里山炮台</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥20</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區曾厝垵路2号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區曾厝垵路2号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥20</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
                         <a href="https://j.map.baidu.com/c7/gos" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1555126634-ae2355dd47e3?q=80&w=800" loading="lazy" class="card-img-top" alt="Zengcuoan">
                     <div class="card-content">
-                        <div class="t-time">車程約 10 分鐘</div>
+                        <div class="t-time">車程預估 10 分鐘</div>
                         <div class="t-title">景點/午餐: 曾厝垵主景區-入口</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥13</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區曾厝垵 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區曾厝垵')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥13</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">🍜</div><div class="i-text">午餐可能吃海鮮沙茶麵</div></div>
                         <a href="https://j.map.baidu.com/c6/XUPi" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1596707255149-c1875151b14a?q=80&w=800" loading="lazy" class="card-img-top" alt="Shapowei">
                     <div class="card-content">
-                        <div class="t-time">車程約 30 分鐘</div>
+                        <div class="t-time">車程預估 30 分鐘</div>
                         <div class="t-title">景點: 沙坡尾藝術西區</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥17</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區沙坡尾大学路 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區沙坡尾大学路')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥17</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
                         <a href="https://j.map.baidu.com/9c/7vK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1627885449703-9d41d3a4b08d?q=80&w=800" loading="lazy" class="card-img-top" alt="Zhongshan Road">
                     <div class="card-content">
-                        <div class="t-time">車程約 15 分鐘</div>
+                        <div class="t-time">車程預估 15 分鐘</div>
                         <div class="t-title">吃吃喝喝: 中山路步行街</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥12</span></div></div>
-                        <div class="info-block"><div class="i-icon">🥜</div><div class="i-text">黃則和花生湯</div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區中山路步行街 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區中山路步行街')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥12</span></div>
+                        </div>
+                        <div class="info-block"><div class="i-icon">🥜</div><div class="i-text">推薦：黃則和花生湯</div></div>
                         <a href="https://j.map.baidu.com/1c/AsK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
                     <div class="card-content">
-                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-time">路程預估 15 分鐘</div>
                         <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
-                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚶</div>
+                            <div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div>
+                        </div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
@@ -400,47 +451,76 @@
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1563223847-b8f24418f4bb?q=80&w=800" loading="lazy" class="card-img-top" alt="Jimei School Village">
                     <div class="card-content">
-                        <div class="t-time">車程約 50 分鐘</div>
+                        <div class="t-time">車程預估 50 分鐘</div>
                         <div class="t-title">景點: 集美學村</div>
-                        <div class="info-block"><div class="i-icon">🚇</div><div class="i-text">步行到「鎮海路站」搭地鐵 1號線(往岩內)，至「集美學村站」2號出口 <span class="pill price">¥5</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市集美區嘉庚路 <button class="copy-btn" onclick="copyToClipboard('廈門市集美區嘉庚路')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚇</div>
+                            <div class="i-text">
+                                <span class="subway-step">步行到 <span class="subway-station">鎮海路站</span></span>
+                                <span class="subway-step">搭乘 <span class="subway-line">地鐵1號線（往岩內方向）</span></span>
+                                <span class="subway-step">搭到 <span class="subway-station">集美學村站</span> 2出口</span>
+                                <span class="cost-tag">交通花費：¥5</span>
+                            </div>
+                        </div>
                         <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
                         <a href="https://j.map.baidu.com/20/zXh" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1481437156560-3205f6a55735?q=80&w=800" loading="lazy" class="card-img-top" alt="Outlet">
                     <div class="card-content">
-                        <div class="t-time">車程約 18 分鐘</div>
+                        <div class="t-time">車程預估 18 分鐘</div>
                         <div class="t-title">逛街: 廈門尚柏奧特萊斯</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥30</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市集美區海翔大道与天水路交汇处 <button class="copy-btn" onclick="copyToClipboard('廈門市集美區海翔大道与天水路交汇处')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥30</span></div>
+                        </div>
                         <a href="https://j.map.baidu.com/8f/u8h" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
                     <div class="card-content">
-                        <div class="t-time">車程約 40 分鐘</div>
+                        <div class="t-time">車程預估 40 分鐘</div>
                         <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥80</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥80</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">💡</div><div class="i-text">休息一下</div></div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1627885449703-9d41d3a4b08d?q=80&w=800" loading="lazy" class="card-img-top" alt="Zhongshan Road">
                     <div class="card-content">
-                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-time">路程預估 15 分鐘</div>
                         <div class="t-title">晚餐逛逛: 中山路步行街</div>
-                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區中山路步行街 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區中山路步行街')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚶</div>
+                            <div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div>
+                        </div>
                         <a href="https://j.map.baidu.com/1c/AsK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
+                
                 <div class="trip-card">
                     <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
                     <div class="card-content">
-                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-time">路程預估 15 分鐘</div>
                         <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
-                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12号 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12号')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚶</div>
+                            <div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div>
+                        </div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
@@ -451,11 +531,15 @@
             <div class="day-header">Day 4 • 4/27 (一)</div>
             <div class="timeline">
                 <div class="trip-card">
-                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800" loading="lazy" class="card-img-top" alt="Airport">
+                    <img src="https://i.namu.wiki/i/PV3f5fDHDbvwBjel_bhWCVoa5NCSGguYDXp0rA78OugM-nKn7LPc7ryF-Of1ACgbyKSlJd7OYhGQWh3VfqOg3Q.webp" loading="lazy" class="card-img-top" alt="Airport">
                     <div class="card-content">
-                        <div class="t-time">車程約 25 分鐘</div>
+                        <div class="t-time">車程預估 25 分鐘</div>
                         <div class="t-title">出發機場: 廈門高崎國際機場</div>
-                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥45</span></div></div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市湖里區翔雲一路(機場) <button class="copy-btn" onclick="copyToClipboard('廈門市湖里區翔雲一路')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥45</span></div>
+                        </div>
                         <div class="info-block"><div class="i-icon">✈️</div><div class="i-text">準備搭乘 11:40 班機回台</div></div>
                         <a href="https://j.map.baidu.com/47/bYd" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
@@ -705,6 +789,14 @@
         }
 
         function getCatEmoji(cat) { return (cat==='交通'?'🚕':(cat==='食物'?'🍔':(cat==='購物'?'🛍️':'✨'))); }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('已複製地址：' + text);
+            }).catch(err => {
+                console.error('複製失敗', err);
+            });
+        }
         
         function exportToCSV() {
             if (expenses.length === 0) { alert('沒有資料可以匯出！'); return; }
