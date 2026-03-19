@@ -160,12 +160,13 @@
         .trip-card::after { content: ''; position: absolute; left: -32px; top: 25px; width: 18px; height: 18px; border-radius: 0; background-color: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; }
         .card-img-top { width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); }
         .card-content { padding: 25px; }
-        .t-time { font-size: 16px; font-weight: 900; color: var(--color-4); margin-bottom: 8px; display: inline-block; border-bottom: 3px solid rgba(0, 77, 92, 0.2); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
-        .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin-bottom: 15px; line-height: 1.3; }
-        .info-block { display: flex; gap: 12px; margin-bottom: 10px; font-size: 16px; }
+        .t-time { font-size: 16px; font-weight: 900; color: var(--color-4); margin-bottom: 12px; display: inline-block; border-bottom: 3px solid rgba(0, 77, 92, 0.2); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+        .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin-bottom: 18px; line-height: 1.3; }
+        .info-block { display: flex; gap: 12px; margin-bottom: 12px; font-size: 15px; }
         .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 20px; }
         .i-text { flex: 1; line-height: 1.5; font-weight: 700; font-family: var(--font-serif); }
-        .pill { display: inline-block; padding: 4px 10px; font-size: 13px; background-color: var(--color-1); color: #FFF; font-weight: 800;}
+        .pill { display: inline-block; padding: 4px 8px; font-size: 13px; background-color: var(--color-1); color: #FFF; font-weight: 800; font-family: -apple-system, sans-serif; }
+        .pill.price { background-color: var(--color-4); color: #FFF; margin-left: 6px; }
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 15px; margin-top: 20px; font-size: 16px; font-weight: 800; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-2); transition: 0.2s; }
         .map-link:active { transform: translate(2px, 2px); box-shadow: none; }
     </style>
@@ -186,9 +187,10 @@
             <div class="nav-select-wrapper" id="wrapper-itinerary">
                 <select class="nav-select" id="day-selector" onchange="switchView('itinerary', this.value)">
                     <option value="" disabled selected>行程一覽 ▾</option>
-                    <option value="day1">Day 1 (3/12 四)</option>
-                    <option value="day2">Day 2 (3/13 五)</option>
-                    <option value="day3">Day 3 (3/14 六)</option>
+                    <option value="day1">Day 1 (4/24 五)</option>
+                    <option value="day2">Day 2 (4/25 六)</option>
+                    <option value="day3">Day 3 (4/26 日)</option>
+                    <option value="day4">Day 4 (4/27 一)</option>
                 </select>
             </div>
         </div>
@@ -219,10 +221,10 @@
         <div class="input-area">
             <span class="input-title">新增支出至：</span>
             <div class="date-scroll-container">
-                <div class="date-chip active" onclick="selectDate('Day 1')">Day 1</div>
-                <div class="date-chip" onclick="selectDate('Day 2')">Day 2</div>
-                <div class="date-chip" onclick="selectDate('Day 3')">Day 3</div>
-                <div class="date-chip" onclick="selectDate('Day 4')">Day 4</div>
+                <div class="date-chip active" onclick="selectDate('4/24')">4/24</div>
+                <div class="date-chip" onclick="selectDate('4/25')">4/25</div>
+                <div class="date-chip" onclick="selectDate('4/26')">4/26</div>
+                <div class="date-chip" onclick="selectDate('4/27')">4/27</div>
             </div>
             <div class="cat-row">
                 <div class="cat-btn active" onclick="selectCategory('交通')"><span class="cat-emoji">🚕</span>交通</div>
@@ -242,7 +244,7 @@
                 <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)">
             </div>
             
-            <button onclick="addExpense()" id="btn-add" class="add-btn">確認新增 (至 <span id="btn-date-label">Day 1</span>)</button>
+            <button onclick="addExpense()" id="btn-add" class="add-btn">確認新增 (至 <span id="btn-date-label">4/24</span>)</button>
         </div>
         
         <div class="history-list" id="expense-list">
@@ -258,66 +260,204 @@
         <div class="flight-ticket">
             <div class="ticket-header outbound">
                 <div class="ticket-label">Outbound 去程</div>
-                <div class="ticket-date">2026/3/12 (四)</div>
+                <div class="ticket-date">2026/4/24 (五)</div>
             </div>
             <div class="ticket-body">
                 <div class="route-row">
-                    <div><span class="airport-code">TSA</span><span class="airport-name">台北松山</span></div>
+                    <div><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
                     <div class="flight-icon">✈</div>
-                    <div style="text-align:right;"><span class="airport-code">XMN</span><span class="airport-name">廈門高崎 T3</span></div>
+                    <div style="text-align:right;"><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
                 </div>
                 <div class="time-row">
-                    <div class="time-col"><span class="time-lbl">DEPARTURE</span><span class="time-val">08:45</span></div>
-                    <div class="time-col" style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">10:25</span></div>
+                    <div class="time-col"><span class="time-lbl">DEPARTURE</span><span class="time-val">08:40</span></div>
+                    <div class="time-col" style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">10:30</span></div>
                 </div>
                 <div class="flight-info-row">
-                    <div class="airline-logo">XIAMEN AIR MF888</div>
-                    <div>1h 40m</div>
+                    <div class="airline-logo">MANDARIN AIRLINES AE991</div>
+                    <div>1h 50m</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flight-ticket">
+            <div class="ticket-header inbound">
+                <div class="ticket-label">Inbound 回程</div>
+                <div class="ticket-date">2026/4/27 (一)</div>
+            </div>
+            <div class="ticket-body">
+                <div class="route-row">
+                    <div><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
+                    <div class="flight-icon">✈</div>
+                    <div style="text-align:right;"><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
+                </div>
+                <div class="time-row">
+                    <div class="time-col"><span class="time-lbl">DEPARTURE</span><span class="time-val">11:40</span></div>
+                    <div class="time-col" style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">13:30</span></div>
+                </div>
+                <div class="flight-info-row">
+                    <div class="airline-logo">MANDARIN AIRLINES AE992</div>
+                    <div>1h 50m</div>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="view-itinerary" class="view-container">
+        
         <div id="day1-content" class="day-schedule">
-            <div class="day-header">Day 1 • 3/12 (四)</div>
+            <div class="day-header">Day 1 • 4/24 (五)</div>
             <div class="timeline">
                 <div class="trip-card">
-                    <img src="https://images.unsplash.com/photo-1549247654-e053a479eb1e?q=80&w=800" loading="lazy" class="card-img-top" alt="Hotel">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=800" loading="lazy" class="card-img-top" alt="Hotel Check-in">
                     <div class="card-content">
-                        <div class="t-time">12:00 - 13:00</div>
-                        <div class="t-title">Check in: 中山路附近飯店</div>
-                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">思明區中山路</div></div>
-                        <a href="https://map.baidu.com/search/廈門中山路步行街" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                        <div class="t-time">車程約 20 分鐘</div>
+                        <div class="t-title">Check in: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">包車</span><span class="pill price">¥50</span></div></div>
+                        <div class="info-block"><div class="i-icon">💡</div><div class="i-text">先寄放行李</div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800" loading="lazy" class="card-img-top" alt="Buffet">
+                    <div class="card-content">
+                        <div class="t-time">車程約 35 分鐘</div>
+                        <div class="t-title">Buffet: 漁緯港海鮮自助餐廳<br><span style="font-size: 16px; opacity: 0.8; display:block; margin-top:5px;">(SM廈門-3期)</span></div>
+                        <div class="info-block"><div class="i-icon">🚇</div><div class="i-text">步行到「鎮海路站」搭地鐵 1號線(往岩內)，至「烏石浦站」3B出口 <span class="pill price">¥3</span></div></div>
+                        <div class="info-block"><div class="i-icon">💡</div><div class="i-text">這期有無印良品，吃完buffet逛百貨公司</div></div>
+                        <a href="https://j.map.baidu.com/24/LZQd" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
+                    <div class="card-content">
+                        <div class="t-time">車程約 25 分鐘</div>
+                        <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥28</span></div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
             </div>
         </div>
         
         <div id="day2-content" class="day-schedule">
-            <div class="day-header">Day 2 • 3/13 (五)</div>
+            <div class="day-header">Day 2 • 4/25 (六)</div>
             <div class="timeline">
                 <div class="trip-card">
-                    <img src="https://images.unsplash.com/photo-1596707255476-b6058e5ff90c?q=80&w=800" loading="lazy" class="card-img-top" alt="鼓浪嶼">
+                    <img src="https://images.unsplash.com/photo-1596707255476-b6058e5ff90c?q=80&w=800" loading="lazy" class="card-img-top" alt="Sightseeing">
                     <div class="card-content">
-                        <div class="t-time">09:00 - 16:00</div>
-                        <div class="t-title">鼓浪嶼 (世界遺產)</div>
-                        <div class="info-block"><div class="i-icon">🚢</div><div class="i-text">需提前至厦鼓碼頭乘船</div></div>
-                        <a href="https://map.baidu.com/search/鼓浪嶼" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                        <div class="t-time">車程約 12 分鐘</div>
+                        <div class="t-title">景點: 胡里山炮台</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥20</span></div></div>
+                        <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                        <a href="https://j.map.baidu.com/c7/gos" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1555126634-ae2355dd47e3?q=80&w=800" loading="lazy" class="card-img-top" alt="Zengcuoan">
+                    <div class="card-content">
+                        <div class="t-time">車程約 10 分鐘</div>
+                        <div class="t-title">景點/午餐: 曾厝垵主景區-入口</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥13</span></div></div>
+                        <div class="info-block"><div class="i-icon">🍜</div><div class="i-text">午餐可能吃海鮮沙茶麵</div></div>
+                        <a href="https://j.map.baidu.com/c6/XUPi" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1596707255149-c1875151b14a?q=80&w=800" loading="lazy" class="card-img-top" alt="Shapowei">
+                    <div class="card-content">
+                        <div class="t-time">車程約 30 分鐘</div>
+                        <div class="t-title">景點: 沙坡尾藝術西區</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥17</span></div></div>
+                        <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                        <a href="https://j.map.baidu.com/9c/7vK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1627885449703-9d41d3a4b08d?q=80&w=800" loading="lazy" class="card-img-top" alt="Zhongshan Road">
+                    <div class="card-content">
+                        <div class="t-time">車程約 15 分鐘</div>
+                        <div class="t-title">吃吃喝喝: 中山路步行街</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥12</span></div></div>
+                        <div class="info-block"><div class="i-icon">🥜</div><div class="i-text">黃則和花生湯</div></div>
+                        <a href="https://j.map.baidu.com/1c/AsK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
+                    <div class="card-content">
+                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="day3-content" class="day-schedule">
-            <div class="day-header">Day 3 • 3/14 (六)</div>
+            <div class="day-header">Day 3 • 4/26 (日)</div>
             <div class="timeline">
                 <div class="trip-card">
-                    <img src="https://images.unsplash.com/photo-1596707255149-c1875151b14a?q=80&w=800" loading="lazy" class="card-img-top" alt="沙坡尾">
+                    <img src="https://images.unsplash.com/photo-1563223847-b8f24418f4bb?q=80&w=800" loading="lazy" class="card-img-top" alt="Jimei School Village">
                     <div class="card-content">
-                        <div class="t-time">15:00 - 18:00</div>
-                        <div class="t-title">沙坡尾藝術西區</div>
-                        <a href="https://map.baidu.com/search/沙坡尾" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                        <div class="t-time">車程約 50 分鐘</div>
+                        <div class="t-title">景點: 集美學村</div>
+                        <div class="info-block"><div class="i-icon">🚇</div><div class="i-text">步行到「鎮海路站」搭地鐵 1號線(往岩內)，至「集美學村站」2號出口 <span class="pill price">¥5</span></div></div>
+                        <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                        <a href="https://j.map.baidu.com/20/zXh" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1481437156560-3205f6a55735?q=80&w=800" loading="lazy" class="card-img-top" alt="Outlet">
+                    <div class="card-content">
+                        <div class="t-time">車程約 18 分鐘</div>
+                        <div class="t-title">逛街: 廈門尚柏奧特萊斯</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥30</span></div></div>
+                        <a href="https://j.map.baidu.com/8f/u8h" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
+                    <div class="card-content">
+                        <div class="t-time">車程約 40 分鐘</div>
+                        <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥80</span></div></div>
+                        <div class="info-block"><div class="i-icon">💡</div><div class="i-text">休息一下</div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1627885449703-9d41d3a4b08d?q=80&w=800" loading="lazy" class="card-img-top" alt="Zhongshan Road">
+                    <div class="card-content">
+                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-title">晚餐逛逛: 中山路步行街</div>
+                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <a href="https://j.map.baidu.com/1c/AsK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?q=80&w=800" loading="lazy" class="card-img-top" alt="Return Hotel">
+                    <div class="card-content">
+                        <div class="t-time">路程約 15 分鐘</div>
+                        <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">🚶</div><div class="i-text"><span class="pill">步行</span><span class="pill price">¥0</span></div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="day4-content" class="day-schedule">
+            <div class="day-header">Day 4 • 4/27 (一)</div>
+            <div class="timeline">
+                <div class="trip-card">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800" loading="lazy" class="card-img-top" alt="Airport">
+                    <div class="card-content">
+                        <div class="t-time">車程約 25 分鐘</div>
+                        <div class="t-title">出發機場: 廈門高崎國際機場</div>
+                        <div class="info-block"><div class="i-icon">🚕</div><div class="i-text"><span class="pill">計程車</span><span class="pill price">¥45</span></div></div>
+                        <div class="info-block"><div class="i-icon">✈️</div><div class="i-text">準備搭乘 11:40 班機回台</div></div>
+                        <a href="https://j.map.baidu.com/47/bYd" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
             </div>
@@ -339,11 +479,11 @@
         const currentRate = 4.45; 
         
         let expenses = []; 
-        let selectedInputDate = 'Day 1'; 
+        let selectedInputDate = '4/24'; 
         let selectedCategory = '交通';
         let selectedCurrency = 'RMB'; 
         
-        const tripDates = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5']; 
+        const tripDates = ['4/24', '4/25', '4/26', '4/27']; 
         
         const XIAMEN_LAT = 24.4798; 
         const XIAMEN_LON = 118.0894;
@@ -356,7 +496,7 @@
                 document.getElementById('day-selector').value = savedDay;
             } else { switchView(savedTab); }
             
-            fetchXiamenWeather(); selectDate('Day 1'); fetchExpenses();
+            fetchXiamenWeather(); selectDate('4/24'); fetchExpenses();
         });
 
         async function fetchExpenses() {
@@ -397,14 +537,11 @@
             
             if (isNaN(inputPrice)) { alert('請輸入金額！'); return; }
             
-            let finalPriceTWD; // 準備要存進資料庫的台幣金額
+            let finalPriceTWD; 
 
-            // --- 核心修改：資料庫全面改存台幣 ---
             if (selectedCurrency === 'RMB') {
-                // 如果輸入人民幣，乘上匯率轉換成台幣
                 finalPriceTWD = Math.round(inputPrice * currentRate); 
             } else {
-                // 如果輸入台幣，直接存入
                 finalPriceTWD = Math.round(inputPrice); 
             }
             
@@ -413,8 +550,8 @@
             formData.append('id', Date.now()); 
             formData.append('date', selectedInputDate);
             formData.append('cat', selectedCategory); 
-            formData.append('name', finalName); // 移除了 (NT$xxx) 括號
-            formData.append('price', finalPriceTWD); // 這裡傳上去的一定是台幣
+            formData.append('name', finalName); 
+            formData.append('price', finalPriceTWD); 
 
             btn.disabled = true; btn.innerText = '⏳ 儲存中...';
 
@@ -514,13 +651,11 @@
                 if (dailyItems.length > 0) {
                     const divider = document.createElement('div'); divider.className = 'date-divider'; divider.innerHTML = `${date}`; listEl.appendChild(divider);
                     dailyItems.forEach(item => {
-                        // 現在從資料庫拿出來的直接就是「台幣」了！
                         const twdValue = Math.round(parseFloat(item.price));
                         
                         grandTotalTWD += twdValue;
                         if(statsTWD[item.cat] !== undefined) statsTWD[item.cat] += twdValue; else statsTWD['其他'] += twdValue;
                         
-                        // 計算出對應的人民幣顯示在下方
                         let rmbValue = (twdValue / currentRate).toFixed(1);
 
                         const div = document.createElement('div'); div.className = 'history-item';
