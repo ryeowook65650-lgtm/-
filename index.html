@@ -17,11 +17,10 @@
 
     <style>
         :root {
-            /* --- 全新清爽配色 --- */
-            --color-1: #59802c; /* 綠色：主視覺、邊框、主要數字 */
-            --color-2: #6B4C38; /* 棕色：內文、次要標題 */
-            --color-3: #FDFBF2; /* 米白：背景、卡片底色 */
-            --color-4: #F5C71A; /* 黃色：按鈕、標籤、強調色 */
+            --color-1: #59802c; 
+            --color-2: #6B4C38; 
+            --color-3: #FDFBF2; 
+            --color-4: #F5C71A; 
 
             --font-serif: "Noto Serif TC", "Nanum Myeongjo", "Georgia", serif;
             --border-width: 3px; 
@@ -46,22 +45,21 @@
         }
 
         .top-bar { position: sticky; top: 0; z-index: 999; background-color: var(--color-3); border-bottom: var(--border-width) solid var(--color-1); padding-top: env(safe-area-inset-top); }
-        .header-info { padding: 20px 20px 10px; display: flex; justify-content: space-between; align-items: center; }
+        .header-info { padding: 25px 20px 15px; display: flex; justify-content: space-between; align-items: center; }
         
         .app-title { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--color-1); text-shadow: none; display: flex; align-items: center; line-height: 1; }
-        
         .refresh-btn { font-size: 20px; cursor: pointer; transition: transform 0.3s ease; margin-left: 8px; display: inline-block; }
         .refresh-btn:active { transform: rotate(180deg); }
         
-        .weather-badge { font-size: 14px; font-weight: 800; color: var(--color-2); background: var(--color-4); padding: 8px 14px; border-radius: 0; text-decoration: none; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; box-shadow: 2px 2px 0 var(--color-1); }
+        .weather-badge { font-size: 13px; font-weight: 800; color: var(--color-2); background: var(--color-4); padding: 7px 12px; border-radius: 0; text-decoration: none; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; box-shadow: 2px 2px 0 var(--color-1); }
         .weather-badge:active { transform: translate(2px, 2px); box-shadow: none; }
 
-        .nav-bar-row { display: flex; align-items: center; padding: 10px 15px 20px; gap: 10px; background-color: var(--color-3); }
-        .nav-btn, .nav-select { display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 15px; font-weight: 800; color: var(--color-1); cursor: pointer; position: relative; transition: 0.2s; background: var(--color-3); border: var(--border-width) solid var(--color-1); border-radius: 0; appearance: none; -webkit-appearance: none; outline: none; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .nav-bar-row { display: flex; align-items: center; padding: 5px 20px 25px; gap: 12px; background-color: var(--color-3); }
+        .nav-btn, .nav-select { display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 14px; font-weight: 800; color: var(--color-1); cursor: pointer; position: relative; transition: 0.2s; background: var(--color-3); border: var(--border-width) solid var(--color-1); border-radius: 0; appearance: none; -webkit-appearance: none; outline: none; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         .nav-btn { flex: 1; white-space: nowrap; }
-        .nav-select-wrapper { flex: 1.3; position: relative; }
-        .nav-select-wrapper::after { content: '▼'; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--color-3); pointer-events: none; transition: 0.2s; z-index: 2; }
-        .nav-select { padding: 12px 15px; text-align: left; }
+        .nav-select-wrapper { flex: 1.45; position: relative; }
+        .nav-select-wrapper::after { content: '▼'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--color-3); pointer-events: none; transition: 0.2s; z-index: 2; }
+        .nav-select { padding: 12px 10px; text-align: left; }
         
         .nav-btn.active, .nav-select-wrapper.active .nav-select { background-color: var(--color-1); color: var(--color-3); border-color: var(--color-1); box-shadow: 2px 2px 0 var(--color-4);}
         .nav-select-wrapper::after { color: var(--color-1); }
@@ -110,7 +108,6 @@
         .danger-text { color: #D35400 !important; }
         .danger-bg { background-color: #D35400 !important; }
 
-        /* --- 重新設計：網格統計圖表 (2x2) --- */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 25px; }
         .stat-box { background: #FFFFFF; border: 2px solid var(--color-1); padding: 12px 15px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; box-shadow: 2px 2px 0 rgba(89, 128, 44, 0.15); }
         .stat-box-title { font-size: 14px; font-weight: 800; color: var(--color-2); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
@@ -150,10 +147,6 @@
         .cat-btn { flex: 1; min-width: 75px; text-align: center; padding: 12px 5px; border-radius: 0; background: #FFFFFF; border: var(--border-width) solid var(--color-1); font-size: 14px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; box-shadow: var(--box-shadow-soft); }
         .cat-btn.active { background: var(--color-1); color: var(--color-3); }
         .cat-emoji { font-size: 22px; display: block; margin-bottom: 6px; filter: drop-shadow(1px 1px 0 rgba(89, 128, 44, 0.2));}
-
-        .data-mgr-section { border-top: var(--border-width) dashed var(--color-1); padding-top: 25px; margin-top: 30px; opacity: 0.8; }
-        .export-btn { width: 100%; padding: 14px; border-radius: 0; font-size: 15px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); background: var(--color-3); color: var(--color-1); transition: 0.2s;}
-        .export-btn:active { transform: translate(3px, 3px); box-shadow: none; }
 
         .day-schedule { display: none; animation: fadeIn 0.3s ease; }
         .day-schedule.active { display: block; }
@@ -272,10 +265,6 @@
         
         <div class="history-list" id="expense-list">
             <div class="loading-text">🔄 正在同步全家人的帳本...</div>
-        </div>
-
-        <div class="data-mgr-section">
-            <button onclick="exportToCSV()" class="export-btn">📤 匯出 Excel (CSV報表)</button>
         </div>
     </div>
 
@@ -828,26 +817,6 @@
             }).catch(err => {
                 console.error('複製失敗', err);
             });
-        }
-        
-        function exportToCSV() {
-            if (expenses.length === 0) { alert('沒有資料可以匯出！'); return; }
-            let csvContent = "\uFEFF日期,分類,項目,金額(TWD),預估(RMB)\n";
-            expenses.forEach(item => {
-                let twd = Math.round(parseFloat(item.price));
-                let rmb = (twd / currentRate).toFixed(1);
-                let safeName = item.name ? item.name.replace(/,/g, " ") : "";
-                csvContent += `${item.date},${item.cat},${safeName},${twd},${rmb}\n`;
-            });
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "xiamen_expenses_2026.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
     </script>
 </body>
