@@ -209,9 +209,9 @@
             <div class="balance-sub" id="total-secondary">≈ ¥ 0</div>
             
             <div class="budget-container">
-                <div class="budget-rem-row" id="budget-rem-row">剩餘：NT$ 20,000</div>
+                <div class="budget-rem-row" id="budget-rem-row">剩餘：NT$ 30,000</div>
                 <div class="budget-track"><div class="budget-fill" id="budget-fill"></div></div>
-                <div class="budget-tot-row">總預算：NT$ 20,000</div>
+                <div class="budget-tot-row">總預算：NT$ 30,000</div>
             </div>
 
             <div class="stats-grid">
@@ -778,7 +778,7 @@
             document.getElementById('total-primary').textContent = `NT$ ${totalTWD.toLocaleString()}`;
             document.getElementById('total-secondary').textContent = `≈ ¥ ${displayTotalRMB}`;
             
-            const TOTAL_BUDGET = 20000;
+            const TOTAL_BUDGET = 30000;
             let remaining = TOTAL_BUDGET - totalTWD;
             let spentPercent = Math.min(100, Math.max(0, (totalTWD / TOTAL_BUDGET) * 100));
             
