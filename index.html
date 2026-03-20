@@ -94,12 +94,10 @@
         .flight-info-row { margin-top: 20px; background: #FFFFFF; padding: 12px 15px; border-radius: 0; display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 rgba(89, 128, 44, 0.1); }
         .airline-logo { display:flex; align-items:center; gap:8px; font-weight: 900; color: var(--color-2); }
 
-        .balance-card { overflow: hidden; padding: 25px 30px 20px; margin-bottom: 30px; position: relative; }
+        .balance-card { overflow: hidden; padding: 25px 30px 25px; margin-bottom: 30px; position: relative; }
         .balance-card::before { content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; background: var(--color-4); opacity: 0.2; pointer-events: none; border: var(--border-width) solid var(--color-1); }
         .balance-label { font-family: -apple-system, sans-serif; font-size: 16px; font-weight: 900; color: var(--color-1); }
-        
         .balance-amount { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 42px; margin: 10px 0; font-weight: 900; color: var(--color-1); text-shadow: none; }
-        
         .balance-sub { font-size: 16px; font-weight: 800; color: var(--color-2); opacity: 0.9; }
         .rate-tag { position: absolute; top: 25px; right: 25px; font-size: 13px; background-color: var(--color-1); color: var(--color-3); padding: 6px 10px; border-radius: 0; font-weight: 800; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 var(--color-4); }
 
@@ -112,11 +110,11 @@
         .danger-text { color: #D35400 !important; }
         .danger-bg { background-color: #D35400 !important; }
 
-        .stats-divider { border-top: var(--border-width) dashed var(--color-1); margin: 20px 0 15px; opacity: 0.4; }
-        .stats-row { display: flex; justify-content: space-between; }
-        .stat-col { text-align: center; flex: 1; }
-        .stat-icon-small { font-size: 20px; display: block; margin-bottom: 4px; }
-        .stat-val-small { font-size: 15px; font-weight: 800; color: var(--color-1); }
+        /* --- 重新設計：網格統計圖表 (2x2) --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 25px; }
+        .stat-box { background: #FFFFFF; border: 2px solid var(--color-1); padding: 12px 15px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; box-shadow: 2px 2px 0 rgba(89, 128, 44, 0.15); }
+        .stat-box-title { font-size: 14px; font-weight: 800; color: var(--color-2); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        .stat-box-val { font-size: 18px; font-weight: 900; color: var(--color-1); word-break: break-word; }
 
         .input-area { overflow: hidden; padding: 25px; margin-bottom: 25px; }
         .input-title { font-family: -apple-system, sans-serif; font-size: 18px; font-weight: 900; color: var(--color-1); margin-bottom: 15px; display:block; }
@@ -223,12 +221,23 @@
                 <div class="budget-tot-row">總預算：NT$ 20,000</div>
             </div>
 
-            <div class="stats-divider"></div>
-            <div class="stats-row">
-                <div class="stat-col"><span class="stat-icon-small">🚕</span><span class="stat-val-small" id="stat-transport">0</span></div>
-                <div class="stat-col"><span class="stat-icon-small">🍔</span><span class="stat-val-small" id="stat-food">0</span></div>
-                <div class="stat-col"><span class="stat-icon-small">🛍️</span><span class="stat-val-small" id="stat-shopping">0</span></div>
-                <div class="stat-col"><span class="stat-icon-small">✨</span><span class="stat-val-small" id="stat-other">0</span></div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-box-title"><span>🚕</span> 交通</div>
+                    <div class="stat-box-val" id="stat-transport">NT$ 0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-title"><span>🍔</span> 食物</div>
+                    <div class="stat-box-val" id="stat-food">NT$ 0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-title"><span>🛍️</span> 購物</div>
+                    <div class="stat-box-val" id="stat-shopping">NT$ 0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-title"><span>✨</span> 其他</div>
+                    <div class="stat-box-val" id="stat-other">NT$ 0</div>
+                </div>
             </div>
         </div>
 
@@ -562,7 +571,6 @@
             } else { window.location.reload(true); }
         }
 
-        // 請換成你發布的 GAS 網址
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVVY1EqQrjndhkeej_NIabBYYjNORHcRkaoev-wRGcWsRdO6HnvVrXg7BIIEHUYrVP/exec';
         
         const currentRate = 4.45; 
@@ -738,19 +746,15 @@
             let hasRenderedAny = false;
 
             tripDates.forEach(date => {
-                // --- 完美修正：支援 Google Sheets 自動轉換日期的過濾器 ---
                 const dailyItems = expenses.filter(item => {
                     const sheetDate = String(item.date).trim();
-                    if (sheetDate === date) return true; // 直接匹配 '4/24'
-                    
-                    if (sheetDate.includes('T')) { // 處理轉成時間戳的狀況
+                    if (sheetDate === date) return true; 
+                    if (sheetDate.includes('T')) { 
                         const d = new Date(sheetDate);
                         const formatted = (d.getMonth() + 1) + '/' + d.getDate();
                         if (formatted === date) return true;
                     }
-                    
-                    if (sheetDate.includes(date)) return true; // 處理包含的狀況
-                    
+                    if (sheetDate.includes(date)) return true; 
                     return false;
                 });
 
@@ -772,7 +776,6 @@
                 }
             });
             
-            // 防呆：如果有資料但日期對不上，給予明確提示
             if (!hasRenderedAny && expenses.length > 0) {
                 listEl.innerHTML = '<div style="text-align:center; color:var(--color-2); padding:30px; opacity:0.6; font-weight:800;">有記帳紀錄，但日期不是 4/24 ~ 4/27<br>建議到 Google 試算表把舊資料清空！</div>';
             }
