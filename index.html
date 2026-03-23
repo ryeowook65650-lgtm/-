@@ -34,15 +34,7 @@
         body { 
             margin: 0; padding: 0; 
             font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-            background-color: var(--color-3);
-            /* 極淡的淺拿鐵色菱格紋，創造清爽呼吸感 (RGB: 183, 143, 100) */
-            background-image: 
-              linear-gradient(45deg, rgba(183, 143, 100, 0.1) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(183, 143, 100, 0.1) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgba(183, 143, 100, 0.1) 75%),
-              linear-gradient(-45deg, transparent 75%, rgba(183, 143, 100, 0.1) 75%);
-            background-size: 50px 50px; 
-            background-position: 0 0, 0 25px, 25px 25px, 25px 0;
+            background-color: var(--color-3); /* 純淨的淺灰杏色底 */
             color: var(--color-2);
             padding-bottom: 60px;
         }
@@ -102,7 +94,7 @@
         .balance-label { font-family: -apple-system, sans-serif; font-size: 16px; font-weight: 900; color: var(--color-1); }
         .balance-amount { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 42px; margin: 10px 0; font-weight: 900; color: var(--color-1); text-shadow: none; }
         .balance-sub { font-size: 16px; font-weight: 800; color: var(--color-2); opacity: 0.9; }
-        .rate-tag { position: absolute; top: 25px; right: 25px; font-size: 13px; background-color: var(--color-1); color: var(--color-3); padding: 6px 10px; border-radius: 0; font-weight: 800; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 var(--color-5); }
+        .rate-tag { position: absolute; top: 25px; right: 25px; font-size: 13px; background-color: var(--color-1); color: var(--color-3); padding: 6px 10px; border-radius: 0; font-weight: 800; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 var(--color-4); }
 
         .budget-container { margin-top: 25px; padding: 18px 20px; background: rgba(183, 143, 100, 0.15); border: 2px dashed var(--color-1); border-radius: 0; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; }
         .budget-rem-row { text-align: left; font-size: 24px; font-weight: 900; color: var(--color-1); line-height: 1; transition: 0.3s; }
@@ -169,13 +161,11 @@
         .i-icon { color: var(--color-1); width: 24px; text-align: center; font-size: 20px; line-height: 1.4; }
         .i-text { flex: 1; line-height: 1.5; font-weight: 700; color: var(--color-2); }
         
-        /* 交通花費半透明標籤 */
         .cost-tag { display: inline-block; background-color: rgba(244, 192, 125, 0.3); color: var(--color-1); padding: 4px 8px; font-size: 14px; font-weight: 800; border: 1px solid var(--color-4); margin-top: 6px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         
-        /* 地鐵步驟標示 */
         .subway-step { display: block; margin-bottom: 6px; border-left: 2px solid var(--color-5); padding-left: 10px;}
         .subway-station { font-weight: 900; font-size: 16px; color: var(--color-1); }
-        .subway-line { color: var(--color-2); font-weight: 800; }
+        .subway-line { color: #D35400; font-weight: 800; }
 
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 15px; margin-top: 20px; font-size: 16px; font-weight: 900; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-5); transition: 0.2s; }
         .map-link:active { transform: translate(2px, 2px); box-shadow: none; }
