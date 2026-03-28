@@ -32,7 +32,7 @@
             --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
             
             --border-width: 1px; 
-            --box-shadow-soft: 0 8px 25px rgba(56, 38, 21, 0.05); /* 陰影更柔和立體 */
+            --box-shadow-soft: 0 8px 25px rgba(56, 38, 21, 0.05);
             --transition-speed: 0.25s;
         }
 
@@ -43,7 +43,7 @@
             font-family: var(--font-sans);
             background-color: var(--color-3); 
             color: var(--color-1);
-            padding-bottom: 80px; /* 留給 Toast 空間 */
+            padding-bottom: 80px;
             letter-spacing: 0.02em; 
         }
 
@@ -54,7 +54,7 @@
         .refresh-btn { font-size: 18px; cursor: pointer; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 8px; opacity: 0.7;}
         .refresh-btn:active { transform: rotate(180deg) scale(0.9); opacity: 1; }
         
-        .weather-badge { font-size: 13px; font-weight: 600; color: var(--color-1); background: var(--color-4); padding: 8px 14px; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: var(--transition-speed); display: flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 rgba(56, 38, 21, 1); /* 加入雜誌風的硬陰影 */ }
+        .weather-badge { font-size: 13px; font-weight: 600; color: var(--color-1); background: var(--color-4); padding: 8px 14px; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: var(--transition-speed); display: flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 rgba(56, 38, 21, 1); }
         .weather-badge:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
 
         .nav-bar-row { display: flex; align-items: center; padding: 5px 20px 25px; gap: 12px; }
@@ -74,7 +74,7 @@
         .view-container.active { display: block; animation: fadeUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeUpIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 卡片共用 UX --- */
+        /* --- 卡片共用 --- */
         .retro-card, .flight-ticket, .balance-card, .input-area, .trip-card { background-color: var(--color-white); border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 25px; transition: transform 0.3s ease; }
         
         /* --- 記帳版面 (Accounting) --- */
@@ -84,7 +84,6 @@
         .balance-sub { font-size: 15px; font-weight: 600; color: var(--color-2); opacity: 0.7; }
         .rate-tag { position: absolute; top: 30px; right: 30px; font-size: 12px; background-color: var(--color-3); color: var(--color-1); padding: 6px 10px; font-weight: 700; border: var(--border-width) solid var(--color-1); }
         
-        /* 預算進度條UX優化 */
         .budget-container { margin-top: 30px; padding: 20px; background: rgba(183, 143, 100, 0.05); border: var(--border-width) dashed var(--color-5); position: relative; display: flex; flex-direction: column; gap: 12px; }
         .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); transition: color 0.3s; }
         .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
@@ -96,7 +95,7 @@
         .stat-box-title { font-size: 12px; font-weight: 700; color: var(--color-5); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .stat-box-val { font-size: 18px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); }
 
-        /* --- 輸入區塊 UX --- */
+        /* --- 輸入區塊 --- */
         .input-area { padding: 25px; background: var(--color-white); }
         .input-title { font-size: 15px; font-weight: 700; color: var(--color-1); margin-bottom: 15px; display:block; letter-spacing: 1px; font-family: var(--font-serif);}
         
@@ -111,7 +110,6 @@
         .cat-emoji { font-size: 22px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
-        /* 輸入框視覺回饋 */
         .input-group { border: var(--border-width) solid var(--color-1); background: #FFFFFF; margin-bottom: 20px; transition: box-shadow 0.3s ease; }
         .input-group:focus-within { box-shadow: 4px 4px 0 rgba(56, 38, 21, 0.1); }
         
@@ -128,7 +126,7 @@
         .add-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
         .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; }
 
-        /* --- 歷史紀錄 UX --- */
+        /* --- 歷史紀錄 --- */
         .date-divider { font-family: var(--font-serif); font-size: 20px; color: var(--color-1); font-weight: 700; margin: 35px 0 15px 5px; border-bottom: 2px solid var(--color-1); padding-bottom: 5px; display: inline-block; }
         
         .history-item { display: flex; justify-content: space-between; align-items: center; background: var(--color-white); padding: 20px; margin-bottom: 12px; border: var(--border-width) solid var(--color-1); transition: transform 0.2s, box-shadow 0.2s; }
@@ -142,7 +140,6 @@
         .del-btn { color: var(--color-5); background: transparent; border: var(--border-width) solid transparent; font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-speed); margin-left: 10px;}
         .del-btn:hover, .del-btn:active { color: var(--color-danger); border-color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
 
-        /* 空狀態優化 */
         .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); }
         .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.8; }
         .empty-state-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
@@ -174,17 +171,22 @@
         .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--color-1); opacity: 0.2; }
         
         .day-header { font-family: var(--font-serif); font-size: 26px; color: var(--color-1); margin-bottom: 30px; font-weight: 900; display: inline-block; position: relative; z-index: 10; background: var(--color-3); padding-right: 20px; letter-spacing: 1px;}
-        .day-header::after { content: ''; position: absolute; left: 0; bottom: 4px; width: 100%; height: 8px; background: rgba(244, 192, 125, 0.4); z-index: -1; } /* 雜誌螢光筆效果 */
+        .day-header::after { content: ''; position: absolute; left: 0; bottom: 4px; width: 100%; height: 8px; background: rgba(244, 192, 125, 0.4); z-index: -1; } 
 
         .trip-card { position: relative; overflow: hidden; }
         .trip-card::after { content: ''; position: absolute; left: -16px; top: 30px; width: 11px; height: 11px; background-color: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; border-radius: 50% !important; }
-        .card-img-top { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); filter: contrast(0.95) sepia(0.1); /* 微調照片色調符合大地色系 */ }
+        .card-img-top { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); filter: contrast(0.95) sepia(0.1); }
         .card-content { padding: 25px; }
         .t-time { font-size: 12px; font-weight: 700; color: var(--color-1); background: var(--color-4); padding: 4px 8px; display: inline-block; margin-bottom: 15px; border: var(--border-width) solid var(--color-1); }
         .t-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; color: var(--color-1); }
+        
         .info-block { display: flex; gap: 14px; margin-bottom: 16px; font-size: 14px; align-items: flex-start; }
         .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 18px; line-height: 1.4; opacity: 0.8; }
         .i-text { flex: 1; line-height: 1.6; font-weight: 500; color: var(--color-1); }
+        .cost-tag { display: inline-block; background-color: transparent; color: var(--color-2); padding: 4px 8px; font-size: 13px; font-weight: 600; border: var(--border-width) dashed var(--color-5); margin-top: 6px; font-family: var(--font-sans); }
+        .subway-step { display: block; margin-bottom: 6px; border-left: 1px solid var(--color-5); padding-left: 10px;}
+        .subway-station { font-weight: 700; font-size: 15px; color: var(--color-1); }
+        .subway-line { color: var(--color-2); font-weight: 600; font-size: 13px;}
         
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 16px; margin-top: 25px; font-size: 14px; font-weight: 700; gap: 8px; transition: var(--transition-speed); letter-spacing: 2px;}
         .map-link:active { transform: scale(0.98); background: var(--color-2); }
@@ -192,7 +194,7 @@
         .copy-btn { background: rgba(183, 143, 100, 0.1); border: var(--border-width) solid var(--color-5); cursor: pointer; font-size: 12px; margin-left: 8px; color: var(--color-1); padding: 2px 6px; transition: var(--transition-speed); border-radius: 4px !important; }
         .copy-btn:active { background: var(--color-4); transform: scale(0.9); }
 
-        /* --- Toast 通知系統 (UX優化核心) --- */
+        /* --- Toast 通知系統 --- */
         .toast-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px; }
         .toast { background: var(--color-1); color: var(--color-3); padding: 16px 20px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; border: 1px solid rgba(255,255,255,0.1); }
         .toast.hide { animation: toastOut 0.3s ease-in forwards; }
@@ -292,9 +294,9 @@
                 </div>
                 <div class="ticket-body">
                     <div class="route-row">
-                        <div><span class="airport-code">TPE</span><span class="airport-name">台北桃園 T2</span></div>
+                        <div><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
                         <div class="flight-icon">✈</div>
-                        <div style="text-align:right;"><span class="airport-code">XMN</span><span class="airport-name">廈門高崎 T3</span></div>
+                        <div style="text-align:right;"><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
                     </div>
                     <div class="time-row">
                         <div><span class="time-lbl">DEPARTURE</span><span class="time-val">08:40</span></div>
@@ -313,9 +315,9 @@
                 </div>
                 <div class="ticket-body">
                     <div class="route-row">
-                        <div><span class="airport-code">XMN</span><span class="airport-name">廈門高崎 T3</span></div>
+                        <div><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
                         <div class="flight-icon">✈</div>
-                        <div style="text-align:right;"><span class="airport-code">TPE</span><span class="airport-name">台北桃園 T2</span></div>
+                        <div style="text-align:right;"><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
                     </div>
                     <div class="time-row">
                         <div><span class="time-lbl">DEPARTURE</span><span class="time-val">11:40</span></div>
@@ -330,23 +332,195 @@
         </section>
 
         <section id="view-itinerary" class="view-container">
+            
             <div id="day1-content" class="day-schedule">
-                <div class="day-header">Day 1 • 4/24</div>
+                <div class="day-header">Day 1 • 4/24 (五)</div>
                 <div class="timeline">
                     <div class="trip-card">
                         <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Hotel Check-in">
                         <div class="card-content">
                             <div class="t-time">車程預估 20 分鐘</div>
-                            <div class="t-title">廈門瑞頤大酒店</div>
-                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">複製</button></div></div>
-                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">包車 (約 ¥50)</div></div>
+                            <div class="t-title">Check in: 廈門瑞頤大酒店</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 包車<br><span class="cost-tag">交通花費：¥50</span></div></div>
                             <div class="info-block"><div class="i-icon">💡</div><div class="i-text">先寄放行李</div></div>
-                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">📍 開啟百度地圖</a>
+                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
                         </div>
                     </div>
+                    <div class="trip-card">
+                        <img src="https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" loading="lazy" class="card-img-top" alt="Buffet">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 35 分鐘</div>
+                            <div class="t-title">漁緯港海鮮自助餐廳<br><span style="font-size: 15px; font-family: var(--font-sans); font-weight:500; display:block; margin-top:6px;">(SM廈門-3期)</span></div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市湖里區嘉禾路399號SM商業城3期4層 <button class="copy-btn" onclick="copyToClipboard('廈門市湖里區嘉禾路399號SM商業城3期4層')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚇</div>
+                                <div class="i-text">
+                                    <span class="subway-step">步行到 <span class="subway-station">鎮海路站</span></span>
+                                    <span class="subway-step">搭乘 <span class="subway-line">地鐵1號線（往岩內方向）</span></span>
+                                    <span class="subway-step">搭到 <span class="subway-station">烏石浦站</span> 3B出口</span>
+                                    <span class="cost-tag">交通花費：¥3</span>
+                                </div>
+                            </div>
+                            <div class="info-block"><div class="i-icon">💡</div><div class="i-text">這期有無印良品，吃完buffet逛百貨公司</div></div>
+                            <a href="https://j.map.baidu.com/24/LZQd" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
                     </div>
+                    <div class="trip-card">
+                        <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 25 分鐘</div>
+                            <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥28</span></div></div>
+                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </section>
+            
+            <div id="day2-content" class="day-schedule">
+                <div class="day-header">Day 2 • 4/25 (六)</div>
+                <div class="timeline">
+                    <div class="trip-card">
+                        <img src="https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" loading="lazy" class="card-img-top" alt="Sightseeing">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 12 分鐘</div>
+                            <div class="t-title">景點: 胡里山炮台</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區曾厝垵路2號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區曾厝垵路2號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥20</span></div></div>
+                            <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                            <a href="https://j.map.baidu.com/c7/gos" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" loading="lazy" class="card-img-top" alt="Zengcuoan">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 10 分鐘</div>
+                            <div class="t-title">景點/午餐: 曾厝垵主景區-入口</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區環島南路 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區環島南路')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥13</span></div></div>
+                            <div class="info-block"><div class="i-icon">🍜</div><div class="i-text">午餐可能吃海鮮沙茶麵</div></div>
+                            <a href="https://j.map.baidu.com/c6/XUPi" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" loading="lazy" class="card-img-top" alt="Shapowei">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 30 分鐘</div>
+                            <div class="t-title">景點: 沙坡尾藝術西區</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區沙坡尾60號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區沙坡尾60號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥17</span></div></div>
+                            <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                            <a href="https://j.map.baidu.com/9c/7vK" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" loading="lazy" class="card-img-top" alt="Zhongshan Road">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 15 分鐘</div>
+                            <div class="t-title">吃吃喝喝: 中山路步行街</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區中山路步行街 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區中山路步行街')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥12</span></div></div>
+                            <div class="info-block"><div class="i-icon">🥜</div><div class="i-text">推薦：黃則和花生湯</div></div>
+                            <a href="https://j.map.baidu.com/1c/AsK" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
+                        <div class="card-content">
+                            <div class="t-time">路程預估 15 分鐘</div>
+                            <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚶</div><div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div></div>
+                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day3-content" class="day-schedule">
+                <div class="day-header">Day 3 • 4/26 (日)</div>
+                <div class="timeline">
+                    <div class="trip-card">
+                        <img src="https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" loading="lazy" class="card-img-top" alt="Jimei School Village">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 50 分鐘</div>
+                            <div class="t-title">景點: 集美學村</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市集美區銀江路183號 <button class="copy-btn" onclick="copyToClipboard('廈門市集美區銀江路183號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚇</div>
+                                <div class="i-text">
+                                    <span class="subway-step">步行到 <span class="subway-station">鎮海路站</span></span>
+                                    <span class="subway-step">搭乘 <span class="subway-line">地鐵1號線（往岩內方向）</span></span>
+                                    <span class="subway-step">搭到 <span class="subway-station">集美學村站</span> 2出口</span>
+                                    <span class="cost-tag">交通花費：¥5</span>
+                                </div>
+                            </div>
+                            <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                            <a href="https://j.map.baidu.com/20/zXh" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://symphonyholdings.com/assets/img/meta.jpg" loading="lazy" class="card-img-top" alt="Outlet">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 18 分鐘</div>
+                            <div class="t-title">逛街: 廈門尚柏奧特萊斯</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市集美區天水路2號 <button class="copy-btn" onclick="copyToClipboard('廈門市集美區天水路2號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥30</span></div></div>
+                            <a href="https://j.map.baidu.com/8f/u8h" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 40 分鐘</div>
+                            <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥80</span></div></div>
+                            <div class="info-block"><div class="i-icon">💡</div><div class="i-text">休息一下</div></div>
+                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" loading="lazy" class="card-img-top" alt="Zhongshan Road">
+                        <div class="card-content">
+                            <div class="t-time">路程預估 15 分鐘</div>
+                            <div class="t-title">晚餐逛逛: 中山路步行街</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區中山路 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區中山路')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚶</div><div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div></div>
+                            <a href="https://j.map.baidu.com/1c/AsK" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                    <div class="trip-card">
+                        <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
+                        <div class="card-content">
+                            <div class="t-time">路程預估 15 分鐘</div>
+                            <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚶</div><div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div></div>
+                            <a href="https://j.map.baidu.com/36/PoJ" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day4-content" class="day-schedule">
+                <div class="day-header">Day 4 • 4/27 (一)</div>
+                <div class="timeline">
+                    <div class="trip-card">
+                        <img src="https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" loading="lazy" class="card-img-top" alt="Airport">
+                        <div class="card-content">
+                            <div class="t-time">車程預估 25 分鐘</div>
+                            <div class="t-title">出發機場: 廈門高崎國際機場</div>
+                            <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市湖里區翔雲一路121號 <button class="copy-btn" onclick="copyToClipboard('廈門市湖里區翔雲一路121號')">📋</button></div></div>
+                            <div class="info-block"><div class="i-icon">🚕</div><div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥45</span></div></div>
+                            <div class="info-block"><div class="i-icon">✈️</div><div class="i-text">準備搭乘 11:40 班機回台</div></div>
+                            <a href="https://j.map.baidu.com/47/bYd" target="_blank" rel="noopener noreferrer" class="map-link">開啟 百度地圖 ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
     </main>
 
     <div id="toast-container" class="toast-container"></div>
@@ -385,12 +559,10 @@
         let expenses = []; 
         let appState = { date: '4/24', category: '交通', currency: 'RMB' };
 
-        // --- 優化的 Toast 通知系統 ---
         function showToast(message, type = 'default') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
-            // 根據類型設定 Icon
             let icon = 'ℹ️';
             if (type === 'success') icon = '✅';
             if (type === 'error') icon = '⚠️';
@@ -398,14 +570,12 @@
             toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
             DOM.toastContainer.appendChild(toast);
 
-            // 3秒後開始消失動畫
             setTimeout(() => {
                 toast.classList.add('hide');
                 toast.addEventListener('animationend', () => toast.remove());
             }, 3000);
         }
 
-        // --- 初始化與API存取 ---
         document.addEventListener('DOMContentLoaded', () => {
             initViews();
             fetchExchangeRate(); 
@@ -511,7 +681,6 @@
             }
         }
 
-        // --- UI 渲染邏輯 ---
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
 
         function renderExpenses() {
@@ -605,8 +774,6 @@
                 DOM.budgetFill.style.backgroundColor = 'var(--color-danger)';
             } else {
                 DOM.budgetRemRow.textContent = `剩餘 NT$ ${remaining.toLocaleString()}`;
-                
-                // 動態色彩心理學
                 if (spentPercent < 60) {
                     DOM.budgetFill.style.backgroundColor = 'var(--color-success)';
                     DOM.budgetRemRow.style.color = 'var(--color-1)';
@@ -625,7 +792,6 @@
             });
         }
 
-        // --- 視圖與輸入控制 ---
         function selectCurrency(curr) {
             appState.currency = curr;
             document.getElementById('btn-curr-rmb').classList.toggle('active', curr === 'RMB');
@@ -691,7 +857,6 @@
             }
         }
 
-        // --- 輔助功能 ---
         async function fetchXiamenWeather() {
             try {
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${XIAMEN_LAT}&longitude=${XIAMEN_LON}&current_weather=true&timezone=Asia%2FShanghai`);
