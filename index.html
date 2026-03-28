@@ -7,168 +7,182 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#004D5C">
+    <meta name="theme-color" content="#d8d8d0">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* 恢復你指定的經典配色 */
-            --color-1: #004D5C; /* 深藍綠 */
-            --color-2: #53A8A2; /* 淺藍綠 */
-            --color-3: #FFFDF1; /* 米白 */
-            --color-4: #EE869A; /* 粉紅 */
+            /* --- 高級大地日雜配色 --- */
+            --color-1: #382615; /* 深咖啡：主文字、細邊框 */
+            --color-2: #713e18; /* 暖焦糖：次要文字、標題 */
+            --color-3: #d8d8d0; /* 淺灰杏：主背景 */
+            --color-4: #f4c07d; /* 柔和橘：強調色、按鈕 */
+            --color-5: #b78f64; /* 淺拿鐵：實體陰影、輔助底色 */
+            --color-white: #FCFAFA; /* 柔和白：卡片底色 */
 
-            --font-serif: "Noto Serif TC", "Nanum Myeongjo", "Georgia", serif;
-            --border-width: 3px; 
-            --box-shadow-soft: 4px 4px 0px rgba(0, 77, 92, 0.4); 
+            --font-serif: "Noto Serif TC", "Georgia", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            
+            /* 保持實體感，但不厚重 */
+            --border-width: 1px; 
+            --box-shadow-soft: 3px 3px 0px var(--color-5); 
         }
 
-        /* 絕對銳利無圓角 */
+        /* 保持不圓角的俐落排版 */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; border-radius: 0 !important; }
         
         body { 
             margin: 0; padding: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-            background-color: var(--color-1); /* 無格子純底色 */
+            font-family: var(--font-sans);
+            background-color: var(--color-3); /* 無格子的純淨底色 */
             color: var(--color-1);
             padding-bottom: 60px;
+            letter-spacing: 0.02em; 
         }
 
-        .top-bar { position: sticky; top: 0; z-index: 999; background-color: var(--color-1); border-bottom: var(--border-width) solid var(--color-3); padding-top: env(safe-area-inset-top); }
+        .top-bar { position: sticky; top: 0; z-index: 999; background-color: var(--color-3); border-bottom: var(--border-width) solid var(--color-1); padding-top: env(safe-area-inset-top); }
         .header-info { padding: 25px 20px 15px; display: flex; justify-content: space-between; align-items: center; }
         
-        .app-title { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--color-3); text-shadow: 2px 2px 0px var(--color-4); display: flex; align-items: center; line-height: 1; }
-        .refresh-btn { font-size: 20px; cursor: pointer; transition: transform 0.3s ease; margin-left: 8px; display: inline-block; text-shadow: none;}
+        /* 標題：字重調降，襯線體 */
+        .app-title { font-family: var(--font-serif); font-size: 24px; font-weight: 600; letter-spacing: 1px; color: var(--color-1); display: flex; align-items: center; line-height: 1; }
+        .refresh-btn { font-size: 18px; cursor: pointer; transition: transform 0.3s ease; margin-left: 8px; display: inline-block; opacity: 0.8;}
         .refresh-btn:active { transform: rotate(180deg); }
         
-        .weather-badge { font-size: 13px; font-weight: 800; color: var(--color-1); background: var(--color-3); padding: 7px 12px; border-radius: 0; text-decoration: none; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; box-shadow: 2px 2px 0 var(--color-4); }
+        .weather-badge { font-size: 13px; font-weight: 500; color: var(--color-1); background: var(--color-4); padding: 7px 12px; text-decoration: none; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; box-shadow: 2px 2px 0px var(--color-5); }
         .weather-badge:active { transform: translate(2px, 2px); box-shadow: none; }
 
-        .nav-bar-row { display: flex; align-items: center; padding: 5px 20px 25px; gap: 12px; background-color: var(--color-1); }
-        .nav-btn, .nav-select { display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 14px; font-weight: 800; color: var(--color-1); cursor: pointer; position: relative; transition: 0.2s; background: var(--color-3); border: var(--border-width) solid var(--color-3); border-radius: 0; appearance: none; -webkit-appearance: none; outline: none; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .nav-bar-row { display: flex; align-items: center; padding: 5px 20px 25px; gap: 12px; background-color: var(--color-3); }
+        
+        /* 面按鈕配置不變：有邊框、有底色、不加粗 */
+        .nav-btn, .nav-select { display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 14px; font-weight: 500; color: var(--color-1); cursor: pointer; position: relative; transition: 0.2s; background: var(--color-white); border: var(--border-width) solid var(--color-1); appearance: none; -webkit-appearance: none; outline: none; font-family: var(--font-sans); }
         .nav-btn { flex: 1; white-space: nowrap; }
-        .nav-select-wrapper { flex: 1.45; position: relative; }
+        .nav-select-wrapper { flex: 1.45; position: relative; background: var(--color-white); }
         .nav-select-wrapper::after { content: '▼'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--color-1); pointer-events: none; transition: 0.2s; z-index: 2; }
         .nav-select { padding: 12px 10px; text-align: left; }
         
-        .nav-btn.active, .nav-select-wrapper.active .nav-select { background-color: var(--color-2); color: #FFF; border-color: var(--color-3); }
-        .nav-select-wrapper.active::after { color: #FFF; }
+        .nav-btn.active, .nav-select-wrapper.active .nav-select { background-color: var(--color-1); color: var(--color-3); box-shadow: 2px 2px 0px var(--color-4); }
+        .nav-select-wrapper::after { color: var(--color-1); }
+        .nav-select-wrapper.active::after { color: var(--color-3); }
 
         .view-container { display: none; padding: 25px 20px; max-width: 600px; margin: 0 auto; }
         .view-container.active { display: block; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .retro-card, .flight-ticket, .balance-card, .input-area, .trip-card { background-color: var(--color-3); border-radius: 0; border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); color: var(--color-1); margin-bottom: 25px;}
+        /* 卡片配置不變，僅使用 1px 邊框與淺拿鐵陰影 */
+        .retro-card, .flight-ticket, .balance-card, .input-area, .trip-card { background-color: var(--color-white); border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); color: var(--color-1); margin-bottom: 25px; position: relative;}
         
-        .flight-ticket { position: relative; }
-        .flight-ticket::before, .flight-ticket::after { content: ''; position: absolute; top: 135px; width: 12px; height: 24px; background-color: var(--color-1); z-index: 2; border: var(--border-width) solid var(--color-1); box-sizing: border-box; }
-        .flight-ticket::before { left: -3px; border-radius: 0; border-left: none; }
-        .flight-ticket::after { right: -3px; border-radius: 0; border-right: none; }
-        .ticket-header { padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: var(--border-width) dashed var(--color-1); border-radius: 0; }
-        .ticket-header.outbound { background: rgba(83, 168, 162, 0.2); }
-        .ticket-header.inbound { background: rgba(238, 134, 154, 0.2); }
-        .ticket-label { font-family: var(--font-serif); font-size: 18px; font-weight: 900; color: var(--color-1); }
-        .ticket-date { font-weight: 800; font-size: 15px; }
-        .ticket-body { padding: 25px; position: relative; border-radius: 0; }
+        .flight-ticket::before, .flight-ticket::after { content: ''; position: absolute; top: 135px; width: 12px; height: 24px; background-color: var(--color-3); z-index: 2; border: var(--border-width) solid var(--color-1); box-sizing: border-box; }
+        .flight-ticket::before { left: -1px; border-left: none; }
+        .flight-ticket::after { right: -1px; border-right: none; }
+        
+        .ticket-header { padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: var(--border-width) solid var(--color-1); }
+        .ticket-header.outbound { background: rgba(183, 143, 100, 0.15); }
+        .ticket-header.inbound { background: rgba(244, 192, 125, 0.15); }
+        .ticket-label { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: var(--color-1); letter-spacing: 1px;}
+        .ticket-date { font-weight: 500; font-size: 14px; color: var(--color-2); }
+        .ticket-body { padding: 25px; position: relative; }
         .route-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .airport-code { font-size: 36px; font-weight: 900; font-family: var(--font-serif); line-height: 1; color: var(--color-1); }
-        .airport-name { font-size: 14px; font-weight: 700; display: block; margin-top: 8px; opacity: 0.7; }
-        .flight-icon { font-size: 28px; color: var(--color-4); transform: none; }
+        .airport-code { font-size: 32px; font-weight: 600; line-height: 1; color: var(--color-1); font-family: var(--font-serif); }
+        .airport-name { font-size: 13px; font-weight: 400; display: block; margin-top: 8px; opacity: 0.8; color: var(--color-2); }
+        .flight-icon { font-size: 24px; color: var(--color-5); opacity: 0.8; }
         .time-row { display: flex; justify-content: space-between; border-top: var(--border-width) solid var(--color-1); padding-top: 20px; margin-top: 15px; }
         .time-col { flex: 1; }
-        .time-val { font-size: 24px; font-weight: 900; color: var(--color-1); }
-        .time-lbl { font-size: 13px; font-weight: 700; margin-bottom: 4px; display: block; opacity: 0.6;}
-        .flight-info-row { margin-top: 20px; background: #FFFFFF; padding: 12px 15px; border-radius: 0; display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
-        .airline-logo { display:flex; align-items:center; gap:8px; font-weight: 900; color: var(--color-2); }
+        .time-val { font-size: 22px; font-weight: 600; color: var(--color-1); font-family: var(--font-serif); }
+        .time-lbl { font-size: 11px; font-weight: 500; margin-bottom: 4px; display: block; opacity: 0.6; letter-spacing: 1px; color: var(--color-2);}
+        .flight-info-row { margin-top: 20px; background: var(--color-white); padding: 12px 15px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; border: var(--border-width) solid var(--color-1); color: var(--color-2); }
+        .airline-logo { display:flex; align-items:center; gap:8px; color: var(--color-2); }
 
-        .balance-card { overflow: hidden; padding: 25px 30px 25px; position: relative; }
-        .balance-card::before { content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; background: var(--color-2); opacity: 0.15; pointer-events: none; border: var(--border-width) solid var(--color-1); }
-        .balance-label { font-family: var(--font-serif); font-size: 16px; font-weight: 900; color: var(--color-2); }
-        .balance-amount { font-family: var(--font-serif); font-size: 42px; margin: 10px 0; font-weight: 900; color: var(--color-3); -webkit-text-stroke: 1.5px var(--color-1); text-shadow: 2px 2px 0 var(--color-4); }
-        .balance-sub { font-size: 16px; font-weight: 800; color: var(--color-2); opacity: 0.9; }
-        .rate-tag { position: absolute; top: 25px; right: 25px; font-size: 13px; background-color: var(--color-1); color: #FFF; padding: 6px 10px; border-radius: 0; font-weight: 800; border: 2px solid var(--color-1); box-shadow: 2px 2px 0 var(--color-4); }
-
-        .budget-container { margin-top: 25px; padding: 18px 20px; background: rgba(83, 168, 162, 0.1); border: 2px dashed var(--color-1); border-radius: 0; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; }
-        .budget-rem-row { text-align: left; font-size: 24px; font-weight: 900; color: var(--color-1); line-height: 1; transition: 0.3s; }
-        .budget-track { height: 16px; width: 100%; border: 2px solid var(--color-1); border-radius: 0; background: #FFFFFF; overflow: hidden; }
-        .budget-fill { height: 100%; width: 0%; background-color: var(--color-2); transition: width 0.5s; }
-        .budget-tot-row { text-align: left; font-size: 14px; font-weight: 800; color: var(--color-1); opacity: 0.7; line-height: 1; }
+        .balance-card { overflow: hidden; padding: 25px 30px; }
+        .balance-card::before { content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; background: var(--color-5); opacity: 0.15; pointer-events: none; border: var(--border-width) solid var(--color-1); }
+        .balance-label { font-size: 14px; font-weight: 500; color: var(--color-2); letter-spacing: 1px; text-transform: uppercase;}
+        .balance-amount { font-family: var(--font-serif); font-size: 40px; margin: 10px 0; font-weight: 600; color: var(--color-1); letter-spacing: 1px; }
+        .balance-sub { font-size: 15px; font-weight: 400; color: var(--color-2); opacity: 0.8; }
         
-        .danger-text { color: var(--color-4) !important; }
-        .danger-bg { background-color: var(--color-4) !important; }
+        /* 即時匯率標籤 */
+        .rate-tag { position: absolute; top: 25px; right: 25px; font-size: 12px; background-color: var(--color-3); color: var(--color-1); padding: 5px 10px; font-weight: 500; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-5); }
 
-        /* 2x2 Bento Box 網格統計 */
+        .budget-container { margin-top: 25px; padding: 18px 20px; background: rgba(183, 143, 100, 0.08); border: var(--border-width) solid var(--color-1); position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; }
+        .budget-rem-row { text-align: left; font-size: 20px; font-weight: 600; color: var(--color-1); line-height: 1; font-family: var(--font-serif); }
+        .budget-track { height: 12px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
+        .budget-fill { height: 100%; width: 0%; background-color: var(--color-1); transition: width 0.5s; }
+        .budget-tot-row { text-align: left; font-size: 13px; font-weight: 400; color: var(--color-2); opacity: 0.8; line-height: 1; }
+        
+        .danger-text { color: #A04000 !important; }
+        .danger-bg { background-color: #A04000 !important; }
+
+        /* 2x2 網格統計 - 樣式不變，線條與字重減輕 */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 25px; }
-        .stat-box { background: #FFFFFF; border: 2px solid var(--color-1); padding: 12px 15px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; box-shadow: 2px 2px 0 rgba(0, 77, 92, 0.15); }
-        .stat-box-title { font-size: 14px; font-weight: 800; color: var(--color-1); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-        .stat-box-val { font-size: 18px; font-weight: 900; color: var(--color-1); word-break: break-word; }
+        .stat-box { background: var(--color-white); border: var(--border-width) solid var(--color-1); padding: 12px 15px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; box-shadow: 2px 2px 0 var(--color-5); }
+        .stat-box-title { font-size: 13px; font-weight: 500; color: var(--color-2); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        .stat-box-val { font-size: 17px; font-weight: 600; color: var(--color-1); word-break: break-word; font-family: var(--font-serif); }
 
-        .input-area { overflow: hidden; padding: 25px; }
-        .input-title { font-family: var(--font-serif); font-size: 18px; font-weight: 900; color: var(--color-1); margin-bottom: 15px; display:block; }
+        .input-area { padding: 25px; }
+        .input-title { font-size: 16px; font-weight: 600; color: var(--color-1); margin-bottom: 15px; display:block; letter-spacing: 1px;}
         
         .curr-btn-row { display: flex; border-bottom: var(--border-width) solid var(--color-1); background: var(--color-3); }
-        .curr-btn { flex: 1; text-align: center; padding: 12px; font-size: 15px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); }
+        .curr-btn { flex: 1; text-align: center; padding: 12px; font-size: 14px; font-weight: 500; color: var(--color-1); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); }
         .curr-btn:last-child { border-right: none; }
-        .curr-btn.active { background: var(--color-2); color: #FFF; }
+        .curr-btn.active { background: var(--color-1); color: var(--color-3); }
 
-        .modern-input { width: 100%; padding: 14px; border: none; background: transparent; outline: none; font-size: 16px; color: var(--color-1); transition: 0.3s; font-weight: 700; border-radius: 0 !important; }
-        .modern-input::placeholder { color: rgba(0, 77, 92, 0.4); }
+        .modern-input { width: 100%; padding: 14px; border: none; background: transparent; outline: none; font-size: 15px; color: var(--color-1); transition: 0.3s; font-weight: 400; }
+        .modern-input::placeholder { color: rgba(113, 62, 24, 0.4); }
         
-        .add-btn { width: 100%; background: var(--color-4); color: #FFF; padding: 16px; border-radius: 0; border: var(--border-width) solid var(--color-1); font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: var(--box-shadow-soft); transition: 0.2s; margin-top: 10px; }
-        .add-btn:active { transform: translate(3px, 3px); box-shadow: none; }
-        .add-btn:disabled { background: #ccc; border-color: #999; box-shadow: none; cursor: not-allowed; }
+        .add-btn { width: 100%; background: var(--color-4); color: var(--color-1); padding: 16px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px; letter-spacing: 1px; box-shadow: 3px 3px 0 var(--color-5); }
+        .add-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+        .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; }
 
         .history-list { margin-top: 15px; padding-bottom: 20px; }
-        .date-divider { font-family: var(--font-serif); font-size: 22px; color: var(--color-3); font-weight: 900; margin: 35px 0 15px 10px; text-shadow: 2px 2px 0 var(--color-1); }
+        .date-divider { font-family: var(--font-serif); font-size: 20px; color: var(--color-1); font-weight: 600; margin: 35px 0 15px 5px; }
         
-        .history-item { display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; padding: 18px; border-radius: 0; margin-bottom: 12px; border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); }
-        .h-name { font-weight: 800; font-size: 16px; color: var(--color-1); }
-        .h-cat { font-size: 13px; color: var(--color-1); opacity: 0.7; font-weight: 700; margin-top: 4px;}
-        .h-price { font-weight: 900; font-size: 18px; color: var(--color-1); }
-        .h-twd { font-size: 13px; color: var(--color-2); display: block; font-weight: 700; margin-top: 3px;}
-        .del-btn { color: var(--color-4); font-weight:900; background: none; border: none; font-size: 24px; padding-left: 15px; cursor: pointer;}
+        .history-item { display: flex; justify-content: space-between; align-items: center; background: var(--color-white); padding: 18px; margin-bottom: 12px; border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); }
+        .h-name { font-weight: 500; font-size: 15px; color: var(--color-1); }
+        .h-cat { font-size: 12px; color: var(--color-2); opacity: 0.8; font-weight: 400; margin-top: 4px;}
+        .h-price { font-weight: 600; font-size: 17px; color: var(--color-1); font-family: var(--font-serif); }
+        .h-twd { font-size: 12px; color: var(--color-2); opacity: 0.8; display: block; font-weight: 400; margin-top: 3px;}
+        .del-btn { color: var(--color-5); background: none; border: none; font-size: 22px; padding-left: 15px; cursor: pointer; transition: 0.2s; opacity: 0.6;}
+        .del-btn:hover { color: #A04000; opacity: 1; }
         
-        .loading-text { text-align: center; padding: 40px; font-size: 14px; font-weight: 800; color: var(--color-3); opacity: 0.8; }
+        .loading-text { text-align: center; padding: 30px; font-size: 14px; font-weight: 400; color: var(--color-2); }
 
         .date-scroll-container { overflow-x: auto; white-space: nowrap; padding: 5px 5px 20px; scrollbar-width: none; }
-        .date-chip { display: inline-block; background: #FFFFFF; border: var(--border-width) solid var(--color-1); padding: 10px 18px; border-radius: 0; margin-right: 10px; font-size: 15px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; box-shadow: var(--box-shadow-soft); }
-        .date-chip.active { background: var(--color-2); color: #FFF; }
+        .date-chip { display: inline-block; background: var(--color-white); border: var(--border-width) solid var(--color-1); padding: 10px 18px; margin-right: 10px; font-size: 14px; font-weight: 500; color: var(--color-1); cursor: pointer; transition: 0.2s; box-shadow: 2px 2px 0 var(--color-5); }
+        .date-chip.active { background: var(--color-1); color: var(--color-3); box-shadow: 2px 2px 0 var(--color-4); }
 
         .cat-row { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
-        .cat-btn { flex: 1; min-width: 75px; text-align: center; padding: 12px 5px; border-radius: 0; background: #FFFFFF; border: var(--border-width) solid var(--color-1); font-size: 14px; font-weight: 800; color: var(--color-1); cursor: pointer; transition: 0.2s; box-shadow: var(--box-shadow-soft); }
-        .cat-btn.active { background: var(--color-1); color: #FFF; box-shadow: 2px 2px 0 var(--color-2);}
-        .cat-emoji { font-size: 22px; display: block; margin-bottom: 6px; filter: drop-shadow(1px 1px 0 rgba(0, 77, 92, 0.2));}
+        .cat-btn { flex: 1; min-width: 75px; text-align: center; padding: 12px 5px; background: var(--color-white); border: var(--border-width) solid var(--color-1); font-size: 13px; font-weight: 500; color: var(--color-1); cursor: pointer; transition: 0.2s; box-shadow: 2px 2px 0 var(--color-5); }
+        .cat-btn.active { background: var(--color-1); color: var(--color-3); box-shadow: 2px 2px 0 var(--color-4);}
+        .cat-emoji { font-size: 20px; display: block; margin-bottom: 6px; opacity: 0.9; }
 
         .day-schedule { display: none; animation: fadeIn 0.3s ease; }
         .day-schedule.active { display: block; }
         .timeline { position: relative; padding-left: 25px; padding-top: 15px; }
-        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 4px; background: var(--color-3); opacity: 0.5; } 
-        .day-header { font-family: var(--font-serif); font-size: 26px; color: var(--color-3); margin-bottom: 25px; padding-left: 15px; font-weight: 900; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--color-1); opacity: 0.2; } 
+        .day-header { font-family: var(--font-serif); font-size: 24px; color: var(--color-1); margin-bottom: 25px; padding-left: 15px; font-weight: 600; }
         
         .trip-card { overflow: hidden; margin-bottom: 35px; position: relative; }
-        .trip-card::after { content: ''; position: absolute; left: -32px; top: 25px; width: 18px; height: 18px; border-radius: 0; background-color: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; }
+        .trip-card::after { content: ''; position: absolute; left: -32px; top: 25px; width: 14px; height: 14px; background-color: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; }
         .card-img-top { width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); }
         .card-content { padding: 25px; }
-        .t-time { font-size: 16px; font-weight: 900; color: var(--color-4); margin-bottom: 12px; display: inline-block; border-bottom: 3px solid rgba(0, 77, 92, 0.2); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-        .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin-bottom: 18px; line-height: 1.3; color: var(--color-1); }
-        .info-block { display: flex; gap: 12px; margin-bottom: 15px; font-size: 15px; align-items: flex-start; }
-        .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 20px; line-height: 1.4; }
-        .i-text { flex: 1; line-height: 1.5; font-weight: 700; color: var(--color-1); }
+        .t-time { font-size: 13px; font-weight: 500; color: var(--color-1); margin-bottom: 12px; display: inline-block; padding-bottom: 4px; border-bottom: 2px solid var(--color-5); font-family: var(--font-sans); }
+        .t-title { font-family: var(--font-serif); font-size: 22px; font-weight: 600; margin-bottom: 18px; line-height: 1.35; color: var(--color-1); }
+        .info-block { display: flex; gap: 12px; margin-bottom: 15px; font-size: 14px; align-items: flex-start; }
+        .i-icon { color: var(--color-5); width: 24px; text-align: center; font-size: 18px; line-height: 1.4; margin-top: 2px; }
+        .i-text { flex: 1; line-height: 1.6; font-weight: 400; color: var(--color-1); }
         
-        .cost-tag { display: inline-block; background-color: rgba(238, 134, 154, 0.25); color: var(--color-1); padding: 4px 8px; font-size: 14px; font-weight: 800; border: 1px solid rgba(238, 134, 154, 0.6); margin-top: 6px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .cost-tag { display: inline-block; background-color: var(--color-white); color: var(--color-2); padding: 4px 8px; font-size: 12px; font-weight: 500; border: 1px solid var(--color-5); margin-top: 6px; font-family: var(--font-sans); }
         
-        .subway-step { display: block; margin-bottom: 6px; border-left: 2px solid rgba(83, 168, 162, 0.5); padding-left: 10px;}
-        .subway-station { font-weight: 900; font-size: 16px; color: var(--color-1); }
-        .subway-line { color: #D35400; font-weight: 800; }
+        .subway-step { display: block; margin-bottom: 6px; border-left: 1px dashed var(--color-5); padding-left: 10px;}
+        .subway-station { font-weight: 600; font-size: 14px; color: var(--color-1); }
+        .subway-line { color: var(--color-2); font-weight: 500; font-size: 13px;}
 
-        .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 15px; margin-top: 20px; font-size: 16px; font-weight: 800; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-2); transition: 0.2s; }
+        .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-3); color: var(--color-1); text-decoration: none; padding: 14px; margin-top: 20px; font-size: 14px; font-weight: 600; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-5); transition: 0.2s; letter-spacing: 1px;}
         .map-link:active { transform: translate(2px, 2px); box-shadow: none; }
-        .copy-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-left: 5px; color: var(--color-2); padding: 0; transition: 0.2s; }
+        .copy-btn { background: none; border: none; cursor: pointer; font-size: 14px; margin-left: 8px; color: var(--color-5); padding: 0; transition: 0.2s; }
         .copy-btn:active { transform: scale(0.9); }
     </style>
 </head>
@@ -199,7 +213,7 @@
 
     <div id="view-accounting" class="view-container active">
         <div class="balance-card">
-            <div class="rate-tag" id="rate-display">即時匯率: 載入中...</div>
+            <div class="rate-tag" id="rate-display">匯率載入中...</div>
             <div class="balance-label">Trip Total</div>
             <div class="balance-amount" id="total-primary">NT$ 0</div>
             <div class="balance-sub" id="total-secondary">≈ ¥ 0</div>
@@ -245,7 +259,7 @@
                 <div class="cat-btn" onclick="selectCategory('其他')"><span class="cat-emoji">✨</span>其他</div>
             </div>
             
-            <div style="border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 15px; background: #FFFFFF;">
+            <div style="border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 15px; background: var(--color-white);">
                 <input type="text" id="item-name" class="modern-input" placeholder="細項名稱 (空白則自動填入分類)" style="border-bottom: var(--border-width) solid var(--color-1);">
                 
                 <div class="curr-btn-row">
@@ -333,7 +347,7 @@
                     <img src="https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" loading="lazy" class="card-img-top" alt="Buffet">
                     <div class="card-content">
                         <div class="t-time">車程預估 35 分鐘</div>
-                        <div class="t-title">漁緯港海鮮自助餐廳<br><span style="font-size: 15px; font-family: var(--font-sans); font-weight:500; display:block; margin-top:6px; color: var(--color-2);">SM廈門-3期</span></div>
+                        <div class="t-title">漁緯港海鮮自助餐廳<br><span style="font-size: 15px; font-family: var(--font-sans); font-weight:400; display:block; margin-top:6px; color: var(--color-2);">SM廈門-3期</span></div>
                         <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市湖里區嘉禾路399號SM商業城3期4層 <button class="copy-btn" onclick="copyToClipboard('廈門市湖里區嘉禾路399號SM商業城3期4層')">📋</button></div></div>
                         <div class="info-block">
                             <div class="i-icon">🚇</div>
@@ -579,7 +593,7 @@
             } else { switchView(savedTab); }
             
             fetchXiamenWeather(); 
-            fetchExchangeRate();
+            fetchExchangeRate(); 
             selectDate('4/24'); 
             fetchExpenses();
         });
@@ -833,6 +847,14 @@
         }
 
         function getCatEmoji(cat) { return (cat==='交通'?'🚕':(cat==='食物'?'🍔':(cat==='購物'?'🛍️':'✨'))); }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('已複製地址：' + text);
+            }).catch(err => {
+                console.error('複製失敗', err);
+            });
+        }
     </script>
 </body>
 </html>
