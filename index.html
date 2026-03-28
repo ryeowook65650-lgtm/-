@@ -18,20 +18,17 @@
            1. 變數與基礎設定 (Variables & Base)
            ========================================= */
         :root {
-            /* 顏色系統：大地清爽配色 */
-            --color-1: #382615; /* 深咖啡 */
-            --color-2: #713e18; /* 暖焦糖 */
-            --color-3: #d8d8d0; /* 淺灰杏 */
-            --color-4: #f4c07d; /* 柔和橘 */
-            --color-5: #b78f64; /* 淺拿鐵 */
-            --color-white: #FCFAFA; /* 柔白 */
+            --color-1: #382615; 
+            --color-2: #713e18; 
+            --color-3: #d8d8d0; 
+            --color-4: #f4c07d; 
+            --color-5: #b78f64; 
+            --color-white: #FCFAFA; 
             
-            /* 狀態顏色 */
-            --color-success: #6b8c65; /* 復古綠 (健康) */
-            --color-warning: #d4a373; /* 警告橘 (緊繃) */
-            --color-danger: #A04000;  /* 復古紅 (超支) */
+            --color-success: #6b8c65; 
+            --color-warning: #d4a373; 
+            --color-danger: #A04000;  
 
-            /* 字體與 UI 參數 */
             --font-serif: "Noto Serif TC", "Georgia", serif;
             --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
             --border-width: 1px; 
@@ -43,6 +40,15 @@
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
             border-radius: 0 !important; 
+        }
+        
+        /* 強制清除 iOS/Safari 的預設 UI 樣式，防止排版歪掉 */
+        button, input, select {
+            appearance: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+            font-family: inherit;
+            margin: 0;
         }
         
         body { 
@@ -139,10 +145,6 @@
             transition: var(--transition-speed); 
             background: var(--color-3); 
             border: var(--border-width) solid var(--color-1); 
-            appearance: none; 
-            -webkit-appearance: none; 
-            outline: none; 
-            font-family: var(--font-sans); 
         }
         
         .nav-btn { 
@@ -191,7 +193,7 @@
         }
 
         /* =========================================
-           3. 視圖容器與共用卡片 (Views & Cards)
+           3. 視圖容器與共用卡片
            ========================================= */
         .view-container { 
             display: none; 
@@ -219,7 +221,7 @@
         }
 
         /* =========================================
-           4. 記帳版面特有樣式 (Accounting UI)
+           4. 記帳版面特有樣式
            ========================================= */
         .balance-card { 
             overflow: hidden; 
@@ -360,7 +362,7 @@
             font-family: var(--font-serif); 
         }
 
-        /* --- 輸入區塊 (Input Area) --- */
+        /* --- 輸入區塊 --- */
         .input-area { 
             padding: 25px; 
             background: var(--color-white); 
@@ -388,7 +390,9 @@
         .scroll-container::-webkit-scrollbar { display: none; }
         
         .chip { 
-            display: inline-block; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
             background: transparent; 
             border: var(--border-width) solid var(--color-5); 
             padding: 8px 18px; 
@@ -463,7 +467,9 @@
         
         .curr-btn { 
             flex: 1; 
-            text-align: center; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 12px; 
             font-size: 14px; 
             font-weight: 600; 
@@ -483,6 +489,7 @@
         }
 
         .modern-input { 
+            display: block; /* 確保輸入框佔滿整行，修正歪斜問題 */
             width: 100%; 
             padding: 16px; 
             border: none; 
@@ -530,7 +537,7 @@
             transform: none; 
         }
 
-        /* --- 歷史紀錄 (History List & Collapsible) --- */
+        /* --- 歷史紀錄清單 --- */
         .date-section { margin-bottom: 25px; }
         
         .date-divider { 
@@ -657,7 +664,7 @@
         }
 
         /* =========================================
-           5. 航班資訊與行程一覽 (Flight & Itinerary)
+           5. 航班資訊與行程一覽
            ========================================= */
         .flight-ticket { position: relative; }
         .flight-ticket::before, .flight-ticket::after { content: ''; position: absolute; top: 135px; width: 16px; height: 32px; background-color: var(--color-3); z-index: 2; border: var(--border-width) solid var(--color-1); box-sizing: border-box; }
@@ -703,7 +710,7 @@
         .copy-btn:active { background: var(--color-4); transform: scale(0.9); }
 
         /* =========================================
-           6. Toast 通知系統 (Toast Notification)
+           6. Toast 通知系統
            ========================================= */
         .toast-container { 
             position: fixed; 
@@ -745,15 +752,14 @@
             from { opacity: 1; transform: translateY(0) scale(1); } 
             to { opacity: 0; transform: translateY(10px) scale(0.95); } 
         }
-
     </style>
 </head>
 <body>
 
     <header class="top-bar">
         <div class="header-info">
-            <div class="app-title">廈門旅遊 <span class="refresh-btn" onclick="forceAppUpdate()" title="重新載入">🔄</span></div>
-            <div id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">🇨🇳 載入中...</div>
+            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入" style="background:none; border:none; color:inherit;">🔄</button></div>
+            <button id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">🇨🇳 載入中...</button>
         </div>
         
         <nav class="nav-bar-row">
@@ -834,8 +840,8 @@
                 <div class="input-group">
                     <input type="text" id="item-name" class="modern-input" placeholder="寫下品項名稱 (選填)" style="border-bottom: var(--border-width) solid var(--color-1);">
                     <div class="curr-btn-row">
-                        <div id="btn-curr-rmb" class="curr-btn active" onclick="selectCurrency('RMB')">¥ 人民幣</div>
-                        <div id="btn-curr-twd" class="curr-btn" onclick="selectCurrency('TWD')">$ 新台幣</div>
+                        <button id="btn-curr-rmb" class="curr-btn active" onclick="selectCurrency('RMB')">¥ 人民幣</button>
+                        <button id="btn-curr-twd" class="curr-btn" onclick="selectCurrency('TWD')">$ 新台幣</button>
                     </div>
                     <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)" min="0" step="0.01">
                 </div>
@@ -1099,7 +1105,7 @@
         const TRIP_DATES = ['4/24', '4/25', '4/26', '4/27'];
         const EMOJI_MAP = { '交通': '🚕', '食物': '🍔', '購物': '🛍️', '其他': '✨' };
         
-        // 集中管理 DOM 元素，提升效能
+        // 集中管理 DOM 元素
         const DOM = {
             rateDisplay: document.getElementById('rate-display'),
             expenseList: document.getElementById('expense-list'),
@@ -1107,7 +1113,7 @@
             totalSecondary: document.getElementById('total-secondary'),
             budgetRemRow: document.getElementById('budget-rem-row'),
             budgetFill: document.getElementById('budget-fill'),
-            personInput: document.getElementById('person-input'), // 新增自訂成員輸入框
+            personInput: document.getElementById('person-input'), 
             itemName: document.getElementById('item-name'),
             itemPrice: document.getElementById('item-price'),
             btnAdd: document.getElementById('btn-add'),
@@ -1228,7 +1234,7 @@
                 return; 
             }
             
-            // 處理自訂成員：若有填寫，則自動加上括號
+            // 將自訂成員加入品項名稱
             let personName = DOM.personInput.value.trim();
             let finalName = personName ? `【${personName}】${baseName}` : baseName;
 
@@ -1316,7 +1322,7 @@
                     const section = document.createElement('div');
                     section.className = 'date-section';
                     
-                    // 預設折疊非當日或較早的日期，保持畫面清爽
+                    // 預設折疊非當日或較早的日期
                     if (appState.activeFilter === 'All' && index < TRIP_DATES.indexOf(appState.date) - 1 ) {
                         section.classList.add('collapsed'); 
                     }
@@ -1427,7 +1433,7 @@
 
         function selectDate(date) { 
             appState.date = date; 
-            document.querySelectorAll('.date-scroll-container .chip').forEach(chip => {
+            document.querySelectorAll('.scroll-container .chip').forEach(chip => {
                 chip.classList.toggle('active', chip.textContent.includes(date));
             });
         }
