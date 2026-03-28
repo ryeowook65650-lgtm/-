@@ -167,11 +167,13 @@
         .i-icon { color: var(--color-1); width: 24px; text-align: center; font-size: 20px; line-height: 1.4; }
         .i-text { flex: 1; line-height: 1.5; font-weight: 700; color: var(--color-2); }
         
+        /* 交通花費半透明標籤 */
         .cost-tag { display: inline-block; background-color: rgba(244, 192, 125, 0.3); color: var(--color-1); padding: 4px 8px; font-size: 14px; font-weight: 800; border: 1px solid var(--color-4); margin-top: 6px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         
+        /* 地鐵步驟標示 */
         .subway-step { display: block; margin-bottom: 6px; border-left: 2px solid var(--color-5); padding-left: 10px;}
         .subway-station { font-weight: 900; font-size: 16px; color: var(--color-1); }
-        .subway-line { color: #D35400; font-weight: 800; }
+        .subway-line { color: var(--color-2); font-weight: 800; }
 
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 15px; margin-top: 20px; font-size: 16px; font-weight: 900; gap: 8px; border: var(--border-width) solid var(--color-1); box-shadow: 2px 2px 0 var(--color-5); transition: 0.2s; }
         .map-link:active { transform: translate(2px, 2px); box-shadow: none; }
@@ -465,31 +467,74 @@
                             <div class="i-text">
                                 <span class="subway-step">步行到 <span class="subway-station">鎮海路站</span></span>
                                 <span class="subway-step">搭乘 <span class="subway-line">地鐵1號線（往岩內方向）</span></span>
-                                <span class="subway-step">搭到 <span class="subway-station">烏石浦站</span> 3B出口</span>
-                                <span class="cost-tag">交通花費：¥3</span>
+                                <span class="subway-step">搭到 <span class="subway-station">集美學村站</span> 2出口</span>
+                                <span class="cost-tag">交通花費：¥5</span>
                             </div>
                         </div>
-                        <div class="info-block"><div class="i-icon">💡</div><div class="i-text">這期有無印良品，吃完buffet逛百貨公司</div></div>
-                        <a href="https://j.map.baidu.com/24/LZQd" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                        <div class="info-block"><div class="i-icon">📸</div><div class="i-text">拍照留念</div></div>
+                        <a href="https://j.map.baidu.com/20/zXh" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                
+                <div class="trip-card">
+                    <img src="https://symphonyholdings.com/assets/img/meta.jpg" loading="lazy" class="card-img-top" alt="Outlet">
+                    <div class="card-content">
+                        <div class="t-time">車程預估 18 分鐘</div>
+                        <div class="t-title">逛街: 廈門尚柏奧特萊斯</div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市集美區天水路2號 <button class="copy-btn" onclick="copyToClipboard('廈門市集美區天水路2號')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚕</div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥30</span></div>
+                        </div>
+                        <a href="https://j.map.baidu.com/8f/u8h" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
                 
                 <div class="trip-card">
                     <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
                     <div class="card-content">
-                        <div class="t-time">車程預估 25 分鐘</div>
+                        <div class="t-time">車程預估 40 分鐘</div>
                         <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
                         <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
                         <div class="info-block">
                             <div class="i-icon">🚕</div>
-                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥28</span></div>
+                            <div class="i-text">搭乘 計程車<br><span class="cost-tag">交通花費：¥80</span></div>
+                        </div>
+                        <div class="info-block"><div class="i-icon">💡</div><div class="i-text">休息一下</div></div>
+                        <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                
+                <div class="trip-card">
+                    <img src="https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" loading="lazy" class="card-img-top" alt="Zhongshan Road">
+                    <div class="card-content">
+                        <div class="t-time">路程預估 15 分鐘</div>
+                        <div class="t-title">晚餐逛逛: 中山路步行街</div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區中山路 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區中山路')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚶</div>
+                            <div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div>
+                        </div>
+                        <a href="https://j.map.baidu.com/1c/AsK" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
+                    </div>
+                </div>
+                
+                <div class="trip-card">
+                    <img src="https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" loading="lazy" class="card-img-top" alt="Return Hotel">
+                    <div class="card-content">
+                        <div class="t-time">路程預估 15 分鐘</div>
+                        <div class="t-title">回飯店: 廈門瑞頤大酒店</div>
+                        <div class="info-block"><div class="i-icon">📍</div><div class="i-text">廈門市思明區鷺江道12號 <button class="copy-btn" onclick="copyToClipboard('廈門市思明區鷺江道12號')">📋</button></div></div>
+                        <div class="info-block">
+                            <div class="i-icon">🚶</div>
+                            <div class="i-text">步行<br><span class="cost-tag">交通花費：¥0</span></div>
                         </div>
                         <a href="https://j.map.baidu.com/36/PoJ" target="_blank" class="map-link">開啟 百度地圖 ↗</a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div id="day4-content" class="day-schedule">
             <div class="day-header">Day 4 • 4/27 (一)</div>
             <div class="timeline">
@@ -522,7 +567,7 @@
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVVY1EqQrjndhkeej_NIabBYYjNORHcRkaoev-wRGcWsRdO6HnvVrXg7BIIEHUYrVP/exec';
         
-        let currentRate = 4.45; // 改成 let 變數
+        let currentRate = 4.45; // 使用即時匯率變數
         
         let expenses = []; 
         let selectedInputDate = '4/24'; 
@@ -542,13 +587,13 @@
                 document.getElementById('day-selector').value = savedDay;
             } else { switchView(savedTab); }
             
-            fetchXiamenWeather();
-            fetchExchangeRate(); // 加入即時匯率
+            fetchXiamenWeather(); 
+            fetchExchangeRate(); // 呼叫即時匯率
             selectDate('4/24'); 
             fetchExpenses();
         });
 
-        // 加入監聽器，網頁切回時自動更新
+        // 畫面回到前景時更新匯率
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
                 fetchXiamenWeather();
@@ -557,7 +602,7 @@
             }
         });
 
-        // 取得即時匯率函數
+        // 即時匯率抓取函數
         async function fetchExchangeRate() {
             try {
                 const res = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/cny.json');
@@ -565,7 +610,7 @@
                 if(data && data.cny && data.cny.twd) {
                     currentRate = data.cny.twd;
                     document.getElementById('rate-display').innerText = `即時匯率: ${currentRate.toFixed(2)}`;
-                    if (expenses.length > 0) renderExpenses();
+                    if (expenses.length > 0) renderExpenses(); // 有資料就重繪算金額
                 }
             } catch (e) {
                 console.warn('即時匯率 API 載入失敗，使用預設匯率', e);
