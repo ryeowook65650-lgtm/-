@@ -213,7 +213,7 @@
 
     <div id="view-accounting" class="view-container active">
         <div class="balance-card">
-            <div class="rate-tag" id="rate-display">固定匯率: 4.45</div>
+            <div class="rate-tag" id="rate-display">即時匯率: 載入中...</div>
             <div class="balance-label">Trip Total</div>
             <div class="balance-amount" id="total-primary">NT$ 0</div>
             <div class="balance-sub" id="total-secondary">≈ ¥ 0</div>
@@ -572,7 +572,7 @@
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVVY1EqQrjndhkeej_NIabBYYjNORHcRkaoev-wRGcWsRdO6HnvVrXg7BIIEHUYrVP/exec';
         
-        const currentRate = 4.45; 
+        let currentRate = 4.45; // 預設匯率，若API抓取失敗則退回此值
         
         let expenses = []; 
         let selectedInputDate = '4/24'; 
@@ -592,8 +592,27 @@
                 document.getElementById('day-selector').value = savedDay;
             } else { switchView(savedTab); }
             
+            fetchExchangeRate(); // 載入頁面時自動抓取即時匯率
             fetchXiamenWeather(); selectDate('4/24'); fetchExpenses();
         });
+
+        // 抓取即時匯率的函數
+        async function fetchExchangeRate() {
+            const rateDisplay = document.getElementById('rate-display');
+            try {
+                // 使用免費穩定的 open.er-api.com
+                const res = await fetch('https://open.er-api.com/v6/latest/CNY');
+                const data = await res.json();
+                if (data && data.rates && data.rates.TWD) {
+                    currentRate = data.rates.TWD;
+                    rateDisplay.innerText = `即時匯率: ${currentRate.toFixed(2)}`;
+                    renderExpenses(); // 更新畫面上的總計估算
+                }
+            } catch (error) {
+                console.error('匯率載入失敗', error);
+                rateDisplay.innerText = `參考匯率: ${currentRate}`;
+            }
+        }
 
         async function fetchExpenses() {
             const listEl = document.getElementById('expense-list');
@@ -635,6 +654,7 @@
             
             let finalPriceTWD; 
 
+            // 這裡會用「當下的 currentRate」來算出台幣寫入資料庫，實現當下記帳當下鎖定
             if (selectedCurrency === 'RMB') {
                 finalPriceTWD = Math.round(inputPrice * currentRate); 
             } else {
