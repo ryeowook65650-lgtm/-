@@ -42,13 +42,17 @@
             border-radius: 0 !important; 
         }
         
-        /* 強制清除 iOS/Safari 的預設 UI 樣式，防止排版歪掉 */
+        /* 🚨 強制清除 iOS/Safari 的預設 UI 樣式，這是解決歪斜的核心 */
         button, input, select {
             appearance: none;
             -webkit-appearance: none;
             border-radius: 0;
             font-family: inherit;
             margin: 0;
+            padding: 0;
+            outline: none;
+            background: transparent;
+            border: none;
         }
         
         body { 
@@ -188,9 +192,7 @@
             box-shadow: none; 
         }
         
-        .nav-select-wrapper.active::after { 
-            color: var(--color-3); 
-        }
+        .nav-select-wrapper.active::after { color: var(--color-3); }
 
         /* =========================================
            3. 視圖容器與共用卡片
@@ -221,447 +223,104 @@
         }
 
         /* =========================================
-           4. 記帳版面特有樣式
+           4. 記帳版面與輸入 (Accounting & Forms)
            ========================================= */
-        .balance-card { 
-            overflow: hidden; 
-            padding: 30px; 
-            position: relative; 
-        }
+        .balance-card { overflow: hidden; padding: 30px; position: relative; }
+        .balance-label { font-size: 13px; font-weight: 700; color: var(--color-5); letter-spacing: 2px; text-transform: uppercase;}
+        .balance-amount { font-family: var(--font-serif); font-size: 44px; margin: 8px 0; font-weight: 700; color: var(--color-1); letter-spacing: 1px; line-height: 1.1; }
+        .balance-sub { font-size: 15px; font-weight: 600; color: var(--color-2); opacity: 0.7; }
+        .rate-tag { position: absolute; top: 30px; right: 30px; font-size: 12px; background-color: var(--color-3); color: var(--color-1); padding: 6px 10px; font-weight: 700; border: var(--border-width) solid var(--color-1); }
         
-        .balance-label { 
-            font-size: 13px; 
-            font-weight: 700; 
-            color: var(--color-5); 
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-        }
-        
-        .balance-amount { 
-            font-family: var(--font-serif); 
-            font-size: 44px; 
-            margin: 8px 0; 
-            font-weight: 700; 
-            color: var(--color-1); 
-            letter-spacing: 1px; 
-            line-height: 1.1; 
-        }
-        
-        .balance-sub { 
-            font-size: 15px; 
-            font-weight: 600; 
-            color: var(--color-2); 
-            opacity: 0.7; 
-        }
-        
-        .rate-tag { 
-            position: absolute; 
-            top: 30px; 
-            right: 30px; 
-            font-size: 12px; 
-            background-color: var(--color-3); 
-            color: var(--color-1); 
-            padding: 6px 10px; 
-            font-weight: 700; 
-            border: var(--border-width) solid var(--color-1); 
-        }
-        
-        .budget-container { 
-            margin-top: 30px; 
-            padding: 20px; 
-            background: rgba(183, 143, 100, 0.05); 
-            border: var(--border-width) dashed var(--color-5); 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-        
-        .budget-rem-row { 
-            text-align: left; 
-            font-size: 20px; 
-            font-weight: 700; 
-            color: var(--color-1); 
-            font-family: var(--font-serif); 
-            transition: color 0.3s; 
-        }
-        
-        .budget-track { 
-            height: 8px; 
-            width: 100%; 
-            border: var(--border-width) solid var(--color-1); 
-            background: #FFFFFF; 
-            overflow: hidden; 
-        }
-        
-        .budget-fill { 
-            height: 100%; 
-            width: 0%; 
-            background-color: var(--color-success); 
-            transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease; 
-        }
-        
-        .budget-tot-row { 
-            text-align: right; 
-            font-size: 12px; 
-            font-weight: 600; 
-            color: var(--color-2); 
-            opacity: 0.6; 
-        }
+        .budget-container { margin-top: 30px; padding: 20px; background: rgba(183, 143, 100, 0.05); border: var(--border-width) dashed var(--color-5); position: relative; display: flex; flex-direction: column; gap: 12px; }
+        .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); transition: color 0.3s; }
+        .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
+        .budget-fill { height: 100%; width: 0%; background-color: var(--color-success); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease; }
+        .budget-tot-row { text-align: right; font-size: 12px; font-weight: 600; color: var(--color-2); opacity: 0.6; }
 
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            margin-top: 30px; 
-        }
-        
-        .stat-box { 
-            border-top: 2px solid var(--color-3); 
-            padding-top: 12px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 4px; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            opacity: 0.7; 
-        }
-        
-        .stat-box:active { 
-            transform: scale(0.95); 
-        }
-        
-        .stat-box.active-filter { 
-            border-top: 2px solid var(--color-1); 
-            opacity: 1; 
-            background: rgba(183, 143, 100, 0.05); 
-            padding: 12px 8px 8px; 
-            margin-top: -12px; 
-            border-radius: 0; 
-        }
-        
-        .stat-box-title { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: var(--color-5); 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-        
-        .stat-box.active-filter .stat-box-title { 
-            color: var(--color-1); 
-        }
-        
-        .stat-box-val { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: var(--color-1); 
-            font-family: var(--font-serif); 
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
+        .stat-box { border-top: 2px solid var(--color-3); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: 0.3s; opacity: 0.7; }
+        .stat-box:active { transform: scale(0.95); }
+        .stat-box.active-filter { border-top: 2px solid var(--color-1); opacity: 1; background: rgba(183, 143, 100, 0.05); padding: 12px 8px 8px; margin-top: -12px; border-radius: 0; }
+        .stat-box-title { font-size: 12px; font-weight: 700; color: var(--color-5); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-box.active-filter .stat-box-title { color: var(--color-1); }
+        .stat-box-val { font-size: 18px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); }
 
-        /* --- 輸入區塊 --- */
-        .input-area { 
-            padding: 25px; 
-            background: var(--color-white); 
-        }
+        .input-area { padding: 25px; background: var(--color-white); }
+        .input-title { font-size: 14px; font-weight: 700; color: var(--color-5); margin-bottom: 12px; display: block; letter-spacing: 1px;}
         
-        .input-title { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: var(--color-5); 
-            margin-bottom: 12px; 
-            display: block; 
-            letter-spacing: 1px;
-        }
-        
-        .scroll-container { 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            padding-bottom: 15px; 
-            margin-bottom: 5px; 
-            scrollbar-width: none; 
-            display: flex; 
-            gap: 10px; 
-        }
-        
+        .scroll-container { overflow-x: auto; white-space: nowrap; padding-bottom: 15px; margin-bottom: 5px; scrollbar-width: none; display: flex; gap: 10px; }
         .scroll-container::-webkit-scrollbar { display: none; }
         
-        .chip { 
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-            background: transparent; 
-            border: var(--border-width) solid var(--color-5); 
-            padding: 8px 18px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            color: var(--color-2); 
-            cursor: pointer; 
-            transition: var(--transition-speed); 
-            flex-shrink: 0; 
-        }
-        
-        .chip.active { 
-            background: var(--color-1); 
-            border-color: var(--color-1); 
-            color: var(--color-3); 
-        }
+        .chip { display: flex; align-items: center; justify-content: center; border: var(--border-width) solid var(--color-5); padding: 8px 18px; font-size: 14px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); flex-shrink: 0; }
+        .chip.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); }
 
-        .cat-row { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 20px; 
-            overflow-x: auto; 
-            scrollbar-width: none; 
-        }
-        
-        .cat-btn { 
-            flex: 1; 
-            min-width: 70px; 
-            padding: 12px 5px; 
-            background: transparent; 
-            border: var(--border-width) solid var(--color-5); 
-            font-size: 13px; 
-            font-weight: 600; 
-            color: var(--color-2); 
-            cursor: pointer; 
-            transition: var(--transition-speed); 
-        }
-        
-        .cat-btn.active { 
-            background: var(--color-1); 
-            border-color: var(--color-1); 
-            color: var(--color-3); 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 10px rgba(56,38,21,0.15); 
-        }
-        
-        .cat-emoji { 
-            font-size: 22px; 
-            display: block; 
-            margin-bottom: 8px; 
-            transition: transform 0.2s; 
-        }
-        
+        .cat-row { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
+        .cat-btn { flex: 1; min-width: 70px; padding: 12px 5px; border: var(--border-width) solid var(--color-5); font-size: 13px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); }
+        .cat-btn.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56,38,21,0.15); }
+        .cat-emoji { font-size: 22px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
+        /* 🚨 解決歪掉的核心：嚴格控制 Flex 結構與邊框 */
         .input-group { 
+            display: flex; 
+            flex-direction: column; /* 讓內部元素完美垂直堆疊，不留空隙 */
             border: var(--border-width) solid var(--color-1); 
             background: #FFFFFF; 
             margin-bottom: 20px; 
             transition: box-shadow 0.3s ease; 
         }
-        
-        .input-group:focus-within { 
-            box-shadow: 4px 4px 0 rgba(56, 38, 21, 0.1); 
-        }
+        .input-group:focus-within { box-shadow: 4px 4px 0 rgba(56, 38, 21, 0.1); }
         
         .curr-btn-row { 
             display: flex; 
+            width: 100%;
+            border-top: var(--border-width) solid var(--color-1); 
             border-bottom: var(--border-width) solid var(--color-1); 
             background: var(--color-3); 
         }
-        
         .curr-btn { 
             flex: 1; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            color: var(--color-2); 
-            cursor: pointer; 
-            transition: var(--transition-speed); 
-            border-right: var(--border-width) solid var(--color-1); 
-            opacity: 0.6; 
+            display: flex; align-items: center; justify-content: center;
+            padding: 14px; 
+            font-size: 14px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: 0.2s; 
+            border-right: var(--border-width) solid var(--color-1); opacity: 0.6; 
         }
-        
         .curr-btn:last-child { border-right: none; }
-        
-        .curr-btn.active { 
-            background: var(--color-1); 
-            color: var(--color-3); 
-            opacity: 1; 
-        }
+        .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
 
         .modern-input { 
-            display: block; /* 確保輸入框佔滿整行，修正歪斜問題 */
-            width: 100%; 
-            padding: 16px; 
-            border: none; 
-            background: transparent; 
-            outline: none; 
-            font-size: 16px; 
-            color: var(--color-1); 
-            transition: background 0.3s; 
-            font-weight: 600; 
+            display: block; width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; 
         }
-        
         .modern-input:focus { background: rgba(183, 143, 100, 0.05); }
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.3); font-weight: 500; }
 
         .add-btn { 
-            width: 100%; 
-            background: var(--color-4); 
-            color: var(--color-1); 
-            padding: 18px; 
-            border: var(--border-width) solid var(--color-1); 
-            font-size: 16px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: var(--transition-speed); 
-            letter-spacing: 2px; 
-            box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            margin-top: 10px;
+            width: 100%; background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px;
         }
-        
-        .add-btn:active { 
-            transform: translate(3px, 3px); 
-            box-shadow: 0 0 0 rgba(56, 38, 21, 1); 
-        }
-        
-        .add-btn:disabled { 
-            background: var(--color-3); 
-            border-color: var(--color-1); 
-            color: var(--color-5); 
-            box-shadow: none; 
-            cursor: not-allowed; 
-            transform: none; 
-        }
+        .add-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
+        .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; }
 
         /* --- 歷史紀錄清單 --- */
         .date-section { margin-bottom: 25px; }
-        
-        .date-divider { 
-            font-family: var(--font-serif); 
-            font-size: 20px; 
-            color: var(--color-1); 
-            font-weight: 700; 
-            padding: 10px 5px; 
-            border-bottom: 2px solid var(--color-1); 
-            margin-bottom: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            opacity: 0.9; 
-        }
-        
+        .date-divider { font-family: var(--font-serif); font-size: 20px; color: var(--color-1); font-weight: 700; padding: 10px 5px; border-bottom: 2px solid var(--color-1); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; opacity: 0.9; }
         .date-divider:active { background: rgba(183, 143, 100, 0.1); }
         .date-divider::after { content: '▾'; font-family: var(--font-sans); font-size: 16px; transition: 0.3s; }
-        
         .date-section.collapsed .date-divider::after { transform: rotate(-90deg); }
         .date-section.collapsed .history-items-wrapper { display: none; }
         
-        .history-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: var(--color-white); 
-            padding: 20px; 
-            margin-bottom: 12px; 
-            border: var(--border-width) solid var(--color-1); 
-            transition: transform 0.2s, box-shadow 0.2s; 
-        }
+        .history-item { display: flex; justify-content: space-between; align-items: center; background: var(--color-white); padding: 20px; margin-bottom: 12px; border: var(--border-width) solid var(--color-1); transition: transform 0.2s, box-shadow 0.2s; }
+        .history-item:active { transform: scale(0.98); background-color: #f9f9f9; }
+        .h-name { font-weight: 700; font-size: 16px; color: var(--color-1); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;}
+        .h-tag { font-size: 11px; background: var(--color-3); border: var(--border-width) solid var(--color-5); padding: 2px 6px; color: var(--color-2); font-weight: 700; font-family: var(--font-sans); }
+        .h-cat { font-size: 12px; color: var(--color-5); font-weight: 600; margin-top: 6px; letter-spacing: 1px;}
+        .h-price { font-weight: 700; font-size: 18px; color: var(--color-1); font-family: var(--font-serif); text-align: right; }
+        .h-twd { font-size: 12px; color: var(--color-2); display: block; font-weight: 500; margin-top: 4px; text-align: right; opacity: 0.8;}
         
-        .history-item:active { 
-            transform: scale(0.98); 
-            background-color: #f9f9f9; 
-        }
-        
-        .h-name { 
-            font-weight: 700; 
-            font-size: 16px; 
-            color: var(--color-1); 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            flex-wrap: wrap;
-        }
-        
-        .h-tag { 
-            font-size: 11px; 
-            background: var(--color-3); 
-            border: var(--border-width) solid var(--color-5); 
-            padding: 2px 6px; 
-            color: var(--color-2); 
-            font-weight: 700; 
-            font-family: var(--font-sans); 
-        }
-        
-        .h-cat { 
-            font-size: 12px; 
-            color: var(--color-5); 
-            font-weight: 600; 
-            margin-top: 6px; 
-            letter-spacing: 1px;
-        }
-        
-        .h-price { 
-            font-weight: 700; 
-            font-size: 18px; 
-            color: var(--color-1); 
-            font-family: var(--font-serif); 
-            text-align: right; 
-        }
-        
-        .h-twd { 
-            font-size: 12px; 
-            color: var(--color-2); 
-            display: block; 
-            font-weight: 500; 
-            margin-top: 4px; 
-            text-align: right; 
-            opacity: 0.8;
-        }
-        
-        .del-btn { 
-            color: var(--color-5); 
-            background: transparent; 
-            border: var(--border-width) solid transparent; 
-            font-size: 20px; 
-            width: 40px; 
-            height: 40px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            transition: var(--transition-speed); 
-            margin-left: 10px;
-        }
-        
-        .del-btn:hover, .del-btn:active { 
-            color: var(--color-danger); 
-            border-color: var(--color-danger); 
-            background: rgba(160, 64, 0, 0.05); 
-        }
-
-        .empty-state { 
-            text-align: center; 
-            padding: 40px 20px; 
-            color: var(--color-5); 
-        }
-        
-        .empty-state-icon { 
-            font-size: 48px; 
-            margin-bottom: 15px; 
-            opacity: 0.8; 
-        }
-        
-        .empty-state-text { 
-            font-size: 15px; 
-            font-weight: 600; 
-            line-height: 1.6; 
-        }
+        .del-btn { color: var(--color-5); font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; margin-left: 10px;}
+        .del-btn:hover, .del-btn:active { color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); }
+        .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.8; }
+        .empty-state-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
 
         /* =========================================
            5. 航班資訊與行程一覽
@@ -692,7 +351,7 @@
         .day-header { font-family: var(--font-serif); font-size: 26px; color: var(--color-1); margin-bottom: 30px; font-weight: 900; display: inline-block; position: relative; z-index: 10; background: var(--color-3); padding-right: 20px; letter-spacing: 1px;}
         .day-header::after { content: ''; position: absolute; left: 0; bottom: 4px; width: 100%; height: 8px; background: rgba(244, 192, 125, 0.4); z-index: -1; } 
         .trip-card { position: relative; overflow: hidden; }
-        .trip-card::after { content: ''; position: absolute; left: -16px; top: 30px; width: 11px; height: 11px; background-color: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; border-radius: 50% !important; }
+        .trip-card::after { content: ''; position: absolute; left: -16px; top: 30px; width: 11px; height: 11px; background: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; border-radius: 50% !important; }
         .card-img-top { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); filter: contrast(0.95) sepia(0.1); }
         .card-content { padding: 25px; }
         .t-time { font-size: 12px; font-weight: 700; color: var(--color-1); background: var(--color-4); padding: 4px 8px; display: inline-block; margin-bottom: 15px; border: var(--border-width) solid var(--color-1); }
@@ -712,53 +371,20 @@
         /* =========================================
            6. Toast 通知系統
            ========================================= */
-        .toast-container { 
-            position: fixed; 
-            bottom: 40px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            z-index: 9999; 
-            pointer-events: none; 
-            width: 90%; 
-            max-width: 400px; 
-        }
-        
-        .toast { 
-            background: var(--color-1); 
-            color: var(--color-3); 
-            padding: 16px 20px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-            border: 1px solid rgba(255,255,255,0.1); 
-        }
-        
+        .toast-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: var(--color-1); color: var(--color-3); padding: 16px 20px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; border: 1px solid rgba(255,255,255,0.1); }
         .toast.hide { animation: toastOut 0.3s ease-in forwards; }
         .toast.success { border-left: 4px solid var(--color-success); }
         .toast.error { border-left: 4px solid var(--color-danger); }
-        
-        @keyframes toastIn { 
-            from { opacity: 0; transform: translateY(20px) scale(0.95); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
-        @keyframes toastOut { 
-            from { opacity: 1; transform: translateY(0) scale(1); } 
-            to { opacity: 0; transform: translateY(10px) scale(0.95); } 
-        }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.95); } }
     </style>
 </head>
 <body>
 
     <header class="top-bar">
         <div class="header-info">
-            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入" style="background:none; border:none; color:inherit;">🔄</button></div>
+            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入">🔄</button></div>
             <button id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">🇨🇳 載入中...</button>
         </div>
         
@@ -816,7 +442,7 @@
             <div class="input-area">
                 
                 <span class="input-title">📅 日期</span>
-                <div class="scroll-container">
+                <div class="scroll-container" id="date-container">
                     <button class="chip active" onclick="selectDate('4/24')">4/24</button>
                     <button class="chip" onclick="selectDate('4/25')">4/25</button>
                     <button class="chip" onclick="selectDate('4/26')">4/26</button>
@@ -838,7 +464,7 @@
                 
                 <span class="input-title">📝 記帳內容</span>
                 <div class="input-group">
-                    <input type="text" id="item-name" class="modern-input" placeholder="寫下品項名稱 (選填)" style="border-bottom: var(--border-width) solid var(--color-1);">
+                    <input type="text" id="item-name" class="modern-input" placeholder="寫下品項名稱 (選填)">
                     <div class="curr-btn-row">
                         <button id="btn-curr-rmb" class="curr-btn active" onclick="selectCurrency('RMB')">¥ 人民幣</button>
                         <button id="btn-curr-twd" class="curr-btn" onclick="selectCurrency('TWD')">$ 新台幣</button>
@@ -1105,7 +731,6 @@
         const TRIP_DATES = ['4/24', '4/25', '4/26', '4/27'];
         const EMOJI_MAP = { '交通': '🚕', '食物': '🍔', '購物': '🛍️', '其他': '✨' };
         
-        // 集中管理 DOM 元素
         const DOM = {
             rateDisplay: document.getElementById('rate-display'),
             expenseList: document.getElementById('expense-list'),
@@ -1137,7 +762,6 @@
             activeFilter: 'All' 
         };
 
-        // --- 初始化 ---
         document.addEventListener('DOMContentLoaded', () => {
             initViews();
             fetchExchangeRate(); 
@@ -1146,18 +770,14 @@
             fetchExpenses();
         });
 
-        // --- UI 工具函式 ---
         function showToast(message, type = 'default') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             let icon = 'ℹ️';
             if (type === 'success') icon = '✅';
             if (type === 'error') icon = '⚠️';
-
             toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
             DOM.toastContainer.appendChild(toast);
-
             setTimeout(() => {
                 toast.classList.add('hide');
                 toast.addEventListener('animationend', () => toast.remove());
@@ -1174,7 +794,6 @@
             }
         }
 
-        // --- 資料獲取與 API ---
         async function fetchExchangeRate() {
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/CNY');
@@ -1224,7 +843,6 @@
             }
         }
 
-        // --- 核心操作：新增與刪除 ---
         async function addExpense() {
             let baseName = DOM.itemName.value.trim() || appState.category;
             const inputPrice = parseFloat(DOM.itemPrice.value); 
@@ -1234,7 +852,6 @@
                 return; 
             }
             
-            // 將自訂成員加入品項名稱
             let personName = DOM.personInput.value.trim();
             let finalName = personName ? `【${personName}】${baseName}` : baseName;
 
@@ -1255,7 +872,6 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData });
                 
-                // 連續記帳：不清空成員、分類與日期，只清空品項與金額
                 DOM.itemName.value = ''; 
                 DOM.itemPrice.value = ''; 
                 DOM.itemPrice.focus();
@@ -1289,7 +905,6 @@
             }
         }
 
-        // --- 畫面渲染邏輯 ---
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
 
         function renderExpenses() {
@@ -1298,7 +913,6 @@
             const fragment = document.createDocumentFragment();
             let hasRenderedAny = false;
 
-            // 處理過濾器提示狀態
             const filterAllBtn = document.getElementById('filter-all');
             if (appState.activeFilter !== 'All') {
                 filterAllBtn.style.display = 'block';
@@ -1322,7 +936,6 @@
                     const section = document.createElement('div');
                     section.className = 'date-section';
                     
-                    // 預設折疊非當日或較早的日期
                     if (appState.activeFilter === 'All' && index < TRIP_DATES.indexOf(appState.date) - 1 ) {
                         section.classList.add('collapsed'); 
                     }
@@ -1339,7 +952,6 @@
                     dailyItems.forEach(item => {
                         const twdValue = Math.round(parseFloat(item.price));
                         
-                        // 總金額統計不受過濾影響
                         if (appState.activeFilter === 'All') {
                             grandTotalTWD += twdValue;
                             statsTWD[item.cat] = (statsTWD[item.cat] || 0) + twdValue;
@@ -1349,7 +961,6 @@
                         let safeName = escapeHTML(item.name); 
                         const emoji = EMOJI_MAP[item.cat] || EMOJI_MAP['其他'];
 
-                        // 判斷並渲染成員標籤 (例如：【爸爸】)
                         let personTagHtml = '';
                         const tagMatch = safeName.match(/^【(.*?)】(.*)/);
                         if (tagMatch) {
@@ -1414,7 +1025,6 @@
             });
         }
 
-        // --- 互動狀態切換 ---
         function setFilter(cat) {
             appState.activeFilter = (appState.activeFilter === cat || cat === 'All') ? 'All' : cat;
             document.querySelectorAll('.stat-box').forEach(box => box.classList.remove('active-filter'));
@@ -1431,9 +1041,10 @@
             DOM.itemPrice.placeholder = curr === 'RMB' ? "輸入金額 (¥)" : "輸入金額 ($)";
         }
 
+        // 🚨 修正日期無法點擊的問題：透過 ID 綁定，避免選擇器衝突
         function selectDate(date) { 
             appState.date = date; 
-            document.querySelectorAll('.scroll-container .chip').forEach(chip => {
+            document.querySelectorAll('#date-container .chip').forEach(chip => {
                 chip.classList.toggle('active', chip.textContent.includes(date));
             });
         }
@@ -1445,7 +1056,6 @@
             }); 
         }
 
-        // --- 視圖管理 (Views Routing) ---
         function initViews() {
             const savedTab = localStorage.getItem('active_tab') || 'accounting';
             if (savedTab === 'itinerary') {
@@ -1490,7 +1100,6 @@
             }
         }
 
-        // --- 其他工具 ---
         function copyToClipboard(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => showToast('已複製地址', 'success'));
