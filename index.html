@@ -118,15 +118,47 @@
         .cat-emoji { font-size: 22px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
-        .input-group { display: flex; flex-direction: column; border: var(--border-width) solid var(--color-1); background: #FFFFFF; margin-bottom: 20px; transition: box-shadow 0.3s ease; }
+        /* 💡 修正輸入框對齊與邊框溢出問題 */
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+            border: var(--border-width) solid var(--color-1); 
+            background: #FFFFFF; 
+            margin-bottom: 20px; 
+            transition: box-shadow 0.3s ease; 
+            overflow: hidden; /* 防止內部元素撐破圓角或邊框 */
+        }
         .input-group:focus-within { box-shadow: 4px 4px 0 rgba(56, 38, 21, 0.1); }
-        .curr-btn-row { display: flex; width: 100%; border-top: var(--border-width) solid var(--color-1); border-bottom: var(--border-width) solid var(--color-1); background: var(--color-3); }
-        .curr-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 14px; font-size: 14px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); opacity: 0.6; }
+        
+        .curr-btn-row { 
+            display: flex; 
+            width: 100%; 
+            border-top: var(--border-width) solid var(--color-1); 
+            border-bottom: var(--border-width) solid var(--color-1); 
+            background: var(--color-3); 
+        }
+        .curr-btn { 
+            flex: 1; 
+            display: flex; align-items: center; justify-content: center; 
+            padding: 14px; 
+            font-size: 14px; font-weight: 600; color: var(--color-2); 
+            cursor: pointer; transition: 0.2s; 
+            border-right: var(--border-width) solid var(--color-1); 
+            opacity: 0.6; 
+        }
         .curr-btn:last-child { border-right: none; }
         .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
         
-        /* 💡 增加 placeholder 對比度提升可讀性 */
-        .modern-input { display: block; width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; }
+        .modern-input { 
+            display: block; 
+            width: 100%; 
+            padding: 16px; 
+            font-size: 16px; 
+            color: var(--color-1); 
+            font-weight: 600; 
+            background: transparent;
+            border: none;
+        }
         .modern-input:focus { background: rgba(183, 143, 100, 0.05); }
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.5); font-weight: 500; }
 
@@ -390,14 +422,14 @@
                 { time: "車程預估 12 分鐘", title: "景點: 胡里山炮台", address: "廈門市思明區曾厝垵路2號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥20</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/c7/gos", imgUrl: "https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" },
                 { time: "車程預估 10 分鐘", title: "景點/午餐: 曾厝垵主景區-入口", address: "廈門市思明區環島南路", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥13</span>", icon2: "🍜", info2: "午餐可能吃海鮮沙茶麵", mapUrl: "https://j.map.baidu.com/c6/XUPi", imgUrl: "https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" },
                 { time: "車程預估 30 分鐘", title: "景點: 沙坡尾藝術西區", address: "廈門市思明區沙坡尾60號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥17</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/9c/7vK", imgUrl: "https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" },
-                { time: "車程預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", icon2: "🥜", info2: "推薦：黃則和花生湯", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1548661710-7f540c9c56d6?auto=format&fit=crop&w=600&q=80" }, // 💡 修復了 Http Mixed Content 問題
+                { time: "車程預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", icon2: "🥜", info2: "推薦：黃則和花生湯", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" }, // 💡 中山路圖片已還原
                 { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day3: [
                 { time: "車程預估 50 分鐘", title: "景點: 集美學村", address: "廈門市集美區銀江路183號", icon1: "🚇", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">集美學村站</span> 2出口</span><span class=\"cost-tag\">交通花費：¥5</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/20/zXh", imgUrl: "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" },
                 { time: "車程預估 18 分鐘", title: "逛街: 廈門尚柏奧特萊斯", address: "廈門市集美區天水路2號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥30</span>", mapUrl: "https://j.map.baidu.com/8f/u8h", imgUrl: "https://symphonyholdings.com/assets/img/meta.jpg" },
                 { time: "車程預估 40 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥80</span>", icon2: "💡", info2: "休息一下", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
-                { time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路步行街", address: "廈門市思明區中山路", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1548661710-7f540c9c56d6?auto=format&fit=crop&w=600&q=80" },
+                { time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路步行街", address: "廈門市思明區中山路", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" }, // 💡 中山路圖片已還原
                 { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day4: [
@@ -576,7 +608,8 @@
             const listEl = document.getElementById('expense-list');
             if (Store.state.expenses.length === 0) toggleLoading(true, '同步帳本資料...');
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=read`);
+                // 💡 加入 Date.now() 避免 Google API 回傳舊的快取資料
+                const res = await fetch(`${SCRIPT_URL}?action=read&t=${Date.now()}`);
                 Store.state.expenses = await res.json(); 
                 renderExpenses();
             } catch (err) {
@@ -662,7 +695,8 @@
             TRIP_DATES.forEach((date, index) => {
                 const dailyItems = Store.state.expenses.filter(item => {
                     const sheetDate = String(item.date).trim();
-                    let isMatchDate = (sheetDate === date || sheetDate.includes(date));
+                    // 💡 把你原本完美的日期解析邏輯補回來
+                    let isMatchDate = (sheetDate === date || sheetDate.includes(date) || (sheetDate.includes('T') && `${new Date(sheetDate).getMonth() + 1}/${new Date(sheetDate).getDate()}` === date));
                     let isMatchFilter = (Store.state.activeFilter === 'All' || item.cat === Store.state.activeFilter);
                     return isMatchDate && isMatchFilter;
                 });
