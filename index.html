@@ -399,7 +399,7 @@
 
     <script>
         /* =========================================
-           1. 資料驅動：行程資料 (DRY 原則)
+           1. 資料驅動：行程資料
            ========================================= */
         const ITINERARY_DATA = {
             day1: [
@@ -427,7 +427,7 @@
         };
 
         /* =========================================
-           2. 集中狀態管理 (Store Pattern)
+           2. 集中狀態管理 
            ========================================= */
         const Store = {
             state: {
@@ -460,7 +460,7 @@
         });
 
         /* =========================================
-           3. 動態渲染行程 (Data-Driven Rendering)
+           3. 動態渲染行程 
            ========================================= */
         function renderAllItineraries() {
             Object.keys(ITINERARY_DATA).forEach(dayKey => {
@@ -496,7 +496,7 @@
         }
 
         /* =========================================
-           4. 事件綁定分離 (Separation of Concerns)
+           4. 事件綁定 
            ========================================= */
         function bindEvents() {
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -610,10 +610,9 @@
 
             const inputPrice = parseFloat(itemPriceEl.value); 
             
-            // 💡 如果沒有輸入數字，自動滾動過去並 Focus
+            // 💡 智慧按鈕邏輯：沒輸入數字就自動滾動並打開鍵盤
             if (isNaN(inputPrice) || inputPrice <= 0) {
                 itemPriceEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // 稍微延遲一下再 focus，避免畫面還沒滾完，鍵盤就彈出來導致抖動
                 setTimeout(() => itemPriceEl.focus(), 300);
                 return showToast('請先輸入有效的金額！', 'error'); 
             }
@@ -632,7 +631,7 @@
 
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-                itemNameEl.value = ''; itemPriceEl.value = ''; itemPriceEl.blur(); // 儲存完收起鍵盤
+                itemNameEl.value = ''; itemPriceEl.value = ''; itemPriceEl.blur(); 
                 showToast(`已新增一筆花費！`, 'success');
                 await fetchExpenses();
             } catch (err) { 
@@ -662,7 +661,8 @@
             }
         }
 
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag]));
+        // 💡 修復了字元轉換的語法錯誤
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
@@ -767,7 +767,7 @@
         }
 
         /* =========================================
-           6. 工具與輔助 (Utils)
+           6. 工具與輔助 
            ========================================= */
         function initViews() {
             const savedTab = localStorage.getItem('active_tab') || 'accounting';
