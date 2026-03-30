@@ -88,94 +88,83 @@
            ========================================= */
         .balance-card { overflow: hidden; padding: 30px; position: relative; }
         .balance-label { font-size: 13px; font-weight: 700; color: var(--color-5); letter-spacing: 2px; text-transform: uppercase;}
-        .balance-amount { font-family: var(--font-serif); font-size: 44px; margin: 8px 0; font-weight: 700; color: var(--color-1); letter-spacing: 1px; line-height: 1.1; }
+        
+        /* 💡 字型優化：財務數字改用無襯線體與等寬數字 (tabular-nums)，避免參差不齊 */
+        .balance-amount { font-family: var(--font-sans); font-variant-numeric: tabular-nums; font-size: 44px; margin: 8px 0; font-weight: 700; color: var(--color-1); letter-spacing: 0; line-height: 1.1; }
         .balance-sub { font-size: 15px; font-weight: 600; color: var(--color-2); opacity: 0.7; }
         .rate-tag { position: absolute; top: 30px; right: 30px; font-size: 12px; background-color: var(--color-3); color: var(--color-1); padding: 6px 10px; font-weight: 700; border: var(--border-width) solid var(--color-1); }
+        
         .budget-container { margin-top: 30px; padding: 20px; background: rgba(183, 143, 100, 0.05); border: var(--border-width) dashed var(--color-5); position: relative; display: flex; flex-direction: column; gap: 12px; }
-        .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); transition: color 0.3s; }
+        .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.3s; }
         .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
         .budget-fill { height: 100%; width: 0%; background-color: var(--color-success); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease; }
         .budget-tot-row { text-align: right; font-size: 12px; font-weight: 600; color: var(--color-2); opacity: 0.6; }
 
-        /* 💡 修正網格對齊 */
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
-        .stat-box { border-top: 2px solid var(--color-3); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: 0.3s; opacity: 0.7; }
-        .stat-box:active { transform: scale(0.95); }
-        .stat-box.active-filter { border-top: 2px solid var(--color-1); opacity: 1; background: rgba(183, 143, 100, 0.05); padding: 12px 8px 8px; margin-top: -12px; border-radius: 0; }
-        .stat-box-title { font-size: 12px; font-weight: 700; color: var(--color-5); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-box.active-filter .stat-box-title { color: var(--color-1); }
-        .stat-box-val { font-size: 18px; font-weight: 700; color: var(--color-1); font-family: var(--font-serif); }
+        /* 💡 統計網格優化：改為實體卡片，100% 完美對齊且視覺更乾淨 */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 30px; width: 100%; box-sizing: border-box; }
+        .stat-box { 
+            border: var(--border-width) solid var(--color-1); 
+            background: rgba(183, 143, 100, 0.05); 
+            padding: 14px; 
+            display: flex; flex-direction: column; gap: 6px; 
+            cursor: pointer; transition: 0.2s; 
+            box-shadow: 2px 2px 0 rgba(56, 38, 21, 0.1); 
+        }
+        .stat-box:active { transform: translate(1px, 1px); box-shadow: none; }
+        .stat-box.active-filter { 
+            background: var(--color-1); 
+            color: var(--color-3); 
+            box-shadow: none; 
+            transform: translate(1px, 1px); 
+        }
+        .stat-box-title { font-size: 12px; font-weight: 700; color: var(--color-5); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; }
+        .stat-box.active-filter .stat-box-title { color: var(--color-3); }
+        .stat-box-val { font-size: 18px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.2s; }
+        .stat-box.active-filter .stat-box-val { color: var(--color-4); } /* 選中時數字變為金色凸顯 */
 
         .input-area { padding: 25px; background: var(--color-white); }
         .input-title { font-size: 14px; font-weight: 700; color: var(--color-5); margin-bottom: 12px; display: block; letter-spacing: 1px;}
-        .scroll-container { overflow-x: auto; white-space: nowrap; padding-bottom: 15px; margin-bottom: 5px; scrollbar-width: none; display: flex; gap: 10px; }
+        
+        /* 💡 滾動視覺暗示：右側加入漸層遮罩，告訴使用者「後面還有選項」 */
+        .scroll-container, .cat-row { 
+            overflow-x: auto; white-space: nowrap; padding-bottom: 15px; scrollbar-width: none; display: flex; gap: 10px; 
+            padding-right: 40px; 
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
         .scroll-container::-webkit-scrollbar { display: none; }
+        .scroll-container { margin-bottom: 5px; }
+        .cat-row { margin-bottom: 20px; }
+
         .chip { display: flex; align-items: center; justify-content: center; border: var(--border-width) solid var(--color-5); padding: 8px 18px; font-size: 14px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); flex-shrink: 0; }
         .chip.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); }
 
-        .cat-row { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
-        .cat-btn { flex: 1; min-width: 70px; padding: 12px 5px; border: var(--border-width) solid var(--color-5); font-size: 13px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); }
+        .cat-btn { flex: 1; min-width: 70px; padding: 12px 5px; border: var(--border-width) solid var(--color-5); font-size: 13px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); flex-shrink: 0; }
         .cat-btn.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56,38,21,0.15); }
         .cat-emoji { font-size: 22px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
         /* 輸入框對齊與邊框 */
         .input-group { 
-            display: flex; 
-            flex-direction: column; 
-            border: var(--border-width) solid var(--color-1); 
-            background: #FFFFFF; 
-            margin-bottom: 20px; 
-            transition: box-shadow 0.3s ease; 
-            width: 100%;
-            box-sizing: border-box;
-            overflow: hidden; 
+            display: flex; flex-direction: column; border: var(--border-width) solid var(--color-1); background: #FFFFFF; margin-bottom: 20px; transition: box-shadow 0.3s ease; width: 100%; box-sizing: border-box; overflow: hidden; 
         }
         .input-group:focus-within { box-shadow: 4px 4px 0 rgba(56, 38, 21, 0.1); }
-        
-        .curr-btn-row { 
-            display: flex; 
-            width: 100%; 
-            border-top: var(--border-width) solid var(--color-1); 
-            border-bottom: var(--border-width) solid var(--color-1); 
-            background: var(--color-3); 
-            margin: 0;
-            box-sizing: border-box;
-        }
-        .curr-btn { 
-            flex: 1; 
-            display: flex; align-items: center; justify-content: center; 
-            padding: 14px 0; 
-            font-size: 14px; font-weight: 600; color: var(--color-2); 
-            cursor: pointer; transition: 0.2s; 
-            border-right: var(--border-width) solid var(--color-1); 
-            opacity: 0.6; 
-            margin: 0;
-            box-sizing: border-box;
-        }
+        .curr-btn-row { display: flex; width: 100%; border-top: var(--border-width) solid var(--color-1); border-bottom: var(--border-width) solid var(--color-1); background: var(--color-3); margin: 0; box-sizing: border-box; }
+        .curr-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 14px 0; font-size: 14px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: 0.2s; border-right: var(--border-width) solid var(--color-1); opacity: 0.6; margin: 0; box-sizing: border-box; }
         .curr-btn:last-child { border-right: none; }
         .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
         
         .modern-input { 
-            display: block; 
-            width: 100%; 
-            max-width: 100%; 
-            padding: 16px; 
-            font-size: 16px; 
-            color: var(--color-1); 
-            font-weight: 600; 
-            background: transparent;
-            border: none;
-            margin: 0; 
-            box-sizing: border-box;
-            border-radius: 0; 
-            -webkit-appearance: none;
-            appearance: none;
+            display: block; width: 100%; max-width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; background: transparent; border: none; margin: 0; box-sizing: border-box; border-radius: 0; -webkit-appearance: none; appearance: none;
         }
         .modern-input:focus { background: rgba(183, 143, 100, 0.05); outline: none; }
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.5); font-weight: 500; }
 
-        .add-btn { width: 100%; background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; }
+        /* 💡 CTA 吸附：確保「記錄一筆」永遠跟在拇指附近，不怕被鍵盤擠飛 */
+        .add-btn { 
+            width: 100%; background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; 
+            position: sticky; bottom: 20px; z-index: 100;
+        }
         .add-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
         .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; }
 
@@ -191,7 +180,7 @@
         .h-name { font-weight: 700; font-size: 16px; color: var(--color-1); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;}
         .h-tag { font-size: 11px; background: var(--color-3); border: var(--border-width) solid var(--color-5); padding: 2px 6px; color: var(--color-2); font-weight: 700; font-family: var(--font-sans); }
         .h-cat { font-size: 12px; color: var(--color-5); font-weight: 600; margin-top: 6px; letter-spacing: 1px;}
-        .h-price { font-weight: 700; font-size: 18px; color: var(--color-1); font-family: var(--font-serif); text-align: right; }
+        .h-price { font-weight: 700; font-size: 18px; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; letter-spacing: 0; text-align: right; }
         .h-twd { font-size: 12px; color: var(--color-2); display: block; font-weight: 500; margin-top: 4px; text-align: right; opacity: 0.8;}
         .del-btn { color: var(--color-5); font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; margin-left: 10px;}
         .del-btn:hover, .del-btn:active { color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
@@ -671,9 +660,9 @@
 
             const filterAllBtn = document.querySelector('.stat-box[data-filter="All"]');
             if (Store.state.activeFilter !== 'All') {
-                filterAllBtn.style.display = 'flex'; // 💡 顯示時變為 flex 容器橫跨兩格
+                filterAllBtn.style.display = 'flex'; 
             } else {
-                filterAllBtn.style.display = 'none'; // 💡 隱藏時完全不佔空間，恢復下方完美 2x2 對齊
+                filterAllBtn.style.display = 'none'; 
             }
 
             TRIP_DATES.forEach((date, index) => {
