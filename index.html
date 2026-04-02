@@ -314,8 +314,11 @@
                 </div>
 
                 <span class="input-title">👤 誰的花費？</span>
-                <div class="input-group" style="margin-bottom: 20px;">
-                    <input type="text" id="person-input" class="modern-input" placeholder="(空白代表共用)">
+                <div class="scroll-container" id="person-container" style="margin-bottom: 20px;">
+                    <button class="chip active" data-person="">👥 共用</button>
+                    <button class="chip" data-person="小爸">👨 小爸</button>
+                    <button class="chip" data-person="阿馨（韓吉）">👩 阿馨（韓吉）</button>
+                    <button class="chip" data-person="阿雪">🙋 阿雪</button>
                 </div>
 
                 <span class="input-title">🏷️ 分類</span>
@@ -343,49 +346,7 @@
         </section>
 
         <section id="view-flight" class="view-container">
-            <div class="flight-ticket">
-                <div class="ticket-header outbound">
-                    <div class="ticket-label">Outbound 去程</div>
-                    <div class="ticket-date">2026/4/24 (五)</div>
-                </div>
-                <div class="ticket-body">
-                    <div class="route-row">
-                        <div><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
-                        <div class="flight-icon">✈</div>
-                        <div style="text-align:right;"><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
-                    </div>
-                    <div class="time-row">
-                        <div><span class="time-lbl">DEPARTURE</span><span class="time-val">08:40</span></div>
-                        <div style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">10:30</span></div>
-                    </div>
-                    <div class="flight-info-row">
-                        <div>MANDARIN AIRLINES AE991</div>
-                        <div>1h 50m</div>
-                    </div>
-                </div>
-            </div>
-            <div class="flight-ticket">
-                <div class="ticket-header inbound">
-                    <div class="ticket-label">Inbound 回程</div>
-                    <div class="ticket-date">2026/4/27 (一)</div>
-                </div>
-                <div class="ticket-body">
-                    <div class="route-row">
-                        <div><span class="airport-code">XMN</span><span class="airport-name">廈門高崎</span></div>
-                        <div class="flight-icon">✈</div>
-                        <div style="text-align:right;"><span class="airport-code">TPE</span><span class="airport-name">台北桃園</span></div>
-                    </div>
-                    <div class="time-row">
-                        <div><span class="time-lbl">DEPARTURE</span><span class="time-val">11:40</span></div>
-                        <div style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">13:30</span></div>
-                    </div>
-                    <div class="flight-info-row">
-                        <div>MANDARIN AIRLINES AE992</div>
-                        <div>1h 50m</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
         <section id="view-itinerary" class="view-container">
             <div id="day1-content" class="day-schedule"><div class="day-header">Day 1 • 4/24 (五)</div><div class="timeline"></div></div>
@@ -399,7 +360,7 @@
 
     <script>
         /* =========================================
-           1. 資料驅動：行程資料
+           1. 資料驅動：行程與航班資料 (DRY 原則)
            ========================================= */
         const ITINERARY_DATA = {
             day1: [
@@ -426,6 +387,22 @@
             ]
         };
 
+        // 💡 抽離機票為動態資料
+        const FLIGHT_DATA = [
+            {
+                type: "outbound", label: "Outbound 去程", date: "2026/4/24 (五)",
+                fromCode: "TPE", fromName: "台北桃園", toCode: "XMN", toName: "廈門高崎",
+                depTime: "08:40", arrTime: "10:30", airline: "MANDARIN AIRLINES AE991", duration: "1h 50m",
+                checkInUrl: "https://calec.china-airlines.com/echeckin/echeckin_c.aspx"
+            },
+            {
+                type: "inbound", label: "Inbound 回程", date: "2026/4/27 (一)",
+                fromCode: "XMN", fromName: "廈門高崎", toCode: "TPE", toName: "台北桃園",
+                depTime: "11:40", arrTime: "13:30", airline: "MANDARIN AIRLINES AE992", duration: "1h 50m",
+                checkInUrl: "https://calec.china-airlines.com/echeckin/echeckin_c.aspx"
+            }
+        ];
+
         /* =========================================
            2. 集中狀態管理 
            ========================================= */
@@ -434,6 +411,7 @@
                 rate: parseFloat(localStorage.getItem('cached_rate')) || 4.45,
                 expenses: [],
                 date: '4/24',
+                person: '',     // 預設為空字串（即「共用」）
                 category: '交通',
                 currency: 'RMB',
                 activeFilter: 'All'
@@ -451,6 +429,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             renderAllItineraries();
+            renderFlights();
             bindEvents();
             initViews();
             
@@ -460,7 +439,7 @@
         });
 
         /* =========================================
-           3. 動態渲染行程 
+           3. 動態渲染
            ========================================= */
         function renderAllItineraries() {
             Object.keys(ITINERARY_DATA).forEach(dayKey => {
@@ -495,6 +474,40 @@
             });
         }
 
+        // 💡 新增：機票資料渲染與線上報到按鈕
+        function renderFlights() {
+            const flightContainer = document.getElementById('view-flight');
+            let html = '';
+            FLIGHT_DATA.forEach(flight => {
+                html += `
+                <div class="flight-ticket">
+                    <div class="ticket-header ${flight.type}">
+                        <div class="ticket-label">${flight.label}</div>
+                        <div class="ticket-date">${flight.date}</div>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="route-row">
+                            <div><span class="airport-code">${flight.fromCode}</span><span class="airport-name">${flight.fromName}</span></div>
+                            <div class="flight-icon">✈</div>
+                            <div style="text-align:right;"><span class="airport-code">${flight.toCode}</span><span class="airport-name">${flight.toName}</span></div>
+                        </div>
+                        <div class="time-row">
+                            <div><span class="time-lbl">DEPARTURE</span><span class="time-val">${flight.depTime}</span></div>
+                            <div style="text-align:right;"><span class="time-lbl">ARRIVAL</span><span class="time-val">${flight.arrTime}</span></div>
+                        </div>
+                        <div class="flight-info-row">
+                            <div>${flight.airline}</div>
+                            <div>${flight.duration}</div>
+                        </div>
+                        <a href="${flight.checkInUrl}" target="_blank" rel="noopener noreferrer" class="map-link" style="margin-top: 25px;">
+                            <span>🌐</span> 線上報到連結 ↗
+                        </a>
+                    </div>
+                </div>`;
+            });
+            flightContainer.innerHTML = html;
+        }
+
         /* =========================================
            4. 事件綁定 
            ========================================= */
@@ -510,6 +523,15 @@
                 chip.addEventListener('click', (e) => {
                     Store.state.date = e.target.dataset.date;
                     document.querySelectorAll('#date-container .chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                });
+            });
+
+            // 💡 處理人物按鈕點擊事件
+            document.querySelectorAll('#person-container .chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    Store.state.person = e.target.dataset.person;
+                    document.querySelectorAll('#person-container .chip').forEach(c => c.classList.remove('active'));
                     e.target.classList.add('active');
                 });
             });
@@ -605,12 +627,10 @@
         async function addExpense() {
             const itemNameEl = document.getElementById('item-name');
             const itemPriceEl = document.getElementById('item-price');
-            const personInputEl = document.getElementById('person-input');
             const btnAdd = document.getElementById('btn-add');
 
             const inputPrice = parseFloat(itemPriceEl.value); 
             
-            // 💡 智慧按鈕邏輯：沒輸入數字就自動滾動並打開鍵盤
             if (isNaN(inputPrice) || inputPrice <= 0) {
                 itemPriceEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 setTimeout(() => itemPriceEl.focus(), 300);
@@ -618,7 +638,8 @@
             }
             
             let baseName = itemNameEl.value.trim() || Store.state.category;
-            let personName = personInputEl.value.trim();
+            // 💡 改由從 Store 取出人物資料（透過點擊快捷鍵設定的）
+            let personName = Store.state.person;
             let finalName = personName ? `【${personName}】${baseName}` : baseName;
             const finalPriceTWD = Store.state.currency === 'RMB' ? Math.round(inputPrice * Store.state.rate) : Math.round(inputPrice); 
             
@@ -661,8 +682,7 @@
             }
         }
 
-        // 💡 修復了字元轉換的語法錯誤
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
