@@ -387,18 +387,19 @@
             ]
         };
 
+        // 💡 更新：華信航空官方網路報到連結
         const FLIGHT_DATA = [
             {
                 type: "outbound", label: "Outbound 去程", date: "2026/4/24 (五)",
                 fromCode: "TPE", fromName: "台北桃園", toCode: "XMN", toName: "廈門高崎",
                 depTime: "08:40", arrTime: "10:30", airline: "MANDARIN AIRLINES AE991", duration: "1h 50m",
-                checkInUrl: "https://www.china-airlines.com/tw/zh/booking/online-check-in/index"
+                checkInUrl: "https://www.mandarin-airlines.com/b2c/webcheckin"
             },
             {
                 type: "inbound", label: "Inbound 回程", date: "2026/4/27 (一)",
                 fromCode: "XMN", fromName: "廈門高崎", toCode: "TPE", toName: "台北桃園",
                 depTime: "11:40", arrTime: "13:30", airline: "MANDARIN AIRLINES AE992", duration: "1h 50m",
-                checkInUrl: "https://www.china-airlines.com/tw/zh/booking/online-check-in/index"
+                checkInUrl: "https://www.mandarin-airlines.com/b2c/webcheckin"
             }
         ];
 
@@ -678,7 +679,7 @@
             }
         }
 
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag]));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
