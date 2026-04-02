@@ -99,20 +99,11 @@
 
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 30px; width: 100%; box-sizing: border-box; }
         .stat-box { 
-            border: var(--border-width) solid var(--color-1); 
-            background: rgba(183, 143, 100, 0.05); 
-            padding: 14px; 
-            display: flex; flex-direction: column; gap: 6px; 
-            cursor: pointer; transition: 0.2s; 
-            box-shadow: 2px 2px 0 rgba(56, 38, 21, 0.1); 
+            border: var(--border-width) solid var(--color-1); background: rgba(183, 143, 100, 0.05); padding: 14px; 
+            display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: 0.2s; box-shadow: 2px 2px 0 rgba(56, 38, 21, 0.1); 
         }
         .stat-box:active { transform: translate(1px, 1px); box-shadow: none; }
-        .stat-box.active-filter { 
-            background: var(--color-1); 
-            color: var(--color-3); 
-            box-shadow: none; 
-            transform: translate(1px, 1px); 
-        }
+        .stat-box.active-filter { background: var(--color-1); color: var(--color-3); box-shadow: none; transform: translate(1px, 1px); }
         .stat-box-title { font-size: 12px; font-weight: 700; color: var(--color-5); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; }
         .stat-box.active-filter .stat-box-title { color: var(--color-3); }
         .stat-box-val { font-size: 18px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.2s; }
@@ -255,15 +246,15 @@
 
     <header class="top-bar">
         <div class="header-info">
-            <div class="app-title">廈門旅遊 <button class="refresh-btn" id="btn-refresh" title="重新載入">🔄</button></div>
-            <button id="weather-badge" class="weather-badge">🇨🇳 載入中...</button>
+            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入">🔄</button></div>
+            <button id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">🇨🇳 載入中...</button>
         </div>
         
         <nav class="nav-bar-row">
-            <button class="nav-btn" data-target="flight">航班</button>
-            <button class="nav-btn active" data-target="accounting">記帳</button>
+            <button class="nav-btn" id="btn-flight" onclick="switchView('flight')">航班</button>
+            <button class="nav-btn active" id="btn-accounting" onclick="switchView('accounting')">記帳</button>
             <div class="nav-select-wrapper" id="wrapper-itinerary">
-                <select class="nav-select" id="day-selector">
+                <select class="nav-select" id="day-selector" onchange="switchView('itinerary', this.value)">
                     <option value="" disabled selected>行程總覽 ▾</option>
                     <option value="day1">Day 1 (4/24 五)</option>
                     <option value="day2">Day 2 (4/25 六)</option>
@@ -289,16 +280,16 @@
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-box" data-filter="交通">
+                    <div class="stat-box" id="filter-交通" onclick="setFilter('交通')">
                         <div class="stat-box-title">🚕 交通</div><div class="stat-box-val" id="stat-transport">NT$ 0</div>
                     </div>
-                    <div class="stat-box" data-filter="食物">
+                    <div class="stat-box" id="filter-食物" onclick="setFilter('食物')">
                         <div class="stat-box-title">🍔 食物</div><div class="stat-box-val" id="stat-food">NT$ 0</div>
                     </div>
-                    <div class="stat-box" data-filter="購物">
+                    <div class="stat-box" id="filter-購物" onclick="setFilter('購物')">
                         <div class="stat-box-title">🛍️ 購物</div><div class="stat-box-val" id="stat-shopping">NT$ 0</div>
                     </div>
-                    <div class="stat-box" data-filter="其他">
+                    <div class="stat-box" id="filter-其他" onclick="setFilter('其他')">
                         <div class="stat-box-title">✨ 其他</div><div class="stat-box-val" id="stat-other">NT$ 0</div>
                     </div>
                 </div>
@@ -307,39 +298,39 @@
             <div class="input-area">
                 <span class="input-title">📅 日期</span>
                 <div class="scroll-container" id="date-container">
-                    <button class="chip active" data-date="4/24">4/24</button>
-                    <button class="chip" data-date="4/25">4/25</button>
-                    <button class="chip" data-date="4/26">4/26</button>
-                    <button class="chip" data-date="4/27">4/27</button>
+                    <button class="chip active" onclick="selectDate('4/24', this)">4/24</button>
+                    <button class="chip" onclick="selectDate('4/25', this)">4/25</button>
+                    <button class="chip" onclick="selectDate('4/26', this)">4/26</button>
+                    <button class="chip" onclick="selectDate('4/27', this)">4/27</button>
                 </div>
 
                 <span class="input-title">👤 誰的花費？</span>
                 <div class="scroll-container" id="person-container" style="margin-bottom: 20px;">
-                    <button class="chip active" data-person="">👥 共用</button>
-                    <button class="chip" data-person="小爸">🦭 小爸</button>
-                    <button class="chip" data-person="阿馨">🐹 阿馨</button>
-                    <button class="chip" data-person="阿雪">🐵 阿雪</button>
+                    <button class="chip active" onclick="selectPerson('', this)">👥 共用</button>
+                    <button class="chip" onclick="selectPerson('小爸', this)">🦭 小爸</button>
+                    <button class="chip" onclick="selectPerson('阿馨', this)">🐹 阿馨</button>
+                    <button class="chip" onclick="selectPerson('阿雪', this)">🐵 阿雪</button>
                 </div>
 
                 <span class="input-title">🏷️ 分類</span>
                 <div class="cat-row" id="category-container">
-                    <button class="cat-btn active" data-cat="交通"><span class="cat-emoji">🚕</span>交通</button>
-                    <button class="cat-btn" data-cat="食物"><span class="cat-emoji">🍔</span>食物</button>
-                    <button class="cat-btn" data-cat="購物"><span class="cat-emoji">🛍️</span>購物</button>
-                    <button class="cat-btn" data-cat="其他"><span class="cat-emoji">✨</span>其他</button>
+                    <button class="cat-btn active" onclick="selectCategory('交通', this)"><span class="cat-emoji">🚕</span>交通</button>
+                    <button class="cat-btn" onclick="selectCategory('食物', this)"><span class="cat-emoji">🍔</span>食物</button>
+                    <button class="cat-btn" onclick="selectCategory('購物', this)"><span class="cat-emoji">🛍️</span>購物</button>
+                    <button class="cat-btn" onclick="selectCategory('其他', this)"><span class="cat-emoji">✨</span>其他</button>
                 </div>
                 
                 <span class="input-title">📝 記帳內容</span>
                 <div class="input-group">
                     <input type="text" id="item-name" class="modern-input" placeholder="寫下品項名稱 (選填)">
                     <div class="curr-btn-row">
-                        <button class="curr-btn active" data-curr="RMB">¥ 人民幣</button>
-                        <button class="curr-btn" data-curr="TWD">$ 新台幣</button>
+                        <button class="curr-btn active" id="curr-RMB" onclick="selectCurrency('RMB', this)">¥ 人民幣</button>
+                        <button class="curr-btn" id="curr-TWD" onclick="selectCurrency('TWD', this)">$ 新台幣</button>
                     </div>
                     <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)" min="0" step="0.01">
                 </div>
                 
-                <button id="btn-add" class="add-btn"><span>📝</span> 記錄一筆</button>
+                <button id="btn-add" class="add-btn" onclick="addExpense()"><span>📝</span> 記錄一筆</button>
             </div>
             
             <div id="expense-list"></div>
@@ -430,9 +421,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderAllItineraries();
             renderFlights();
-            bindEvents();
             initViews();
-            
             fetchExchangeRate(); 
             fetchXiamenWeather();
             fetchExpenses();
@@ -459,7 +448,7 @@
                                 <div class="t-title">${item.title} ${subtitleHtml}</div>
                                 <div class="info-block">
                                     <div class="i-icon">📍</div>
-                                    <div class="i-text">${item.address} <button class="copy-btn" data-copy="${item.address}">📋</button></div>
+                                    <div class="i-text">${item.address} <button class="copy-btn" onclick="copyToClipboard('${item.address}')">📋</button></div>
                                 </div>
                                 <div class="info-block">
                                     <div class="i-icon">${item.icon1}</div>
@@ -508,69 +497,41 @@
         }
 
         /* =========================================
-           4. 事件綁定 
+           4. 按鈕互動與事件 
            ========================================= */
-        function bindEvents() {
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => switchView(e.target.dataset.target));
-            });
-            document.getElementById('day-selector').addEventListener('change', (e) => switchView('itinerary', e.target.value));
-            document.getElementById('btn-refresh').addEventListener('click', forceAppUpdate);
-            document.getElementById('weather-badge').addEventListener('click', fetchXiamenWeather);
+        function selectDate(date, el) {
+            Store.state.date = date;
+            document.querySelectorAll('#date-container .chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-            document.querySelectorAll('#date-container .chip').forEach(chip => {
-                chip.addEventListener('click', (e) => {
-                    Store.state.date = e.target.dataset.date;
-                    document.querySelectorAll('#date-container .chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                });
-            });
+        function selectPerson(person, el) {
+            Store.state.person = person;
+            document.querySelectorAll('#person-container .chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-            document.querySelectorAll('#person-container .chip').forEach(chip => {
-                chip.addEventListener('click', (e) => {
-                    Store.state.person = e.target.dataset.person;
-                    document.querySelectorAll('#person-container .chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                });
-            });
+        function selectCategory(cat, el) {
+            Store.state.category = cat;
+            document.querySelectorAll('.cat-btn').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const btnEl = e.target.closest('.cat-btn');
-                    Store.state.category = btnEl.dataset.cat;
-                    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                    btnEl.classList.add('active');
-                });
-            });
+        function selectCurrency(curr, el) {
+            Store.state.currency = curr;
+            document.querySelectorAll('.curr-btn').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('item-price').placeholder = curr === 'RMB' ? "輸入金額 (¥)" : "輸入金額 ($)";
+        }
 
-            document.querySelectorAll('.curr-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    Store.state.currency = e.target.dataset.curr;
-                    document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    document.getElementById('item-price').placeholder = Store.state.currency === 'RMB' ? "輸入金額 (¥)" : "輸入金額 ($)";
-                });
-            });
-
-            document.getElementById('btn-add').addEventListener('click', addExpense);
-
-            document.querySelectorAll('.stat-box').forEach(box => {
-                box.addEventListener('click', (e) => {
-                    const filter = e.target.closest('.stat-box').dataset.filter;
-                    Store.state.activeFilter = (Store.state.activeFilter === filter || filter === 'All') ? 'All' : filter;
-                    document.querySelectorAll('.stat-box').forEach(b => b.classList.remove('active-filter'));
-                    if (Store.state.activeFilter !== 'All') {
-                        document.querySelector(`.stat-box[data-filter="${Store.state.activeFilter}"]`).classList.add('active-filter');
-                    }
-                    renderExpenses();
-                });
-            });
-
-            document.body.addEventListener('click', (e) => {
-                if (e.target.classList.contains('copy-btn')) {
-                    copyToClipboard(e.target.dataset.copy);
-                }
-            });
+        function setFilter(filter) {
+            Store.state.activeFilter = (Store.state.activeFilter === filter || filter === 'All') ? 'All' : filter;
+            document.querySelectorAll('.stat-box').forEach(b => b.classList.remove('active-filter'));
+            if (Store.state.activeFilter !== 'All') {
+                const el = document.getElementById(`filter-${Store.state.activeFilter}`);
+                if (el) el.classList.add('active-filter');
+            }
+            renderExpenses();
         }
 
         /* =========================================
@@ -679,7 +640,7 @@
             }
         }
 
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag]));
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
@@ -806,7 +767,7 @@
 
             if (target === 'accounting' || target === 'flight') {
                 document.getElementById(`view-${target}`).classList.add('active');
-                document.querySelector(`.nav-btn[data-target="${target}"]`).classList.add('active');
+                document.getElementById(`btn-${target}`).classList.add('active');
                 document.getElementById('day-selector').value = "";
             } else if (target === 'itinerary') {
                 document.getElementById('view-itinerary').classList.add('active');
