@@ -97,7 +97,7 @@
         .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.3s; }
         .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
         
-        /* 💡 升級 1: 復古斜紋材質的進度條 */
+        /* 復古斜紋材質的進度條 */
         .budget-fill { 
             height: 100%; width: 0%; 
             background-color: var(--color-success); 
@@ -144,7 +144,6 @@
         .cat-btn { flex: 1; min-width: 70px; padding: 12px 5px; border: var(--border-width) solid var(--color-5); font-size: 13px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); flex-shrink: 0; }
         .cat-btn.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56,38,21,0.15); }
         
-        /* 💡 圖示調整 */
         .cat-emoji { font-size: 26px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
@@ -157,7 +156,7 @@
         .curr-btn:last-child { border-right: none; }
         .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
         
-        /* 💡 升級 3: 輸入框聚焦微動畫 */
+        /* 輸入框聚焦微動畫 */
         .modern-input { 
             display: block; width: 100%; max-width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; background: transparent; border: none; margin: 0; box-sizing: border-box; border-radius: 0; -webkit-appearance: none; appearance: none;
             border-left: 4px solid transparent; transition: all 0.2s ease;
@@ -189,7 +188,7 @@
         .del-btn { color: var(--color-5); font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; margin-left: 10px;}
         .del-btn:hover, .del-btn:active { color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
         
-        /* 💡 升級 2: 手帳感虛線空白狀態 */
+        /* 手帳感虛線空白狀態 */
         .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); border: 2px dashed var(--color-5); background: rgba(183, 143, 100, 0.05); margin: 10px 0; }
         .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.8; }
         .empty-state-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
@@ -396,7 +395,7 @@
                 { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-person-simple-walk'></i>", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day4: [
-                { time: "車程預估 25 分鐘", title: "出發機場: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", icon2: "<i class='ph ph-airplane'></i>", info2: "準備搭乘 11:40 班機回台", mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" }
+                { time: "車程預估 25 分鐘", title: "出發機場: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", icon2: "<i class='ph ph-airplane-tilt'></i>", info2: "準備搭乘 11:40 班機回台", mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" }
             ]
         };
 
@@ -438,7 +437,6 @@
         const TOTAL_BUDGET = 30000;
         const TRIP_DATES = ['4/24', '4/25', '4/26', '4/27'];
         
-        // 💡 替換成高級線條圖示
         const EMOJI_MAP = { 
             '交通': '<i class="ph ph-taxi"></i>', 
             '食物': '<i class="ph ph-hamburger"></i>', 
@@ -668,7 +666,14 @@
             }
         }
 
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag]));
+        // 💡 最關鍵的修正：避免單引號語法錯誤
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ 
+            '&': '&amp;', 
+            '<': '&lt;', 
+            '>': '&gt;', 
+            "'": '&#39;', 
+            '"': '&quot;' 
+        }[tag] || tag));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
