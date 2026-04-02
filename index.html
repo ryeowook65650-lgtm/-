@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
         /* =========================================
@@ -58,8 +60,8 @@
             position: sticky; top: 0; z-index: 999; background-color: rgba(216, 216, 208, 0.95); backdrop-filter: blur(8px); border-bottom: var(--border-width) solid var(--color-1); padding-top: env(safe-area-inset-top); 
         }
         .header-info { padding: 25px 20px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .app-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--color-1); display: flex; align-items: center; line-height: 1; }
-        .refresh-btn { font-size: 18px; cursor: pointer; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 8px; opacity: 0.7; }
+        .app-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--color-1); display: flex; align-items: center; line-height: 1; gap: 8px;}
+        .refresh-btn { font-size: 20px; cursor: pointer; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.7; display: flex; align-items: center;}
         .refresh-btn:active { transform: rotate(180deg) scale(0.9); opacity: 1; }
         .weather-badge { font-size: 13px; font-weight: 600; color: var(--color-1); background: var(--color-4); padding: 8px 14px; border: var(--border-width) solid var(--color-1); cursor: pointer; transition: var(--transition-speed); display: flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 rgba(56, 38, 21, 1); }
         .weather-badge:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
@@ -94,7 +96,21 @@
         .budget-container { margin-top: 30px; padding: 20px; background: rgba(183, 143, 100, 0.05); border: var(--border-width) dashed var(--color-5); position: relative; display: flex; flex-direction: column; gap: 12px; }
         .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.3s; }
         .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
-        .budget-fill { height: 100%; width: 0%; background-color: var(--color-success); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease; }
+        
+        /* 💡 升級 1: 復古斜紋材質的進度條 */
+        .budget-fill { 
+            height: 100%; width: 0%; 
+            background-color: var(--color-success); 
+            transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease; 
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 0px,
+                rgba(255, 255, 255, 0.2) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+        }
+        
         .budget-tot-row { text-align: right; font-size: 12px; font-weight: 600; color: var(--color-2); opacity: 0.6; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 30px; width: 100%; box-sizing: border-box; }
@@ -127,7 +143,9 @@
 
         .cat-btn { flex: 1; min-width: 70px; padding: 12px 5px; border: var(--border-width) solid var(--color-5); font-size: 13px; font-weight: 600; color: var(--color-2); cursor: pointer; transition: var(--transition-speed); flex-shrink: 0; }
         .cat-btn.active { background: var(--color-1); border-color: var(--color-1); color: var(--color-3); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56,38,21,0.15); }
-        .cat-emoji { font-size: 22px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
+        
+        /* 💡 圖示調整 */
+        .cat-emoji { font-size: 26px; display: block; margin-bottom: 8px; transition: transform 0.2s; }
         .cat-btn.active .cat-emoji { transform: scale(1.15); }
 
         .input-group { 
@@ -139,10 +157,12 @@
         .curr-btn:last-child { border-right: none; }
         .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
         
+        /* 💡 升級 3: 輸入框聚焦微動畫 */
         .modern-input { 
             display: block; width: 100%; max-width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; background: transparent; border: none; margin: 0; box-sizing: border-box; border-radius: 0; -webkit-appearance: none; appearance: none;
+            border-left: 4px solid transparent; transition: all 0.2s ease;
         }
-        .modern-input:focus { background: rgba(183, 143, 100, 0.05); outline: none; }
+        .modern-input:focus { background: rgba(183, 143, 100, 0.05); outline: none; border-left: 4px solid var(--color-1); padding-left: 20px; }
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.5); font-weight: 500; }
 
         .add-btn { 
@@ -161,14 +181,16 @@
         
         .history-item { display: flex; justify-content: space-between; align-items: center; background: var(--color-white); padding: 20px; margin-bottom: 12px; border: var(--border-width) solid var(--color-1); transition: transform 0.2s, box-shadow 0.2s; }
         .history-item:active { transform: scale(0.98); background-color: #f9f9f9; }
-        .h-name { font-weight: 700; font-size: 16px; color: var(--color-1); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;}
+        .h-name { font-weight: 700; font-size: 16px; color: var(--color-1); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
         .h-tag { font-size: 11px; background: var(--color-3); border: var(--border-width) solid var(--color-5); padding: 2px 6px; color: var(--color-2); font-weight: 700; font-family: var(--font-sans); }
         .h-cat { font-size: 12px; color: var(--color-5); font-weight: 600; margin-top: 6px; letter-spacing: 1px;}
         .h-price { font-weight: 700; font-size: 18px; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; letter-spacing: 0; text-align: right; }
         .h-twd { font-size: 12px; color: var(--color-2); display: block; font-weight: 500; margin-top: 4px; text-align: right; opacity: 0.8;}
         .del-btn { color: var(--color-5); font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; margin-left: 10px;}
         .del-btn:hover, .del-btn:active { color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); }
+        
+        /* 💡 升級 2: 手帳感虛線空白狀態 */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); border: 2px dashed var(--color-5); background: rgba(183, 143, 100, 0.05); margin: 10px 0; }
         .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.8; }
         .empty-state-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
 
@@ -188,7 +210,7 @@
         .route-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .airport-code { font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-1); font-family: var(--font-serif); letter-spacing: 1px;}
         .airport-name { font-size: 13px; font-weight: 600; display: block; margin-top: 8px; color: var(--color-5); }
-        .flight-icon { font-size: 24px; color: var(--color-5); opacity: 0.4; }
+        .flight-icon { font-size: 32px; color: var(--color-5); opacity: 0.4; }
         .time-row { display: flex; justify-content: space-between; border-top: var(--border-width) solid var(--color-1); padding-top: 25px; margin-top: 15px; }
         .time-val { font-size: 24px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); }
         .time-lbl { font-size: 10px; font-weight: 700; margin-bottom: 6px; display: block; color: var(--color-5); letter-spacing: 2px;}
@@ -202,13 +224,13 @@
         .day-header::after { content: ''; position: absolute; left: 0; bottom: 4px; width: 100%; height: 8px; background: rgba(244, 192, 125, 0.4); z-index: -1; } 
         .trip-card { position: relative; overflow: hidden; }
         .trip-card::after { content: ''; position: absolute; left: -16px; top: 30px; width: 11px; height: 11px; background: var(--color-4); border: var(--border-width) solid var(--color-1); z-index: 1; border-radius: 50% !important; }
-        .card-img-top { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); filter: contrast(0.95) sepia(0.1); }
+        .card-img-top { width: 100%; aspect-ratio: 16/9; background-color: var(--color-3); object-fit: cover; display: block; border-bottom: var(--border-width) solid var(--color-1); filter: contrast(0.95) sepia(0.1); }
         .card-content { padding: 25px; }
         .t-time { font-size: 12px; font-weight: 700; color: var(--color-1); background: var(--color-4); padding: 4px 8px; display: inline-block; margin-bottom: 15px; border: var(--border-width) solid var(--color-1); }
         .t-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; color: var(--color-1); }
         .t-subtitle { font-size: 15px; font-family: var(--font-sans); font-weight:500; display:block; margin-top:6px; }
         .info-block { display: flex; gap: 14px; margin-bottom: 16px; font-size: 14px; align-items: flex-start; }
-        .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 18px; line-height: 1.4; opacity: 0.8; }
+        .i-icon { color: var(--color-2); width: 24px; text-align: center; font-size: 20px; line-height: 1.4; opacity: 0.8; }
         .i-text { flex: 1; line-height: 1.6; font-weight: 500; color: var(--color-1); }
         .cost-tag { display: inline-block; background-color: transparent; color: var(--color-2); padding: 4px 8px; font-size: 13px; font-weight: 600; border: var(--border-width) dashed var(--color-5); margin-top: 6px; font-family: var(--font-sans); }
         .subway-step { display: block; margin-bottom: 6px; border-left: 1px solid var(--color-5); padding-left: 10px;}
@@ -216,7 +238,7 @@
         .subway-line { color: var(--color-2); font-weight: 600; font-size: 13px;}
         .map-link { display: flex; align-items: center; justify-content: center; background: var(--color-1); color: var(--color-3); text-decoration: none; padding: 16px; margin-top: 25px; font-size: 14px; font-weight: 700; gap: 8px; transition: var(--transition-speed); letter-spacing: 2px;}
         .map-link:active { transform: scale(0.98); background: var(--color-2); }
-        .copy-btn { background: rgba(183, 143, 100, 0.1); border: var(--border-width) solid var(--color-5); cursor: pointer; font-size: 12px; margin-left: 8px; color: var(--color-1); padding: 2px 6px; transition: var(--transition-speed); border-radius: 4px !important; }
+        .copy-btn { background: rgba(183, 143, 100, 0.1); border: var(--border-width) solid var(--color-5); cursor: pointer; font-size: 14px; margin-left: 8px; color: var(--color-1); padding: 2px 6px; transition: var(--transition-speed); border-radius: 4px !important; display: inline-flex; align-items: center;}
         .copy-btn:active { background: var(--color-4); transform: scale(0.9); }
 
         /* =========================================
@@ -246,7 +268,7 @@
 
     <header class="top-bar">
         <div class="header-info">
-            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入">🔄</button></div>
+            <div class="app-title">廈門旅遊 <button class="refresh-btn" onclick="forceAppUpdate()" title="重新載入"><i class="ph ph-arrows-clockwise"></i></button></div>
             <button id="weather-badge" class="weather-badge" onclick="fetchXiamenWeather()">🇨🇳 載入中...</button>
         </div>
         
@@ -281,16 +303,16 @@
 
                 <div class="stats-grid">
                     <div class="stat-box" id="filter-交通" onclick="setFilter('交通')">
-                        <div class="stat-box-title">🚕 交通</div><div class="stat-box-val" id="stat-transport">NT$ 0</div>
+                        <div class="stat-box-title"><i class="ph ph-taxi"></i> 交通</div><div class="stat-box-val" id="stat-transport">NT$ 0</div>
                     </div>
                     <div class="stat-box" id="filter-食物" onclick="setFilter('食物')">
-                        <div class="stat-box-title">🍔 食物</div><div class="stat-box-val" id="stat-food">NT$ 0</div>
+                        <div class="stat-box-title"><i class="ph ph-hamburger"></i> 食物</div><div class="stat-box-val" id="stat-food">NT$ 0</div>
                     </div>
                     <div class="stat-box" id="filter-購物" onclick="setFilter('購物')">
-                        <div class="stat-box-title">🛍️ 購物</div><div class="stat-box-val" id="stat-shopping">NT$ 0</div>
+                        <div class="stat-box-title"><i class="ph ph-tote"></i> 購物</div><div class="stat-box-val" id="stat-shopping">NT$ 0</div>
                     </div>
                     <div class="stat-box" id="filter-其他" onclick="setFilter('其他')">
-                        <div class="stat-box-title">✨ 其他</div><div class="stat-box-val" id="stat-other">NT$ 0</div>
+                        <div class="stat-box-title"><i class="ph ph-sparkle"></i> 其他</div><div class="stat-box-val" id="stat-other">NT$ 0</div>
                     </div>
                 </div>
             </div>
@@ -314,10 +336,10 @@
 
                 <span class="input-title">🏷️ 分類</span>
                 <div class="cat-row" id="category-container">
-                    <button class="cat-btn active" onclick="selectCategory('交通', this)"><span class="cat-emoji">🚕</span>交通</button>
-                    <button class="cat-btn" onclick="selectCategory('食物', this)"><span class="cat-emoji">🍔</span>食物</button>
-                    <button class="cat-btn" onclick="selectCategory('購物', this)"><span class="cat-emoji">🛍️</span>購物</button>
-                    <button class="cat-btn" onclick="selectCategory('其他', this)"><span class="cat-emoji">✨</span>其他</button>
+                    <button class="cat-btn active" onclick="selectCategory('交通', this)"><i class="ph ph-taxi cat-emoji"></i>交通</button>
+                    <button class="cat-btn" onclick="selectCategory('食物', this)"><i class="ph ph-hamburger cat-emoji"></i>食物</button>
+                    <button class="cat-btn" onclick="selectCategory('購物', this)"><i class="ph ph-tote cat-emoji"></i>購物</button>
+                    <button class="cat-btn" onclick="selectCategory('其他', this)"><i class="ph ph-sparkle cat-emoji"></i>其他</button>
                 </div>
                 
                 <span class="input-title">📝 記帳內容</span>
@@ -330,7 +352,7 @@
                     <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)" min="0" step="0.01">
                 </div>
                 
-                <button id="btn-add" class="add-btn" onclick="addExpense()"><span>📝</span> 記錄一筆</button>
+                <button id="btn-add" class="add-btn" onclick="addExpense()"><i class="ph ph-pencil-simple" style="font-size: 20px;"></i> 記錄一筆</button>
             </div>
             
             <div id="expense-list"></div>
@@ -351,34 +373,33 @@
 
     <script>
         /* =========================================
-           1. 資料驅動：行程與航班資料 (DRY 原則)
+           1. 資料驅動：行程與航班資料
            ========================================= */
         const ITINERARY_DATA = {
             day1: [
-                { time: "車程預估 20 分鐘", title: "Check in: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚕", info1: "搭乘 包車<br><span class=\"cost-tag\">交通花費：¥50</span>", icon2: "💡", info2: "先寄放行李", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
-                { time: "車程預估 35 分鐘", title: "漁緯港海鮮自助餐廳", subtitle: "(SM廈門-3期)", address: "廈門市湖里區嘉禾路399號SM商業城3期4層", icon1: "🚇", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線（往岩內方向）</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">烏石浦站</span> 3B出口</span><span class=\"cost-tag\">交通花費：¥3</span>", icon2: "💡", info2: "這期有無印良品，吃完buffet逛百貨公司", mapUrl: "https://j.map.baidu.com/24/LZQd", imgUrl: "https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" },
-                { time: "車程預估 25 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥28</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { time: "車程預估 20 分鐘", title: "Check in: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 包車<br><span class=\"cost-tag\">交通花費：¥50</span>", icon2: "<i class='ph ph-lightbulb'></i>", info2: "先寄放行李", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
+                { time: "車程預估 35 分鐘", title: "漁緯港海鮮自助餐廳", subtitle: "(SM廈門-3期)", address: "廈門市湖里區嘉禾路399號SM商業城3期4層", icon1: "<i class='ph ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線（往岩內方向）</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">烏石浦站</span> 3B出口</span><span class=\"cost-tag\">交通花費：¥3</span>", icon2: "<i class='ph ph-lightbulb'></i>", info2: "這期有無印良品，吃完buffet逛百貨公司", mapUrl: "https://j.map.baidu.com/24/LZQd", imgUrl: "https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" },
+                { time: "車程預估 25 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥28</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day2: [
-                { time: "車程預估 12 分鐘", title: "景點: 胡里山炮台", address: "廈門市思明區曾厝垵路2號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥20</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/c7/gos", imgUrl: "https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" },
-                { time: "車程預估 10 分鐘", title: "景點/午餐: 曾厝垵主景區-入口", address: "廈門市思明區環島南路", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥13</span>", icon2: "🍜", info2: "午餐可能吃海鮮沙茶麵", mapUrl: "https://j.map.baidu.com/c6/XUPi", imgUrl: "https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" },
-                { time: "車程預估 30 分鐘", title: "景點: 沙坡尾藝術西區", address: "廈門市思明區沙坡尾60號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥17</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/9c/7vK", imgUrl: "https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" },
-                { time: "車程預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", icon2: "🥜", info2: "推薦：黃則和花生湯", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" },
-                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { time: "車程預估 12 分鐘", title: "景點: 胡里山炮台", address: "廈門市思明區曾厝垵路2號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥20</span>", icon2: "<i class='ph ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/c7/gos", imgUrl: "https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" },
+                { time: "車程預估 10 分鐘", title: "景點/午餐: 曾厝垵主景區-入口", address: "廈門市思明區環島南路", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥13</span>", icon2: "<i class='ph ph-bowl-food'></i>", info2: "午餐可能吃海鮮沙茶麵", mapUrl: "https://j.map.baidu.com/c6/XUPi", imgUrl: "https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" },
+                { time: "車程預估 30 分鐘", title: "景點: 沙坡尾藝術西區", address: "廈門市思明區沙坡尾60號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥17</span>", icon2: "<i class='ph ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/9c/7vK", imgUrl: "https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" },
+                { time: "車程預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", icon2: "<i class='ph ph-bowl-food'></i>", info2: "推薦：黃則和花生湯", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" },
+                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-person-simple-walk'></i>", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day3: [
-                { time: "車程預估 50 分鐘", title: "景點: 集美學村", address: "廈門市集美區銀江路183號", icon1: "🚇", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">集美學村站</span> 2出口</span><span class=\"cost-tag\">交通花費：¥5</span>", icon2: "📸", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/20/zXh", imgUrl: "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" },
-                { time: "車程預估 18 分鐘", title: "逛街: 廈門尚柏奧特萊斯", address: "廈門市集美區天水路2號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥30</span>", mapUrl: "https://j.map.baidu.com/8f/u8h", imgUrl: "https://symphonyholdings.com/assets/img/meta.jpg" },
-                { time: "車程預估 40 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥80</span>", icon2: "💡", info2: "休息一下", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
-                { time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路步行街", address: "廈門市思明區中山路", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" },
-                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "🚶", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { time: "車程預估 50 分鐘", title: "景點: 集美學村", address: "廈門市集美區銀江路183號", icon1: "<i class='ph ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">集美學村站</span> 2出口</span><span class=\"cost-tag\">交通花費：¥5</span>", icon2: "<i class='ph ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/20/zXh", imgUrl: "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" },
+                { time: "車程預估 18 分鐘", title: "逛街: 廈門尚柏奧特萊斯", address: "廈門市集美區天水路2號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥30</span>", mapUrl: "https://j.map.baidu.com/8f/u8h", imgUrl: "https://symphonyholdings.com/assets/img/meta.jpg" },
+                { time: "車程預估 40 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥80</span>", icon2: "<i class='ph ph-lightbulb'></i>", info2: "休息一下", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
+                { time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路步行街", address: "廈門市思明區中山路", icon1: "<i class='ph ph-person-simple-walk'></i>", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://lh6.googleusercontent.com/proxy/V1m0Rn2MnTCgJozk8xqaTV9XiUp8qbinJt-B-FTY41kXqhBp4ZUEa1BraqH2AQNnt2QL4-iv_4JsU4NxxqRsrpHDJJTXnXAt_6AsEW1hd5MOo6SiqTHeEocacUSJ" },
+                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph ph-person-simple-walk'></i>", info1: "步行<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
             ],
             day4: [
-                { time: "車程預估 25 分鐘", title: "出發機場: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", icon1: "🚕", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", icon2: "✈️", info2: "準備搭乘 11:40 班機回台", mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" }
+                { time: "車程預估 25 分鐘", title: "出發機場: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", icon1: "<i class='ph ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", icon2: "<i class='ph ph-airplane'></i>", info2: "準備搭乘 11:40 班機回台", mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" }
             ]
         };
 
-        // 💡 更新：華信航空官方網路報到連結
         const FLIGHT_DATA = [
             {
                 type: "outbound", label: "Outbound 去程", date: "2026/4/24 (五)",
@@ -402,7 +423,7 @@
                 rate: parseFloat(localStorage.getItem('cached_rate')) || 4.45,
                 expenses: [],
                 date: '4/24',
-                person: '',     // 預設為空字串（即「共用」）
+                person: '',     
                 category: '交通',
                 currency: 'RMB',
                 activeFilter: 'All'
@@ -416,7 +437,14 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVVY1EqQrjndhkeej_NIabBYYjNORHcRkaoev-wRGcWsRdO6HnvVrXg7BIIEHUYrVP/exec';
         const TOTAL_BUDGET = 30000;
         const TRIP_DATES = ['4/24', '4/25', '4/26', '4/27'];
-        const EMOJI_MAP = { '交通': '🚕', '食物': '🍔', '購物': '🛍️', '其他': '✨' };
+        
+        // 💡 替換成高級線條圖示
+        const EMOJI_MAP = { 
+            '交通': '<i class="ph ph-taxi"></i>', 
+            '食物': '<i class="ph ph-hamburger"></i>', 
+            '購物': '<i class="ph ph-tote"></i>', 
+            '其他': '<i class="ph ph-sparkle"></i>' 
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             renderAllItineraries();
@@ -447,8 +475,8 @@
                                 <div class="t-time">${item.time}</div>
                                 <div class="t-title">${item.title} ${subtitleHtml}</div>
                                 <div class="info-block">
-                                    <div class="i-icon">📍</div>
-                                    <div class="i-text">${item.address} <button class="copy-btn" onclick="copyToClipboard('${item.address}')">📋</button></div>
+                                    <div class="i-icon"><i class="ph ph-map-pin"></i></div>
+                                    <div class="i-text">${item.address} <button class="copy-btn" onclick="copyToClipboard('${item.address}')"><i class="ph ph-copy" style="margin-right: 4px;"></i> 複製</button></div>
                                 </div>
                                 <div class="info-block">
                                     <div class="i-icon">${item.icon1}</div>
@@ -476,7 +504,7 @@
                     <div class="ticket-body">
                         <div class="route-row">
                             <div><span class="airport-code">${flight.fromCode}</span><span class="airport-name">${flight.fromName}</span></div>
-                            <div class="flight-icon">✈</div>
+                            <div class="flight-icon"><i class="ph ph-airplane-tilt"></i></div>
                             <div style="text-align:right;"><span class="airport-code">${flight.toCode}</span><span class="airport-name">${flight.toName}</span></div>
                         </div>
                         <div class="time-row">
@@ -488,7 +516,7 @@
                             <div>${flight.duration}</div>
                         </div>
                         <a href="${flight.checkInUrl}" target="_blank" rel="noopener noreferrer" class="map-link" style="margin-top: 25px;">
-                            <span>🌐</span> 線上報到連結 ↗
+                            <i class="ph ph-globe" style="font-size: 20px;"></i> 線上報到連結 ↗
                         </a>
                     </div>
                 </div>`;
@@ -577,7 +605,7 @@
                 renderExpenses();
             } catch (err) {
                 if (Store.state.expenses.length === 0) {
-                    listEl.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📡</div><div class="empty-state-text">連線失敗，請檢查網路狀態</div></div>`;
+                    listEl.innerHTML = `<div class="empty-state"><i class="ph ph-wifi-x empty-state-icon"></i><div class="empty-state-text">連線失敗，請檢查網路狀態</div></div>`;
                 }
                 showToast('讀取資料失敗', 'error');
             }
@@ -617,7 +645,7 @@
                 showToast('新增失敗！請確認網路連線', 'error'); 
             } finally { 
                 btnAdd.disabled = false;
-                btnAdd.innerHTML = '<span>📝</span> 記錄一筆';
+                btnAdd.innerHTML = '<i class="ph ph-pencil-simple" style="font-size: 20px;"></i> 記錄一筆';
             }
         }
 
@@ -640,7 +668,7 @@
             }
         }
 
-        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' }[tag]));
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag]));
 
         function renderExpenses() {
             let grandTotalTWD = 0; 
@@ -694,7 +722,7 @@
                         div.className = 'history-item';
                         div.innerHTML = `
                             <div>
-                                <div class="h-name">${emoji} ${safeName} ${personTagHtml}</div>
+                                <div class="h-name" style="font-size:18px;">${emoji} <span style="font-size:16px;">${safeName}</span> ${personTagHtml}</div>
                                 <div class="h-cat">${item.cat}</div>
                             </div>
                             <div style="display:flex; align-items:center;">
@@ -702,7 +730,7 @@
                                     <div class="h-price">NT$ ${twdValue.toLocaleString()}</div>
                                     <span class="h-twd">≈ ¥ ${rmbValue}</span>
                                 </div>
-                                <button class="del-btn" onclick="deleteExpense(${item.id})">×</button>
+                                <button class="del-btn" onclick="deleteExpense(${item.id})"><i class="ph ph-trash"></i></button>
                             </div>`;
                         wrapper.appendChild(div);
                     });
@@ -715,7 +743,7 @@
             listEl.innerHTML = '';
             if (!hasRenderedAny) {
                 let emptyMsg = Store.state.activeFilter === 'All' ? '目前沒有記帳資料' : `這天沒有 ${Store.state.activeFilter} 的花費`;
-                listEl.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🍃</div><div class="empty-state-text">${emptyMsg}</div></div>`;
+                listEl.innerHTML = `<div class="empty-state"><i class="ph ph-leaf empty-state-icon"></i><div class="empty-state-text">${emptyMsg}</div></div>`;
             } else {
                 listEl.appendChild(fragment);
             }
