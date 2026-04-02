@@ -316,9 +316,9 @@
                 <span class="input-title">👤 誰的花費？</span>
                 <div class="scroll-container" id="person-container" style="margin-bottom: 20px;">
                     <button class="chip active" data-person="">👥 共用</button>
-                    <button class="chip" data-person="小爸">👨 小爸</button>
-                    <button class="chip" data-person="阿馨（韓吉）">👩 阿馨（韓吉）</button>
-                    <button class="chip" data-person="阿雪">🙋 阿雪</button>
+                    <button class="chip" data-person="小爸">🦭 小爸</button>
+                    <button class="chip" data-person="阿馨">🐹 阿馨</button>
+                    <button class="chip" data-person="阿雪">🐵 阿雪</button>
                 </div>
 
                 <span class="input-title">🏷️ 分類</span>
@@ -387,19 +387,18 @@
             ]
         };
 
-        // 💡 抽離機票為動態資料
         const FLIGHT_DATA = [
             {
                 type: "outbound", label: "Outbound 去程", date: "2026/4/24 (五)",
                 fromCode: "TPE", fromName: "台北桃園", toCode: "XMN", toName: "廈門高崎",
                 depTime: "08:40", arrTime: "10:30", airline: "MANDARIN AIRLINES AE991", duration: "1h 50m",
-                checkInUrl: "https://calec.china-airlines.com/echeckin/echeckin_c.aspx"
+                checkInUrl: "https://www.china-airlines.com/tw/zh/booking/online-check-in/index"
             },
             {
                 type: "inbound", label: "Inbound 回程", date: "2026/4/27 (一)",
                 fromCode: "XMN", fromName: "廈門高崎", toCode: "TPE", toName: "台北桃園",
                 depTime: "11:40", arrTime: "13:30", airline: "MANDARIN AIRLINES AE992", duration: "1h 50m",
-                checkInUrl: "https://calec.china-airlines.com/echeckin/echeckin_c.aspx"
+                checkInUrl: "https://www.china-airlines.com/tw/zh/booking/online-check-in/index"
             }
         ];
 
@@ -474,7 +473,6 @@
             });
         }
 
-        // 💡 新增：機票資料渲染與線上報到按鈕
         function renderFlights() {
             const flightContainer = document.getElementById('view-flight');
             let html = '';
@@ -527,7 +525,6 @@
                 });
             });
 
-            // 💡 處理人物按鈕點擊事件
             document.querySelectorAll('#person-container .chip').forEach(chip => {
                 chip.addEventListener('click', (e) => {
                     Store.state.person = e.target.dataset.person;
@@ -638,7 +635,6 @@
             }
             
             let baseName = itemNameEl.value.trim() || Store.state.category;
-            // 💡 改由從 Store 取出人物資料（透過點擊快捷鍵設定的）
             let personName = Store.state.person;
             let finalName = personName ? `【${personName}】${baseName}` : baseName;
             const finalPriceTWD = Store.state.currency === 'RMB' ? Math.round(inputPrice * Store.state.rate) : Math.round(inputPrice); 
