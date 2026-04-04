@@ -51,11 +51,10 @@
         
         html, body {
             width: 100%;
-            overflow-x: hidden; /* 防止滿版時產生橫向捲軸 */
         }
 
         body { 
-            margin: 0; padding: 0; font-family: var(--font-sans); background-color: var(--color-3); color: var(--color-1); padding-bottom: 80px; letter-spacing: 0.02em; 
+            margin: 0; padding: 0; font-family: var(--font-sans); background-color: var(--color-3); color: var(--color-1); padding-bottom: 120px; letter-spacing: 0.02em; 
         }
 
         /* =========================================
@@ -86,11 +85,13 @@
         /* =========================================
            3. 視圖容器與共用卡片
            ========================================= */
-        /* 改為 100% 寬度，移除 max-width: 600px 限制 */
-        .view-container { display: none; padding: 25px 20px; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box;}
-        .view-container.active { display: block; animation: fadeUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeUpIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .retro-card, .flight-ticket, .balance-card, .input-area, .trip-card { background-color: var(--color-white); border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 25px; transition: transform 0.3s ease; width: 100%;}
+        .view-container { 
+            display: none; padding: 25px 20px 40px 20px; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box;
+        }
+        .view-container.active { display: block; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .retro-card, .flight-ticket, .balance-card, .input-area, .trip-card { background-color: var(--color-white); border: var(--border-width) solid var(--color-1); box-shadow: var(--box-shadow-soft); margin-bottom: 25px; transition: box-shadow 0.3s ease; width: 100%;}
 
         /* =========================================
            4. 記帳版面與輸入 (Accounting & Forms)
@@ -169,12 +170,50 @@
         .modern-input:focus { background: rgba(183, 143, 100, 0.05); outline: none; border-left: 4px solid var(--color-1); padding-left: 20px; }
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.5); font-weight: 500; }
 
+        /* =========================================
+           ✨ 按鈕已經搬到 main 外層，絕不被影響 ✨
+           ========================================= */
         .add-btn { 
-            width: 100%; background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; 
-            position: sticky; bottom: 20px; z-index: 100;
+            position: fixed; 
+            /* 使用絕對支援的 calc 與 env 組合 */
+            bottom: 25px; /* 給老手機的安全備案 */
+            bottom: calc(20px + env(safe-area-inset-bottom));
+            left: 20px;
+            right: 20px;
+            margin: 0 auto;
+            width: auto; 
+            max-width: 560px; 
+            z-index: 99999;
+            
+            background: var(--color-4); 
+            color: var(--color-1); 
+            padding: 18px; 
+            border: var(--border-width) solid var(--color-1); 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.2s ease-out; 
+            letter-spacing: 2px; 
+            box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            
+            /* 觸控優化 */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
-        .add-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
-        .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; }
+        
+        .add-btn:active { 
+            transform: scale(0.98); 
+            box-shadow: 0 0 0 rgba(56, 38, 21, 1); 
+            background-color: var(--color-5);
+        }
+        
+        .add-btn:disabled { 
+            background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; 
+        }
 
         .date-section { margin-bottom: 25px; }
         .date-divider { font-family: var(--font-serif); font-size: 20px; color: var(--color-1); font-weight: 700; padding: 10px 5px; border-bottom: 2px solid var(--color-1); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; opacity: 0.9; }
@@ -220,7 +259,7 @@
         .flight-info-row { margin-top: 25px; background: var(--color-white); padding: 14px 18px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; border: var(--border-width) solid var(--color-1); }
 
         .day-schedule { display: none; }
-        .day-schedule.active { display: block; animation: fadeUpIn 0.4s ease forwards; }
+        .day-schedule.active { display: block; animation: fadeIn 0.4s ease forwards; }
         .timeline { position: relative; padding-left: 20px; padding-top: 10px; }
         .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--color-1); opacity: 0.2; }
         .day-header { font-family: var(--font-serif); font-size: 26px; color: var(--color-1); margin-bottom: 30px; font-weight: 900; display: inline-block; position: relative; z-index: 10; background: var(--color-3); padding-right: 20px; letter-spacing: 1px;}
@@ -247,7 +286,7 @@
         /* =========================================
            6. Toast & Loading 系統
            ========================================= */
-        .toast-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast-container { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px; }
         .toast { background: var(--color-1); color: var(--color-3); padding: 16px 20px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; border: 1px solid rgba(255,255,255,0.1); }
         .toast.hide { animation: toastOut 0.3s ease-in forwards; }
         .toast.success { border-left: 4px solid var(--color-success); }
@@ -354,15 +393,13 @@
                     </div>
                     <input type="number" id="item-price" class="modern-input" placeholder="輸入金額 (¥)" min="0" step="0.01">
                 </div>
-                
-                <button id="btn-add" class="add-btn" onclick="addExpense()"><i class="ph ph-pencil-simple" style="font-size: 20px;"></i> 記錄一筆</button>
             </div>
             
             <div id="expense-list"></div>
         </section>
 
         <section id="view-flight" class="view-container">
-            </section>
+        </section>
 
         <section id="view-itinerary" class="view-container">
             <div id="day1-content" class="day-schedule"><div class="day-header">Day 1 • 4/24 (五)</div><div class="timeline"></div></div>
@@ -370,6 +407,8 @@
             <div id="day3-content" class="day-schedule"><div class="day-header">Day 3 • 4/26 (日)</div><div class="timeline"></div></div>
             <div id="day4-content" class="day-schedule"><div class="day-header">Day 4 • 4/27 (一)</div><div class="timeline"></div></div>
         </section>
+        
+        <button id="btn-add" class="add-btn" onclick="addExpense()"><i class="ph ph-pencil-simple" style="font-size: 20px;"></i> 記錄一筆</button>
     </main>
 
     <div id="toast-container" class="toast-container"></div>
@@ -607,7 +646,6 @@
         async function fetchExpenses() {
             const listEl = document.getElementById('expense-list');
             
-            // 💡 如果快取有資料，就直接先渲染，畫面完全不卡頓
             if (Store.state.expenses.length > 0) {
                 renderExpenses();
             } else {
@@ -615,16 +653,14 @@
             }
 
             try {
-                // 背景向 Google 請求最新資料
                 const res = await fetch(`${SCRIPT_URL}?action=read&t=${Date.now()}`);
                 const freshData = await res.json(); 
-                Store.updateExpenses(freshData); // 更新狀態與快取
+                Store.updateExpenses(freshData);
                 renderExpenses();
             } catch (err) {
                 if (Store.state.expenses.length === 0) {
                     listEl.innerHTML = `<div class="empty-state"><i class="ph ph-wifi-x empty-state-icon"></i><div class="empty-state-text">連線失敗，請檢查網路狀態</div></div>`;
                 }
-                // 背景同步失敗沒關係，至少畫面上還有快取的舊資料可以看
             } finally {
                 toggleLoading(false);
             }
@@ -638,7 +674,7 @@
             
             if (isNaN(inputPrice) || inputPrice <= 0) {
                 itemPriceEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => itemPriceEl.focus(), 300);
+                setTimeout(() => itemPriceEl.focus(), 400);
                 return showToast('請先輸入有效的金額！', 'error'); 
             }
             
@@ -652,22 +688,17 @@
                 action: 'add', id: newId, date: Store.state.date, cat: Store.state.category, name: finalName, price: finalPriceTWD
             });
 
-            // 💡 樂觀更新 (Optimistic UI)：不用等伺服器，直接把資料塞進畫面！
             const newExpenseObj = {
                 id: newId, date: Store.state.date, cat: Store.state.category, name: finalName, price: finalPriceTWD
             };
-            // 將新資料加入陣列並存入快取
             Store.updateExpenses([...Store.state.expenses, newExpenseObj]);
             renderExpenses();
             
-            // 瞬間清空輸入框、收起鍵盤、給予成功提示
             itemNameEl.value = ''; itemPriceEl.value = ''; itemPriceEl.blur(); 
             showToast(`已新增一筆花費！`, 'success');
 
-            // 💡 背景默默地把資料傳給 Google 試算表 (使用者此時已經可以去滑其他畫面了)
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-                // 傳送成功後，背景默默同步一次確保資料一致
                 fetchExpenses(); 
             } catch (err) { 
                 showToast('背景同步延遲，資料已暫存於手機中', 'warning'); 
@@ -678,26 +709,24 @@
             if (!confirm('確定刪除此筆紀錄？')) return;
             const formData = new URLSearchParams({ action: 'delete', id });
             
-            // 💡 樂觀更新：先在畫面上秒刪
             const originalExpenses = [...Store.state.expenses]; 
             Store.updateExpenses(Store.state.expenses.filter(item => item.id != id));
             renderExpenses(); 
 
-            // 背景通知 Google 刪除
             try { 
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData }); 
                 showToast('紀錄已刪除', 'success');
                 fetchExpenses();
             } catch (err) { 
-                // 如果真的刪除失敗，再把資料加回來
                 showToast('刪除失敗，資料已還原', 'error');
                 Store.updateExpenses(originalExpenses);
                 renderExpenses(); 
             }
         }
 
+        /* 👉 修復嚴重的 JavaScript 語法錯誤（將 ''' 修正為正確的跳脫字元） */
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ 
-            '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' 
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' 
         }[tag] || tag));
 
         function renderExpenses() {
@@ -823,10 +852,15 @@
             document.getElementById('day-selector').classList.remove('active');
             document.getElementById('wrapper-itinerary').classList.remove('active');
 
+            // 👉 動態控制「紀錄一筆」按鈕，只在記帳頁面顯示
+            const btnAdd = document.getElementById('btn-add');
+            if (btnAdd) btnAdd.style.display = (target === 'accounting') ? 'flex' : 'none';
+
             if (target === 'accounting' || target === 'flight') {
                 document.getElementById(`view-${target}`).classList.add('active');
                 document.getElementById(`btn-${target}`).classList.add('active');
-                document.getElementById('day-selector').value = "";
+                // 👉 安全重置選單，避免引發錯誤
+                document.getElementById('day-selector').selectedIndex = 0;
             } else if (target === 'itinerary') {
                 document.getElementById('view-itinerary').classList.add('active');
                 document.querySelectorAll('.day-schedule').forEach(el => el.classList.remove('active'));
