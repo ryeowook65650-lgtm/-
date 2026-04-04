@@ -97,7 +97,6 @@
         .budget-rem-row { text-align: left; font-size: 20px; font-weight: 700; color: var(--color-1); font-family: var(--font-sans); font-variant-numeric: tabular-nums; transition: color 0.3s; }
         .budget-track { height: 8px; width: 100%; border: var(--border-width) solid var(--color-1); background: #FFFFFF; overflow: hidden; }
         
-        /* 復古斜紋材質的進度條 */
         .budget-fill { 
             height: 100%; width: 0%; 
             background-color: var(--color-success); 
@@ -156,7 +155,6 @@
         .curr-btn:last-child { border-right: none; }
         .curr-btn.active { background: var(--color-1); color: var(--color-3); opacity: 1; }
         
-        /* 輸入框聚焦微動畫 */
         .modern-input { 
             display: block; width: 100%; max-width: 100%; padding: 16px; font-size: 16px; color: var(--color-1); font-weight: 600; background: transparent; border: none; margin: 0; box-sizing: border-box; border-radius: 0; -webkit-appearance: none; appearance: none;
             border-left: 4px solid transparent; transition: all 0.2s ease;
@@ -188,7 +186,6 @@
         .del-btn { color: var(--color-5); font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; margin-left: 10px;}
         .del-btn:hover, .del-btn:active { color: var(--color-danger); background: rgba(160, 64, 0, 0.05); }
         
-        /* 手帳感虛線空白狀態 */
         .empty-state { text-align: center; padding: 40px 20px; color: var(--color-5); border: 2px dashed var(--color-5); background: rgba(183, 143, 100, 0.05); margin: 10px 0; }
         .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.8; }
         .empty-state-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
@@ -372,7 +369,7 @@
 
     <script>
         /* =========================================
-           1. 資料驅動：行程與航班資料
+           1. 資料驅動：行程與航班資料 (DRY 原則)
            ========================================= */
         const ITINERARY_DATA = {
             day1: [
@@ -415,12 +412,13 @@
         ];
 
         /* =========================================
-           2. 集中狀態管理 
+           2. 集中狀態管理 (加入本地快取 Local Cache)
            ========================================= */
         const Store = {
             state: {
                 rate: parseFloat(localStorage.getItem('cached_rate')) || 4.45,
-                expenses: [],
+                // 💡 一打開網頁，立刻從手機快取拿資料，不需等待 Google 伺服器
+                expenses: JSON.parse(localStorage.getItem('cached_expenses')) || [],
                 date: '4/24',
                 person: '',     
                 category: '交通',
@@ -430,6 +428,10 @@
             updateRate(newRate) {
                 this.state.rate = newRate;
                 localStorage.setItem('cached_rate', newRate);
+            },
+            updateExpenses(newData) {
+                this.state.expenses = newData;
+                localStorage.setItem('cached_expenses', JSON.stringify(newData));
             }
         };
 
@@ -561,7 +563,7 @@
         }
 
         /* =========================================
-           5. 核心邏輯與 API 串接
+           5. 核心邏輯與 API 串接 (非同步極速版)
            ========================================= */
         function toggleLoading(show, text = '處理中...') {
             const overlay = document.getElementById('loading-overlay');
@@ -597,22 +599,33 @@
 
         async function fetchExpenses() {
             const listEl = document.getElementById('expense-list');
+            
+            // 💡 如果快取有資料，就直接先渲染，畫面完全不卡頓
+            if (Store.state.expenses.length > 0) {
+                renderExpenses();
+            } else {
+                toggleLoading(true, '同步帳本資料...');
+            }
+
             try {
+                // 背景向 Google 請求最新資料
                 const res = await fetch(`${SCRIPT_URL}?action=read&t=${Date.now()}`);
-                Store.state.expenses = await res.json(); 
+                const freshData = await res.json(); 
+                Store.updateExpenses(freshData); // 更新狀態與快取
                 renderExpenses();
             } catch (err) {
                 if (Store.state.expenses.length === 0) {
                     listEl.innerHTML = `<div class="empty-state"><i class="ph ph-wifi-x empty-state-icon"></i><div class="empty-state-text">連線失敗，請檢查網路狀態</div></div>`;
                 }
-                showToast('讀取資料失敗', 'error');
+                // 背景同步失敗沒關係，至少畫面上還有快取的舊資料可以看
+            } finally {
+                toggleLoading(false);
             }
         }
 
         async function addExpense() {
             const itemNameEl = document.getElementById('item-name');
             const itemPriceEl = document.getElementById('item-price');
-            const btnAdd = document.getElementById('btn-add');
 
             const inputPrice = parseFloat(itemPriceEl.value); 
             
@@ -627,23 +640,30 @@
             let finalName = personName ? `【${personName}】${baseName}` : baseName;
             const finalPriceTWD = Store.state.currency === 'RMB' ? Math.round(inputPrice * Store.state.rate) : Math.round(inputPrice); 
             
+            const newId = Date.now();
             const formData = new URLSearchParams({
-                action: 'add', id: Date.now(), date: Store.state.date, cat: Store.state.category, name: finalName, price: finalPriceTWD
+                action: 'add', id: newId, date: Store.state.date, cat: Store.state.category, name: finalName, price: finalPriceTWD
             });
 
-            btnAdd.disabled = true;
-            btnAdd.innerHTML = '⏳ 儲存中...';
+            // 💡 樂觀更新 (Optimistic UI)：不用等伺服器，直接把資料塞進畫面！
+            const newExpenseObj = {
+                id: newId, date: Store.state.date, cat: Store.state.category, name: finalName, price: finalPriceTWD
+            };
+            // 將新資料加入陣列並存入快取
+            Store.updateExpenses([...Store.state.expenses, newExpenseObj]);
+            renderExpenses();
+            
+            // 瞬間清空輸入框、收起鍵盤、給予成功提示
+            itemNameEl.value = ''; itemPriceEl.value = ''; itemPriceEl.blur(); 
+            showToast(`已新增一筆花費！`, 'success');
 
+            // 💡 背景默默地把資料傳給 Google 試算表 (使用者此時已經可以去滑其他畫面了)
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-                itemNameEl.value = ''; itemPriceEl.value = ''; itemPriceEl.blur(); 
-                showToast(`已新增一筆花費！`, 'success');
-                await fetchExpenses();
+                // 傳送成功後，背景默默同步一次確保資料一致
+                fetchExpenses(); 
             } catch (err) { 
-                showToast('新增失敗！請確認網路連線', 'error'); 
-            } finally { 
-                btnAdd.disabled = false;
-                btnAdd.innerHTML = '<i class="ph ph-pencil-simple" style="font-size: 20px;"></i> 記錄一筆';
+                showToast('背景同步延遲，資料已暫存於手機中', 'warning'); 
             }
         }
 
@@ -651,28 +671,26 @@
             if (!confirm('確定刪除此筆紀錄？')) return;
             const formData = new URLSearchParams({ action: 'delete', id });
             
+            // 💡 樂觀更新：先在畫面上秒刪
             const originalExpenses = [...Store.state.expenses]; 
-            Store.state.expenses = Store.state.expenses.filter(item => item.id != id); 
+            Store.updateExpenses(Store.state.expenses.filter(item => item.id != id));
             renderExpenses(); 
 
+            // 背景通知 Google 刪除
             try { 
                 await fetch(SCRIPT_URL, { method: 'POST', body: formData }); 
                 showToast('紀錄已刪除', 'success');
-                await fetchExpenses();
+                fetchExpenses();
             } catch (err) { 
+                // 如果真的刪除失敗，再把資料加回來
                 showToast('刪除失敗，資料已還原', 'error');
-                Store.state.expenses = originalExpenses; 
+                Store.updateExpenses(originalExpenses);
                 renderExpenses(); 
             }
         }
 
-        // 💡 最關鍵的修正：避免單引號語法錯誤
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({ 
-            '&': '&amp;', 
-            '<': '&lt;', 
-            '>': '&gt;', 
-            "'": '&#39;', 
-            '"': '&quot;' 
+            '&': '&', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;' 
         }[tag] || tag));
 
         function renderExpenses() {
