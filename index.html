@@ -56,7 +56,7 @@
 
         button, input, select { appearance: none; -webkit-appearance: none; border: none; background: none; outline: none; margin: 0; padding: 0; }
         button { cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 0.2s; }
-        button:active { transform: scale(0.96); opacity: 0.8; }
+        button:active { transform: scale(0.94); opacity: 0.8; }
 
         /* =========================================
            2. 頂部狀態列
@@ -106,7 +106,7 @@
         .balance-card, .segment-wrapper, .bento-grid, .input-composite, .trip-card, .flight-card { margin: 0 !important; }
 
         /* =========================================
-           5. 記帳與餘額 (含獨立的分類統計按鈕)
+           5. 記帳與餘額 (小巧精緻的統計按鈕)
            ========================================= */
         .balance-card {
             background: linear-gradient(135deg, #382615 0%, #20140A 100%);
@@ -114,8 +114,20 @@
             box-shadow: 0 16px 32px rgba(56, 38, 21, 0.2); position: relative; overflow: hidden;
         }
         .b-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2;}
+        
+        /* 這裡用 Flexbox 確保匯率跟統計按鈕乖乖排在同一行 */
+        .b-title-right { display: flex; align-items: center; gap: 8px; }
+        
         .rate-badge { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--accent); border: 1px solid rgba(244, 192, 125, 0.2);}
         
+        /* 小而精緻的統計按鈕 */
+        .stats-btn { 
+            background: rgba(255,255,255,0.1); border-radius: 8px; width: 28px; height: 28px; 
+            display: flex; align-items: center; justify-content: center; color: var(--accent); 
+            border: 1px solid rgba(244, 192, 125, 0.2); transition: 0.2s;
+        }
+        .stats-btn:active { background: rgba(255,255,255,0.25); transform: scale(0.9); }
+
         .b-amount { font-family: var(--font-serif); font-size: 42px; font-weight: 900; margin: 8px 0 4px; line-height: 1.1; background: linear-gradient(135deg, #FFF 0%, #E2DDD5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2;}
         .b-sub { font-size: 15px; color: var(--secondary); font-weight: 600; position: relative; z-index: 2;}
 
@@ -123,31 +135,6 @@
         .budget-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: rgba(255,255,255,0.8); }
         .budget-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
         .budget-fill { height: 100%; width: 0%; background: var(--color-success); border-radius: 99px; transition: width 1s ease; }
-
-        /* 🌟 新增：明顯的分類花費統計按鈕 */
-        .open-stats-btn {
-            width: 100%;
-            margin-top: 20px;
-            padding: 12px;
-            background: rgba(244, 192, 125, 0.15);
-            border: 1px solid rgba(244, 192, 125, 0.3);
-            color: var(--accent);
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
-            position: relative;
-            z-index: 2;
-            letter-spacing: 1px;
-        }
-        .open-stats-btn:active {
-            background: rgba(244, 192, 125, 0.25);
-            transform: scale(0.98);
-        }
 
         .segment-wrapper { background: rgba(56, 38, 21, 0.06); border-radius: 12px; display: flex; padding: 4px; box-shadow: inset 0 1px 3px rgba(56, 38, 21, 0.05);}
         .seg-btn { flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 700; color: var(--text-muted); border-radius: 8px; transition: 0.3s; }
@@ -196,6 +183,7 @@
         .t-time { font-size: 11px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin: 0 0 20px; line-height: 1.3; color: var(--text-main); }
         
+        /* 獨立資訊區塊 */
         .info-block {
             display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; padding: 14px;
             background: rgba(255,255,255,0.8); border-radius: 12px; border: 1px solid var(--border-color);
@@ -209,6 +197,7 @@
         .note-block .i-icon { color: var(--primary); }
         .i-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text-main); line-height: 1.6; }
         
+        /* 複製地址按鈕樣式 */
         .copy-addr-btn { 
             background: rgba(56, 38, 21, 0.06); border: 1px solid rgba(56, 38, 21, 0.1); color: var(--text-main); 
             font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; margin-left: 8px; 
@@ -216,6 +205,7 @@
         }
         .copy-addr-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
+        /* 清晰的地鐵動線樣式 */
         .subway-step { 
             display: block; position: relative; padding-left: 16px; margin-bottom: 10px; border-left: 2px solid var(--border-color); line-height: 1.5;
         }
@@ -225,8 +215,8 @@
         .subway-line { color: var(--primary); font-weight: 800; font-size: 13px; }
 
         .cost-tag { display: inline-block; background-color: #fff; color: var(--primary); padding: 4px 8px; font-size: 12px; font-weight: 800; border-radius: 6px; margin-top: 10px; border: 1px solid rgba(113, 62, 24, 0.2); letter-spacing: 0.5px; }
-        .map-btn { display: block; width: 100%; text-align: center; background: var(--text-main); color: #FFF; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 20px; transition: 0.2s;}
-        .map-btn:active { background: var(--primary); }
+
+        .map-btn { display: block; width: 100%; text-align: center; background: var(--text-main); color: #FFF; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 20px; }
 
         /* =========================================
            7. 機票版面
@@ -243,7 +233,7 @@
         /* Modal / Toast */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(56, 38, 21, 0.4); backdrop-filter: blur(8px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; display: flex; align-items: flex-end; }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-card { background: var(--bg-color); width: 100%; max-height: 85vh; overflow-y: auto; border-radius: 24px 24px 0 0; padding: 24px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(56, 38, 21, 0.2);}
+        .modal-card { background: var(--bg-color); width: 100%; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(56, 38, 21, 0.2);}
         .modal-overlay.active .modal-card { transform: translateY(0); }
         
         .pull-indicator { width: 40px; height: 5px; background: rgba(56,38,21,0.2); border-radius: 3px; margin: 0 auto 20px; }
@@ -283,7 +273,10 @@
             <div class="balance-card">
                 <div class="b-title">
                     <span>Total Expenses</span>
-                    <span class="rate-badge" id="rate-display">匯率 4.45</span>
+                    <div class="b-title-right">
+                        <span class="rate-badge" id="rate-display">匯率 4.45</span>
+                        <button class="stats-btn" onclick="openStatsModal()"><i class="ph-bold ph-chart-pie-slice"></i></button>
+                    </div>
                 </div>
                 <h2 class="b-amount" id="total-primary">NT$ 0</h2>
                 <div class="b-sub" id="total-secondary">≈ ¥ 0</div>
@@ -294,10 +287,6 @@
                     </div>
                     <div class="budget-track"><div class="budget-fill" id="budget-fill"></div></div>
                 </div>
-                
-                <button class="open-stats-btn" onclick="openStatsModal()">
-                    <i class="ph-bold ph-chart-pie-slice"></i> 查看分類花費統計
-                </button>
             </div>
 
             <div class="segment-wrapper" id="date-segment">
@@ -495,7 +484,6 @@
             if (navigator.onLine) fetchExpenses();
         });
 
-        // UI 邏輯
         function switchTab(tabId) {
             document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -553,7 +541,6 @@
             setTimeout(() => toast.remove(), 2500);
         }
 
-        // 🌟 渲染獨立區塊行程表
         function renderItinerary(day) {
             const container = document.getElementById('itinerary-content');
             let html = '';
@@ -596,7 +583,6 @@
             container.innerHTML = html;
         }
 
-        // 🌟 渲染航班卡片
         function renderFlights() {
             const container = document.getElementById('view-flight');
             let html = '';
