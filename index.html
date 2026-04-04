@@ -90,22 +90,31 @@
         .tab-btn.active { color: var(--primary); }
 
         /* =========================================
-           4. 視圖容器
+           4. 視圖容器 (優化：防重疊架構)
            ========================================= */
-        .view-container { display: none; padding: 0 20px; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .view-container.active { display: block; }
+        .view-container { 
+            display: none; 
+            padding: 15px 20px 120px; 
+            flex-direction: column; 
+            gap: 20px; 
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        .view-container.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); filter: blur(4px);} to { opacity: 1; transform: translateY(0); filter: blur(0);} }
+
+        /* 移除 margin-bottom 改用 Flex Gap 控制間距 */
+        .balance-card, .segment-wrapper, .bento-grid, .input-composite, .trip-card, .flight-card { margin: 0 !important; }
 
         /* =========================================
            5. 記帳與餘額
            ========================================= */
         .balance-card {
             background: linear-gradient(135deg, #382615 0%, #20140A 100%);
-            border-radius: var(--radius-lg); padding: 24px; color: #FFF; margin-top: 10px; margin-bottom: 24px;
+            border-radius: var(--radius-lg); padding: 24px; color: #FFF; 
             box-shadow: 0 16px 32px rgba(56, 38, 21, 0.2); position: relative; overflow: hidden;
         }
         .b-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px;}
-        .b-amount { font-family: var(--font-serif); font-size: 42px; font-weight: 900; margin: 4px 0; background: linear-gradient(135deg, #FFF 0%, #E2DDD5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .b-amount { font-family: var(--font-serif); font-size: 42px; font-weight: 900; margin: 8px 0 4px; line-height: 1.1; background: linear-gradient(135deg, #FFF 0%, #E2DDD5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         .b-sub { font-size: 15px; color: var(--secondary); font-weight: 600; }
         .rate-badge { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--accent); border: 1px solid rgba(244, 192, 125, 0.2);}
         .stats-btn { background: rgba(255,255,255,0.1); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--accent); border: 1px solid rgba(244, 192, 125, 0.2); }
@@ -115,17 +124,19 @@
         .budget-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
         .budget-fill { height: 100%; width: 0%; background: var(--color-success); border-radius: 99px; transition: width 1s ease; }
 
-        .segment-wrapper { background: rgba(56, 38, 21, 0.06); border-radius: 12px; display: flex; padding: 4px; margin-bottom: 20px; }
+        .segment-wrapper { background: rgba(56, 38, 21, 0.06); border-radius: 12px; display: flex; padding: 4px; }
         .seg-btn { flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 700; color: var(--text-muted); border-radius: 8px; transition: 0.3s; }
         .seg-btn.active { background: var(--card-bg); color: var(--text-main); box-shadow: 0 2px 8px rgba(56, 38, 21, 0.08); }
 
-        .section-title { font-size: 15px; font-weight: 800; margin: 0 0 12px; color: var(--text-main); }
-        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
-        .bento-box { background: var(--card-bg); border-radius: var(--radius-md); padding: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
+        /* 便當盒網格 */
+        .section-title { font-size: 15px; font-weight: 800; margin: 10px 0 -10px; color: var(--text-main); }
+        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .bento-box { background: var(--card-bg); border-radius: var(--radius-md); padding: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: center; justify-content: center;}
         .bento-box.active { border: 2px solid var(--primary); color: var(--primary); }
         .bento-icon { font-size: 32px; display: block; margin-bottom: 8px; }
 
-        .input-composite { background: var(--card-bg); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-card); margin-bottom: 30px; border: 1px solid var(--border-color); }
+        /* 輸入框組件 */
+        .input-composite { background: var(--card-bg); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-card); border: 1px solid var(--border-color); }
         .input-row { display: flex; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
         .input-row input { flex: 1; font-size: 16px; font-weight: 600; color: var(--text-main); }
         .price-action-row { display: flex; align-items: center; justify-content: space-between; }
@@ -139,24 +150,18 @@
         .h-price { font-family: var(--font-serif); font-size: 18px; font-weight: 900; color: var(--primary); }
 
         /* =========================================
-           6. 行程版面 (大優化：不擁擠、區塊獨立、地鐵線)
+           6. 行程版面 (獨立區塊、地鐵動線)
            ========================================= */
-        .trip-card { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 30px; box-shadow: var(--border-inner), var(--shadow-card); border: 1px solid var(--border-color);}
+        .trip-card { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--border-inner), var(--shadow-card); border: 1px solid var(--border-color);}
         .t-img { width: 100%; height: 200px; object-fit: cover; filter: sepia(0.1) contrast(0.95);}
         .t-body { padding: 24px; }
-        .t-time { font-size: 12px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; }
+        .t-time { font-size: 11px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin: 0 0 20px; line-height: 1.3; color: var(--text-main); }
         
         /* 獨立資訊區塊 */
         .info-block {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            align-items: flex-start;
-            padding: 14px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; padding: 14px;
+            background: rgba(255,255,255,0.8); border-radius: 12px; border: 1px solid var(--border-color);
         }
         .info-block.addr-block { background: rgba(255,255,255,0.5); }
         .info-block.transport-block { background: rgba(183, 143, 100, 0.08); border-color: rgba(183, 143, 100, 0.2); }
@@ -169,26 +174,36 @@
         
         /* 複製地址按鈕樣式 */
         .copy-addr-btn { 
-            background: rgba(56, 38, 21, 0.06); border: 1px solid rgba(56, 38, 21, 0.1); color: var(--text-main); font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; vertical-align: text-bottom; transition: 0.2s; 
+            background: rgba(56, 38, 21, 0.06); border: 1px solid rgba(56, 38, 21, 0.1); color: var(--text-main); 
+            font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; margin-left: 8px; 
+            display: inline-flex; align-items: center; gap: 4px; vertical-align: text-bottom; transition: 0.2s; margin-top: 4px;
         }
-        .copy-addr-btn:active { background: var(--primary); color: #fff; }
+        .copy-addr-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
         /* 清晰的地鐵動線樣式 */
         .subway-step { 
-            display: block; position: relative; padding-left: 16px; margin-bottom: 8px; border-left: 2px solid var(--border-color);
+            display: block; position: relative; padding-left: 16px; margin-bottom: 10px; border-left: 2px solid var(--border-color); line-height: 1.5;
         }
         .subway-step:last-child { border-left-color: transparent; margin-bottom: 0; }
-        .subway-step::before {
-            content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); border: 2px solid var(--card-bg);
-        }
-        .subway-station { font-weight: 800; color: var(--text-main); background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 13px; margin: 0 2px;}
+        .subway-step::before { content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); border: 2px solid #fff; }
+        .subway-station { font-weight: 800; color: var(--text-main); background: #fff; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; margin: 0 4px; display: inline-block;}
         .subway-line { color: var(--primary); font-weight: 800; font-size: 13px; }
 
-        .cost-tag { 
-            display: inline-block; background-color: #fff; color: var(--primary); padding: 4px 8px; font-size: 12px; font-weight: 800; border-radius: 6px; margin-top: 10px; border: 1px solid rgba(113, 62, 24, 0.2); letter-spacing: 0.5px;
-        }
+        .cost-tag { display: inline-block; background-color: #fff; color: var(--primary); padding: 4px 8px; font-size: 12px; font-weight: 800; border-radius: 6px; margin-top: 10px; border: 1px solid rgba(113, 62, 24, 0.2); letter-spacing: 0.5px; }
 
         .map-btn { display: block; width: 100%; text-align: center; background: var(--text-main); color: #FFF; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 20px; }
+
+        /* =========================================
+           7. 機票版面
+           ========================================= */
+        .flight-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--border-inner), var(--shadow-card); border: 1px solid var(--border-color); border-top: 6px solid var(--primary); }
+        .f-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .f-code { font-family: var(--font-serif); font-size: 36px; font-weight: 900; display: block; letter-spacing: -1px; color: var(--text-main); line-height: 1.1;}
+        .f-city { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
+        .f-icon { font-size: 32px; color: var(--secondary); transform: rotate(45deg); opacity: 0.5; }
+        .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--bg-color); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: inset 1px rgba(0,0,0,0.02);}
+        .f-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; display: block; letter-spacing: 0.5px;}
+        .f-val { font-size: 16px; font-weight: 800; color: var(--text-main); }
 
         /* Modal / Toast */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(56, 38, 21, 0.4); backdrop-filter: blur(8px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; display: flex; align-items: flex-end; }
@@ -272,7 +287,7 @@
         </section>
 
         <section id="view-itinerary" class="view-container">
-            <div class="segment-wrapper" style="margin-top: 10px;">
+            <div class="segment-wrapper">
                 <button class="seg-btn active" onclick="switchDay('day1', this)">D1</button>
                 <button class="seg-btn" onclick="switchDay('day2', this)">D2</button>
                 <button class="seg-btn" onclick="switchDay('day3', this)">D3</button>
@@ -281,7 +296,7 @@
             <div id="itinerary-content"></div>
         </section>
 
-        <section id="view-flight" class="view-container" style="padding-top: 10px;"></section>
+        <section id="view-flight" class="view-container"></section>
     </main>
 
     <nav class="bottom-nav">
@@ -306,35 +321,101 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9QRzDsOKhw89lgS03-oOhGpUcfd6szO3-QZ78w_6Mpz18rLnszsFHNyyfzEJntg1m/exec';
 
-        // 🌟 完全還原：精確對應廈門行程與獨立備註區塊
+        // 🌟 廈門行程完全還原 ＆ 客製化圖標
         const ITINERARY_DATA = {
             day1: [
-                { time: "預估 20 分鐘", title: "Check in: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 包車<br><span class=\"cost-tag\">交通花費：¥50</span>", icon2: "<i class='ph-fill ph-suitcase'></i>", info2: "先寄放行李", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
-                { time: "預估 35 分鐘", title: "漁緯港海鮮自助餐廳", address: "SM商業城3期4層", icon1: "<i class='ph-fill ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span> (往岩內方向)</span><span class=\"subway-step\">搭到 <span class=\"subway-station\">烏石浦站</span> 3B出口</span><span class=\"cost-tag\">交通花費：¥3</span>", icon2: "<i class='ph-fill ph-lightbulb'></i>", info2: "這期有無印良品，吃完自助餐可逛百貨公司", mapUrl: "https://j.map.baidu.com/24/LZQd", imgUrl: "https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" },
-                { time: "預估 25 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥28</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { 
+                    time: "預估 20 分鐘", title: "Check in: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 包車<br><span class=\"cost-tag\">交通花費：¥50</span>", 
+                    icon2: "<i class='ph-fill ph-suitcase'></i>", info2: "先寄放行李", 
+                    mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" 
+                },
+                { 
+                    time: "預估 35 分鐘", title: "漁緯港海鮮自助餐廳", address: "SM商業城3期4層", 
+                    icon1: "<i class='ph-fill ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span> (往岩內方向)</span><span class=\"subway-step\">搭到 <span class=\"subway-station\">烏石浦站</span> 3B出口</span><span class=\"cost-tag\">交通花費：¥3</span>", 
+                    icon2: "<i class='ph-fill ph-lightbulb'></i>", info2: "這期有無印良品，吃完自助餐可逛百貨公司", 
+                    mapUrl: "https://j.map.baidu.com/24/LZQd", imgUrl: "https://g.udn.com.tw/upfiles/B_VI/visa520infinite/PSN_PHOTO/321/f_29304321_1.jpg" 
+                },
+                { 
+                    time: "預估 25 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥28</span>", 
+                    mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" 
+                }
             ],
             day2: [
-                { time: "預估 12 分鐘", title: "景點: 胡里山炮台", address: "廈門市思明區曾厝垵路2號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥20</span>", icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/c7/gos", imgUrl: "https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" },
-                { time: "預估 10 分鐘", title: "景點/午餐: 曾厝垵主景區", address: "廈門市思明區環島南路", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥13</span>", icon2: "<i class='ph-fill ph-bowl-food'></i>", info2: "午餐可能吃海鮮沙茶麵", mapUrl: "https://j.map.baidu.com/c6/XUPi", imgUrl: "https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" },
-                { time: "預估 30 分鐘", title: "景點: 沙坡尾藝術西區", address: "廈門市思明區沙坡尾60號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥17</span>", icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/9c/7vK", imgUrl: "https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" },
-                { time: "預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", icon2: "<i class='ph-fill ph-thumbs-up'></i>", info2: "推薦：黃則和花生湯", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" },
-                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行回去<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { 
+                    time: "預估 12 分鐘", title: "景點: 胡里山炮台", address: "廈門市思明區曾厝垵路2號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥20</span>", 
+                    icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", 
+                    mapUrl: "https://j.map.baidu.com/c7/gos", imgUrl: "https://dimg04.c-ctrip.com/images/1lo6t12000c35o4p52F69_R_1000_500.png_.webp?proc=namelogo/d_5" 
+                },
+                { 
+                    time: "預估 10 分鐘", title: "景點/午餐: 曾厝垵主景區", address: "廈門市思明區環島南路", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥13</span>", 
+                    icon2: "<i class='ph-fill ph-bowl-food'></i>", info2: "午餐可能吃海鮮沙茶麵", 
+                    mapUrl: "https://j.map.baidu.com/c6/XUPi", imgUrl: "https://megapx-assets.dcard.tw/images/fe3aa22f-50ee-498d-9d24-2ff46e972a4d/640.jpeg" 
+                },
+                { 
+                    time: "預估 30 分鐘", title: "景點: 沙坡尾藝術西區", address: "廈門市思明區沙坡尾60號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥17</span>", 
+                    icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", 
+                    mapUrl: "https://j.map.baidu.com/9c/7vK", imgUrl: "https://www.highspeed.mtr.com.hk/tc/travel/images/theme/baa318339a5a43b48c2b3076ea8b45.jpg" 
+                },
+                { 
+                    time: "預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", 
+                    icon2: "<i class='ph-fill ph-thumbs-up'></i>", info2: "推薦：黃則和花生湯", 
+                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" 
+                },
+                { 
+                    time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
+                    icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行回去<br><span class=\"cost-tag\">交通花費：¥0</span>", 
+                    mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" 
+                }
             ],
             day3: [
-                { time: "預估 50 分鐘", title: "景點: 集美學村", address: "廈門市集美區銀江路183號", icon1: "<i class='ph-fill ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">集美學村站</span> 2出口</span><span class=\"cost-tag\">交通花費：¥5</span>", icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", mapUrl: "https://j.map.baidu.com/20/zXh", imgUrl: "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" },
-                { time: "預估 18 分鐘", title: "逛街: 廈門尚柏奧特萊斯", address: "廈門市集美區天水路2號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥30</span>", mapUrl: "https://j.map.baidu.com/8f/u8h", imgUrl: "https://symphonyholdings.com/assets/img/meta.jpg" },
-                { time: "預估 40 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥80</span>", icon2: "<i class='ph-fill ph-coffee'></i>", info2: "休息一下", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" },
-                { time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路", address: "廈門市思明區中山路", icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行前往<br><span class=\"cost-tag\">交通花費：¥0</span>", icon2: "<i class='ph-fill ph-moon-stars'></i>", info2: "晚上出來吃晚餐", mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" },
-                { time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行返回<br><span class=\"cost-tag\">交通花費：¥0</span>", mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" }
+                { 
+                    time: "預估 50 分鐘", title: "景點: 集美學村", address: "廈門市集美區銀江路183號", 
+                    icon1: "<i class='ph-fill ph-train'></i>", info1: "<span class=\"subway-step\">步行到 <span class=\"subway-station\">鎮海路站</span></span><span class=\"subway-step\">搭乘 <span class=\"subway-line\">地鐵1號線</span></span><span class=\"subway-step\">搭到 <span class=\"subway-station\">集美學村站</span> 2出口</span><span class=\"cost-tag\">交通花費：¥5</span>", 
+                    icon2: "<i class='ph-fill ph-camera'></i>", info2: "拍照留念", 
+                    mapUrl: "https://j.map.baidu.com/20/zXh", imgUrl: "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hbtmmhrg6cjylyirtb6z.jpg" 
+                },
+                { 
+                    time: "預估 18 分鐘", title: "逛街: 廈門尚柏奧特萊斯", address: "廈門市集美區天水路2號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥30</span>", 
+                    mapUrl: "https://j.map.baidu.com/8f/u8h", imgUrl: "https://symphonyholdings.com/assets/img/meta.jpg" 
+                },
+                { 
+                    time: "預估 40 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥80</span>", 
+                    icon2: "<i class='ph-fill ph-coffee'></i>", info2: "休息一下", 
+                    mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" 
+                },
+                { 
+                    time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路", address: "廈門市思明區中山路", 
+                    icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行前往<br><span class=\"cost-tag\">交通花費：¥0</span>", 
+                    icon2: "<i class='ph-fill ph-moon-stars'></i>", info2: "晚上出來吃晚餐", 
+                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" 
+                },
+                { 
+                    time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
+                    icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行返回<br><span class=\"cost-tag\">交通花費：¥0</span>", 
+                    mapUrl: "https://j.map.baidu.com/36/PoJ", imgUrl: "https://content.skyscnr.com/available/2306062384/2306062384_WxH.jpg" 
+                }
             ],
             day4: [
-                { time: "預估 25 分鐘", title: "出發: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", icon2: "<i class='ph-fill ph-airplane-takeoff'></i>", info2: "準備搭乘 11:40 班機回台", mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" }
+                { 
+                    time: "預估 25 分鐘", title: "出發: 廈門高崎國際機場", address: "廈門市湖里區翔雲一路121號", 
+                    icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥45</span>", 
+                    icon2: "<i class='ph-fill ph-airplane-takeoff'></i>", info2: "準備搭乘 11:40 班機回台", 
+                    mapUrl: "https://j.map.baidu.com/47/bYd", imgUrl: "https://file.variflight.com/buckets/carnoc/keys/7d08cc3dcf7d03f6bbde6f98a9177a0d.jpeg" 
+                }
             ]
         };
 
         const FLIGHT_DATA = [
-            { label: "去程 Outbound", date: "4/24 (五)", fCode: "TPE", tCode: "XMN", dTime: "08:40", aTime: "10:30", air: "MANDARIN AE991", url: "https://www.mandarin-airlines.com/b2c/webcheckin" },
-            { label: "回程 Inbound", date: "4/27 (一)", fCode: "XMN", tCode: "TPE", dTime: "11:40", aTime: "13:30", air: "MANDARIN AE992", url: "https://www.mandarin-airlines.com/b2c/webcheckin" }
+            { label: "去程 Outbound", date: "4/24 (五)", fCode: "TPE", fromName: "台北桃園", tCode: "XMN", toName: "廈門高崎", dTime: "08:40", aTime: "10:30", air: "MANDARIN AE991", url: "https://www.mandarin-airlines.com/b2c/webcheckin" },
+            { label: "回程 Inbound", date: "4/27 (一)", fCode: "XMN", fromName: "廈門高崎", tCode: "TPE", toName: "台北桃園", dTime: "11:40", aTime: "13:30", air: "MANDARIN AE992", url: "https://www.mandarin-airlines.com/b2c/webcheckin" }
         ];
 
         const Store = {
@@ -420,13 +501,12 @@
             setTimeout(() => toast.remove(), 2500);
         }
 
-        // 🌟 渲染獨立區塊的行程表
+        // 🌟 渲染獨立區塊行程表
         function renderItinerary(day) {
             const container = document.getElementById('itinerary-content');
             let html = '';
             (ITINERARY_DATA[day] || []).forEach(item => {
                 let noteHtml = '';
-                // 如果有備註 (info2)，就渲染獨立的備註區塊
                 if(item.info2) {
                     noteHtml = `
                     <div class="info-block note-block">
@@ -464,6 +544,7 @@
             container.innerHTML = html;
         }
 
+        // 🌟 渲染航班卡片
         function renderFlights() {
             const container = document.getElementById('view-flight');
             let html = '';
@@ -471,9 +552,9 @@
                 html += `
                 <div class="flight-card">
                     <div class="f-top">
-                        <div><span class="f-code">${f.fCode}</span><span class="f-city">TPE</span></div>
+                        <div><span class="f-code">${f.fCode}</span><span class="f-city">${f.fromName}</span></div>
                         <i class="ph-fill ph-airplane-tilt f-icon"></i>
-                        <div style="text-align:right;"><span class="f-code">${f.tCode}</span><span class="f-city">XMN</span></div>
+                        <div style="text-align:right;"><span class="f-code">${f.tCode}</span><span class="f-city">${f.toName}</span></div>
                     </div>
                     <div class="f-grid">
                         <div><span class="f-label">日期</span><span class="f-val">${f.date}</span></div>
@@ -481,7 +562,7 @@
                         <div><span class="f-label">起飛</span><span class="f-val">${f.dTime}</span></div>
                         <div><span class="f-label">抵達</span><span class="f-val">${f.aTime}</span></div>
                     </div>
-                    <a href="${f.url}" class="map-btn" target="_blank">線上報到</a>
+                    <a href="${f.url}" class="map-btn" target="_blank">線上報到 ↗</a>
                 </div>`;
             });
             container.innerHTML = html;
@@ -507,8 +588,17 @@
                 const icon = EMOJI_MAP[item.cat] || 'ph-sparkle';
                 listEl.innerHTML += `
                 <div class="h-item">
-                    <div class="h-left"><h4>${item.name}</h4><span class="h-jpy">${item.cat}</span></div>
-                    <div class="h-right"><div class="h-price">$${price}</div><button onclick="deleteExpense('${item.id}')" style="color:var(--text-muted); padding:4px;"><i class="ph-bold ph-trash"></i></button></div>
+                    <div class="h-left">
+                        <div class="h-icon"><i class="ph-fill ${icon}"></i></div>
+                        <div class="h-info">
+                            <h4>${item.name}</h4>
+                            <span class="h-jpy">${item.cat}</span>
+                        </div>
+                    </div>
+                    <div class="h-right">
+                        <div class="h-price">$${price}</div>
+                        <button onclick="deleteExpense('${item.id}')" style="color:var(--text-muted); padding:4px;"><i class="ph-bold ph-trash"></i></button>
+                    </div>
                 </div>`;
             });
 
