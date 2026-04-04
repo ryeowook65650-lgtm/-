@@ -87,7 +87,10 @@
         /* =========================================
            3. 視圖容器與共用卡片
            ========================================= */
-        .view-container { display: none; padding: 25px 20px; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box;}
+        /* 同時確保外層視圖有足夠的底部空間，讓列表最後一筆不會被遮住 */
+        .view-container { 
+            display: none; padding: 25px 20px 120px 20px; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box;
+        }
         
         /* 移除 transform 動畫，改為單純的透明度淡入，這是解決 fixed 失效的關鍵！ */
         .view-container.active { display: block; animation: fadeIn 0.4s ease forwards; }
@@ -173,23 +176,37 @@
         .modern-input::placeholder { color: rgba(113, 62, 24, 0.5); font-weight: 500; }
 
         /* =========================================
-           ✨ 全新修復：確保浮動置底與可點擊 ✨
+           ✨ 終極修復：告別 transform 觸控失靈 ✨
            ========================================= */
         .add-btn { 
             position: fixed; 
             /* 針對 iPhone/全螢幕手機保留底部安全區 */
-            bottom: max(20px, env(safe-area-inset-bottom));
-            left: 50%;
-            /* 完美居中 */
-            transform: translateX(-50%); 
-            width: calc(100% - 40px); 
-            max-width: 600px;
-            z-index: 9999; /* 絕對最上層 */
-            background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s, box-shadow 0.2s, transform 0.1s; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; 
+            bottom: max(25px, env(safe-area-inset-bottom));
+            /* 絕對安全的置中法，不使用 transform */
+            left: 20px;
+            right: 20px;
+            margin: 0 auto;
+            width: auto; 
+            max-width: 560px; /* 滿版 600px 扣掉左右 20px */
+            z-index: 99999; /* 突破天際的層級 */
+            
+            background: var(--color-4); color: var(--color-1); padding: 18px; border: var(--border-width) solid var(--color-1); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s ease-out; letter-spacing: 2px; box-shadow: 3px 3px 0 rgba(56, 38, 21, 1); display: flex; justify-content: center; align-items: center; gap: 8px; 
+            
+            /* 確保手機點擊零延遲 */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
-        /* 點擊效果維持居中不跑版 */
-        .add-btn:active { transform: translateX(-50%) translate(3px, 3px); box-shadow: 0 0 0 rgba(56, 38, 21, 1); }
-        .add-btn:disabled { background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; }
+        
+        /* 點擊特效改為微縮放，避免位移導致觸控中斷 */
+        .add-btn:active { 
+            transform: scale(0.98); 
+            box-shadow: 0 0 0 rgba(56, 38, 21, 1); 
+            background-color: var(--color-5);
+        }
+        
+        .add-btn:disabled { 
+            background: var(--color-3); border-color: var(--color-1); color: var(--color-5); box-shadow: none; cursor: not-allowed; transform: none; 
+        }
 
         .date-section { margin-bottom: 25px; }
         .date-divider { font-family: var(--font-serif); font-size: 20px; color: var(--color-1); font-weight: 700; padding: 10px 5px; border-bottom: 2px solid var(--color-1); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; opacity: 0.9; }
