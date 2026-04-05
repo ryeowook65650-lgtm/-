@@ -23,7 +23,6 @@
             --bg-color: #d8d8d0;         
             --card-bg: #FCFAFA;          
             --primary: #713e18;          
-            --primary-light: rgba(113, 62, 24, 0.08); 
             --secondary: #b78f64;        
             --accent: #f4c07d;           
             --text-main: #382615;        
@@ -31,12 +30,10 @@
             --border-color: rgba(56, 38, 21, 0.1);
             
             --color-success: #6b8c65;
-            --color-danger: #A04000;
+            --color-danger: #FF4B4B;
             
             --radius-lg: 24px;
             --radius-md: 16px;
-            --radius-sm: 10px;
-            
             --shadow-card: 0 8px 24px rgba(56, 38, 21, 0.06), 0 2px 8px rgba(56, 38, 21, 0.03);
             --shadow-btn: 0 6px 16px rgba(113, 62, 24, 0.2);
             --border-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
@@ -54,7 +51,11 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
         }
 
-        button, input, select { appearance: none; -webkit-appearance: none; border: none; background: none; outline: none; margin: 0; padding: 0; }
+        /* 加入 touch-action 解決 iOS 延遲與按鍵失效問題 */
+        button, input, select, .bento-box, .seg-btn { 
+            appearance: none; -webkit-appearance: none; border: none; background: none; outline: none; margin: 0; padding: 0; 
+            touch-action: manipulation; 
+        }
         button { cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 0.2s; }
         button:active { transform: scale(0.94); opacity: 0.8; }
 
@@ -93,10 +94,7 @@
            4. 視圖容器
            ========================================= */
         .view-container { 
-            display: none; 
-            padding: 15px 20px 120px; 
-            flex-direction: column; 
-            gap: 20px; 
+            display: none; padding: 15px 20px 120px; flex-direction: column; gap: 20px; 
             animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
         .view-container.active { display: flex; }
@@ -106,7 +104,7 @@
         .balance-card, .segment-wrapper, .bento-grid, .input-composite, .trip-card, .flight-card { margin: 0 !important; }
 
         /* =========================================
-           5. 記帳與餘額 (小巧精緻的統計按鈕)
+           5. 記帳與餘額
            ========================================= */
         .balance-card {
             background: linear-gradient(135deg, #382615 0%, #20140A 100%);
@@ -114,18 +112,9 @@
             box-shadow: 0 16px 32px rgba(56, 38, 21, 0.2); position: relative; overflow: hidden;
         }
         .b-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2;}
-        
-        /* 這裡用 Flexbox 確保匯率跟統計按鈕乖乖排在同一行 */
         .b-title-right { display: flex; align-items: center; gap: 8px; }
-        
         .rate-badge { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--accent); border: 1px solid rgba(244, 192, 125, 0.2);}
-        
-        /* 小而精緻的統計按鈕 */
-        .stats-btn { 
-            background: rgba(255,255,255,0.1); border-radius: 8px; width: 28px; height: 28px; 
-            display: flex; align-items: center; justify-content: center; color: var(--accent); 
-            border: 1px solid rgba(244, 192, 125, 0.2); transition: 0.2s;
-        }
+        .stats-btn { background: rgba(255,255,255,0.1); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--accent); border: 1px solid rgba(244, 192, 125, 0.2); transition: 0.2s; }
         .stats-btn:active { background: rgba(255,255,255,0.25); transform: scale(0.9); }
 
         .b-amount { font-family: var(--font-serif); font-size: 42px; font-weight: 900; margin: 8px 0 4px; line-height: 1.1; background: linear-gradient(135deg, #FFF 0%, #E2DDD5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2;}
@@ -134,16 +123,16 @@
         .budget-wrapper { margin-top: 20px; position: relative; z-index: 2;}
         .budget-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: rgba(255,255,255,0.8); }
         .budget-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
-        .budget-fill { height: 100%; width: 0%; background: var(--color-success); border-radius: 99px; transition: width 1s ease; }
+        .budget-fill { height: 100%; width: 0%; background: var(--color-success); border-radius: 99px; transition: width 1s ease, background-color 0.4s ease; }
 
         .segment-wrapper { background: rgba(56, 38, 21, 0.06); border-radius: 12px; display: flex; padding: 4px; box-shadow: inset 0 1px 3px rgba(56, 38, 21, 0.05);}
-        .seg-btn { flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 700; color: var(--text-muted); border-radius: 8px; transition: 0.3s; }
+        .seg-btn { flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 700; color: var(--text-muted); border-radius: 8px; transition: 0.3s; cursor: pointer; }
         .seg-btn.active { background: var(--card-bg); color: var(--text-main); box-shadow: 0 2px 8px rgba(56, 38, 21, 0.08); }
 
         /* 便當盒網格 */
         .section-title { font-size: 15px; font-weight: 800; margin: 5px 0 -10px; color: var(--text-main); }
         .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .bento-box { background: var(--card-bg); border-radius: var(--radius-md); padding: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--border-inner), var(--shadow-card); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s;}
+        .bento-box { background: var(--card-bg); border-radius: var(--radius-md); padding: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--border-inner), var(--shadow-card); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer;}
         .bento-box.active { border: 2px solid var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(113, 62, 24, 0.12);}
         .bento-icon { font-size: 32px; display: block; margin-bottom: 8px; color: var(--text-muted); transition: 0.2s;}
         .bento-box.active .bento-icon { color: var(--primary); transform: scale(1.1);}
@@ -157,10 +146,11 @@
         .input-row input::placeholder { color: #B4ACA6; font-weight: 500;}
         .price-action-row { display: flex; align-items: center; justify-content: space-between; }
         .price-input-wrapper { display: flex; align-items: center; background: var(--bg-color); border-radius: 12px; padding: 12px 16px; flex: 1; margin-right: 12px; border: inset 1px rgba(0,0,0,0.02);}
-        .curr-toggle { font-weight: 800; font-size: 20px; color: var(--primary); margin-right: 12px; padding-right: 12px; border-right: 2px solid rgba(56, 38, 21, 0.15); cursor: pointer; transition: 0.2s;}
+        .curr-toggle { font-weight: 800; font-size: 20px; color: var(--primary); margin-right: 12px; padding-right: 12px; border-right: 2px solid rgba(56, 38, 21, 0.15); cursor: pointer; transition: 0.2s; user-select: none; }
+        .curr-toggle:active { transform: scale(0.85); opacity: 0.7; }
         .price-input-wrapper input { font-size: 24px; font-weight: 800; width: 100%; color: var(--text-main); }
         .price-input-wrapper input::placeholder { color: #B4ACA6; font-weight: 500;}
-        .submit-fab { width: 54px; height: 54px; border-radius: 16px; background: linear-gradient(135deg, var(--primary) 0%, #5A3113 100%); color: #FFF; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), var(--shadow-btn); flex-shrink: 0;}
+        .submit-fab { width: 54px; height: 54px; border-radius: 16px; background: linear-gradient(135deg, var(--primary) 0%, #5A3113 100%); color: #FFF; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), var(--shadow-btn); flex-shrink: 0; cursor: pointer;}
 
         .history-list { display: flex; flex-direction: column; gap: 12px; }
         .h-item { background: var(--card-bg); padding: 16px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-card);}
@@ -171,11 +161,11 @@
         .h-right { text-align: right; }
         .h-price { font-family: var(--font-serif); font-size: 18px; font-weight: 900; color: var(--primary); margin-bottom: 2px;}
         .h-jpy { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-        .h-del { color: var(--text-muted); padding: 10px; margin-left: 5px; font-size: 20px; transition: 0.2s;}
+        .h-del { color: var(--text-muted); padding: 10px; margin-left: 5px; font-size: 20px; transition: 0.2s; cursor: pointer;}
         .h-del:active { color: var(--color-danger); }
 
         /* =========================================
-           6. 行程版面 (獨立區塊、地鐵動線)
+           6. 行程版面
            ========================================= */
         .trip-card { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--border-inner), var(--shadow-card); border: 1px solid var(--border-color);}
         .t-img { width: 100%; height: 200px; object-fit: cover; filter: sepia(0.1) contrast(0.95);}
@@ -183,11 +173,7 @@
         .t-time { font-size: 11px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .t-title { font-family: var(--font-serif); font-size: 24px; font-weight: 900; margin: 0 0 20px; line-height: 1.3; color: var(--text-main); }
         
-        /* 獨立資訊區塊 */
-        .info-block {
-            display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; padding: 14px;
-            background: rgba(255,255,255,0.8); border-radius: 12px; border: 1px solid var(--border-color);
-        }
+        .info-block { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; padding: 14px; background: rgba(255,255,255,0.8); border-radius: 12px; border: 1px solid var(--border-color); }
         .info-block.addr-block { background: rgba(255,255,255,0.5); }
         .info-block.transport-block { background: rgba(183, 143, 100, 0.08); border-color: rgba(183, 143, 100, 0.2); }
         .info-block.note-block { background: rgba(244, 192, 125, 0.15); border-color: rgba(244, 192, 125, 0.3); }
@@ -197,26 +183,18 @@
         .note-block .i-icon { color: var(--primary); }
         .i-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text-main); line-height: 1.6; }
         
-        /* 複製地址按鈕樣式 */
-        .copy-addr-btn { 
-            background: rgba(56, 38, 21, 0.06); border: 1px solid rgba(56, 38, 21, 0.1); color: var(--text-main); 
-            font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; margin-left: 8px; 
-            display: inline-flex; align-items: center; gap: 4px; vertical-align: text-bottom; transition: 0.2s; margin-top: 4px;
-        }
+        .copy-addr-btn { background: rgba(56, 38, 21, 0.06); border: 1px solid rgba(56, 38, 21, 0.1); color: var(--text-main); font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; vertical-align: text-bottom; transition: 0.2s; margin-top: 4px; cursor: pointer;}
         .copy-addr-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        /* 清晰的地鐵動線樣式 */
-        .subway-step { 
-            display: block; position: relative; padding-left: 16px; margin-bottom: 10px; border-left: 2px solid var(--border-color); line-height: 1.5;
-        }
+        .subway-step { display: block; position: relative; padding-left: 16px; margin-bottom: 10px; border-left: 2px solid var(--border-color); line-height: 1.5; }
         .subway-step:last-child { border-left-color: transparent; margin-bottom: 0; }
         .subway-step::before { content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); border: 2px solid #fff; }
         .subway-station { font-weight: 800; color: var(--text-main); background: #fff; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; margin: 0 4px; display: inline-block;}
         .subway-line { color: var(--primary); font-weight: 800; font-size: 13px; }
 
         .cost-tag { display: inline-block; background-color: #fff; color: var(--primary); padding: 4px 8px; font-size: 12px; font-weight: 800; border-radius: 6px; margin-top: 10px; border: 1px solid rgba(113, 62, 24, 0.2); letter-spacing: 0.5px; }
-
-        .map-btn { display: block; width: 100%; text-align: center; background: var(--text-main); color: #FFF; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 20px; }
+        .map-btn { display: block; width: 100%; text-align: center; background: var(--text-main); color: #FFF; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 20px; transition: 0.2s; cursor: pointer;}
+        .map-btn:active { background: var(--primary); }
 
         /* =========================================
            7. 機票版面
@@ -233,13 +211,13 @@
         /* Modal / Toast */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(56, 38, 21, 0.4); backdrop-filter: blur(8px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; display: flex; align-items: flex-end; }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-card { background: var(--bg-color); width: 100%; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(56, 38, 21, 0.2);}
+        .modal-card { background: var(--bg-color); width: 100%; max-height: 85vh; overflow-y: auto; border-radius: 24px 24px 0 0; padding: 24px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); box-shadow: 0 -10px 40px rgba(56, 38, 21, 0.2);}
         .modal-overlay.active .modal-card { transform: translateY(0); }
         
         .pull-indicator { width: 40px; height: 5px; background: rgba(56,38,21,0.2); border-radius: 3px; margin: 0 auto 20px; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .modal-header h3 { margin: 0; font-family: var(--font-serif); font-size: 22px; font-weight: 900; color: var(--text-main); }
-        .close-btn { background: rgba(56,38,21,0.06); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 16px; }
+        .close-btn { background: rgba(56,38,21,0.06); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 16px; cursor: pointer;}
         
         .stat-item { background: var(--card-bg); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: var(--border-inner), var(--shadow-card); border: 1px solid var(--border-color); }
         .stat-left { display: flex; align-items: center; gap: 14px; }
@@ -362,7 +340,20 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9QRzDsOKhw89lgS03-oOhGpUcfd6szO3-QZ78w_6Mpz18rLnszsFHNyyfzEJntg1m/exec';
 
-        // 🌟 廈門行程完全還原 ＆ 客製化獨立資訊塊
+        // 🌟 防呆：清理任何可能導致當機的壞掉快取資料
+        function getSafeStorage(key, defaultVal) {
+            try {
+                const val = localStorage.getItem(key);
+                if (!val) return defaultVal;
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : defaultVal;
+            } catch (e) {
+                localStorage.removeItem(key); // 殺掉壞資料
+                return defaultVal;
+            }
+        }
+
+        // 🌟 廈門行程完全還原 ＆ 獨立資訊塊設計
         const ITINERARY_DATA = {
             day1: [
                 { 
@@ -406,7 +397,7 @@
                     time: "預估 15 分鐘", title: "吃吃喝喝: 中山路步行街", address: "廈門市思明區中山路步行街", 
                     icon1: "<i class='ph-fill ph-taxi'></i>", info1: "搭乘 計程車<br><span class=\"cost-tag\">交通花費：¥12</span>", 
                     icon2: "<i class='ph-fill ph-thumbs-up'></i>", info2: "推薦：黃則和花生湯", 
-                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/a0/9b/0d/zhongshan-street.jpg?w=1200&h=-1&s=1" 
+                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" 
                 },
                 { 
                     time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
@@ -436,7 +427,7 @@
                     time: "路程預估 15 分鐘", title: "晚餐逛逛: 中山路", address: "廈門市思明區中山路", 
                     icon1: "<i class='ph-fill ph-sneaker'></i>", info1: "步行前往<br><span class=\"cost-tag\">交通花費：¥0</span>", 
                     icon2: "<i class='ph-fill ph-moon-stars'></i>", info2: "晚上出來吃晚餐", 
-                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/a0/9b/0d/zhongshan-street.jpg?w=1200&h=-1&s=1" 
+                    mapUrl: "https://j.map.baidu.com/1c/AsK", imgUrl: "https://images.unsplash.com/photo-1590559899731-a38283b156b6?q=80&w=800&auto=format&fit=crop" 
                 },
                 { 
                     time: "路程預估 15 分鐘", title: "回飯店: 廈門瑞頤大酒店", address: "廈門市思明區鷺江道12號", 
@@ -462,7 +453,7 @@
         const Store = {
             state: {
                 rate: parseFloat(localStorage.getItem('cached_rate_xmn')) || 4.45, 
-                expenses: JSON.parse(localStorage.getItem('cached_expenses_xmn') || '[]'),
+                expenses: getSafeStorage('cached_expenses_xmn', []), // 🌟 防呆
                 date: '4/24',
                 person: '',     
                 category: '交通',
@@ -476,14 +467,19 @@
         const TOTAL_BUDGET = 30000;
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderFlights();
-            renderItinerary('day1');
-            fetchExchangeRate();
-            fetchXiamenWeather();
-            renderExpenses();
-            if (navigator.onLine) fetchExpenses();
+            try {
+                renderFlights();
+                renderItinerary('day1');
+                fetchExchangeRate();
+                fetchXiamenWeather();
+                renderExpenses();
+                if (navigator.onLine) fetchExpenses();
+            } catch (e) {
+                console.error("Initialization Error", e);
+            }
         });
 
+        // UI 邏輯
         function switchTab(tabId) {
             document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -541,6 +537,7 @@
             setTimeout(() => toast.remove(), 2500);
         }
 
+        // 🌟 渲染獨立區塊行程表
         function renderItinerary(day) {
             const container = document.getElementById('itinerary-content');
             let html = '';
@@ -583,6 +580,7 @@
             container.innerHTML = html;
         }
 
+        // 🌟 渲染航班卡片
         function renderFlights() {
             const container = document.getElementById('view-flight');
             let html = '';
@@ -635,7 +633,7 @@
                     </div>
                     <div class="h-right">
                         <div class="h-price">$${price}</div>
-                        <button onclick="deleteExpense('${item.id}')" style="color:var(--text-muted); padding:4px; border:none; background:none;"><i class="ph-bold ph-trash"></i></button>
+                        <button onclick="deleteExpense('${item.id}')" style="color:var(--text-muted); padding:4px; border:none; background:none; cursor:pointer;"><i class="ph-bold ph-trash"></i></button>
                     </div>
                 </div>`;
             });
@@ -645,7 +643,7 @@
             document.getElementById('total-primary').innerText = `NT$ ${totalTWD.toLocaleString()}`;
             document.getElementById('total-secondary').innerText = `≈ ¥ ${totalRMB}`;
 
-            // 🌟 修正這裡：把顏色的動態切換加回來！
+            // 🌟 加入變紅預算條
             let spentPercent = (totalTWD / TOTAL_BUDGET) * 100;
             let remaining = TOTAL_BUDGET - totalTWD;
             const fillEl = document.getElementById('budget-fill');
@@ -656,23 +654,12 @@
             if (remaining >= 0) {
                 remLabel.innerText = `剩餘 NT$ ${remaining.toLocaleString()}`;
                 remLabel.style.color = 'rgba(255,255,255,0.8)';
-                // 超過 85% 變警告色(暖沙金)，正常是綠色
                 fillEl.style.background = spentPercent > 85 ? 'var(--accent)' : 'var(--color-success)';
             } else {
                 remLabel.innerText = `超支 NT$ ${Math.abs(remaining).toLocaleString()}`;
-                remLabel.style.color = '#FF4B4B'; // 文字變成紅色
-                fillEl.style.background = '#FF4B4B'; // 爆預算時，線條變成鮮豔的紅色
+                remLabel.style.color = 'var(--color-danger)';
+                fillEl.style.background = 'var(--color-danger)';
             }
-        }
-            Store.state.expenses.forEach(item => { totalTWD += Math.round(parseFloat(item.price) || 0); });
-            const totalRMB = (totalTWD / Store.state.rate).toFixed(1);
-            document.getElementById('total-primary').innerText = `NT$ ${totalTWD.toLocaleString()}`;
-            document.getElementById('total-secondary').innerText = `≈ ¥ ${totalRMB}`;
-
-            let spentPercent = (totalTWD / TOTAL_BUDGET) * 100;
-            let remaining = TOTAL_BUDGET - totalTWD;
-            document.getElementById('budget-fill').style.width = `${Math.min(spentPercent, 100)}%`;
-            document.getElementById('budget-rem-label').innerText = remaining >= 0 ? `剩餘 NT$ ${remaining.toLocaleString()}` : `超支 NT$ ${Math.abs(remaining).toLocaleString()}`;
         }
 
         async function fetchExchangeRate() {
