@@ -645,6 +645,30 @@
             document.getElementById('total-primary').innerText = `NT$ ${totalTWD.toLocaleString()}`;
             document.getElementById('total-secondary').innerText = `≈ ¥ ${totalRMB}`;
 
+            // 🌟 修正這裡：把顏色的動態切換加回來！
+            let spentPercent = (totalTWD / TOTAL_BUDGET) * 100;
+            let remaining = TOTAL_BUDGET - totalTWD;
+            const fillEl = document.getElementById('budget-fill');
+            const remLabel = document.getElementById('budget-rem-label');
+
+            fillEl.style.width = `${Math.min(spentPercent, 100)}%`;
+
+            if (remaining >= 0) {
+                remLabel.innerText = `剩餘 NT$ ${remaining.toLocaleString()}`;
+                remLabel.style.color = 'rgba(255,255,255,0.8)';
+                // 超過 85% 變警告色(暖沙金)，正常是綠色
+                fillEl.style.background = spentPercent > 85 ? 'var(--accent)' : 'var(--color-success)';
+            } else {
+                remLabel.innerText = `超支 NT$ ${Math.abs(remaining).toLocaleString()}`;
+                remLabel.style.color = '#FF4B4B'; // 文字變成紅色
+                fillEl.style.background = '#FF4B4B'; // 爆預算時，線條變成鮮豔的紅色
+            }
+        }
+            Store.state.expenses.forEach(item => { totalTWD += Math.round(parseFloat(item.price) || 0); });
+            const totalRMB = (totalTWD / Store.state.rate).toFixed(1);
+            document.getElementById('total-primary').innerText = `NT$ ${totalTWD.toLocaleString()}`;
+            document.getElementById('total-secondary').innerText = `≈ ¥ ${totalRMB}`;
+
             let spentPercent = (totalTWD / TOTAL_BUDGET) * 100;
             let remaining = TOTAL_BUDGET - totalTWD;
             document.getElementById('budget-fill').style.width = `${Math.min(spentPercent, 100)}%`;
